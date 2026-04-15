@@ -2,6 +2,7 @@
 
 #include <dwmapi.h>
 #include <flutter_windows.h>
+#include <windowsx.h>
 
 #include "resource.h"
 
@@ -16,7 +17,13 @@ namespace {
 #define DWMWA_USE_IMMERSIVE_DARK_MODE 20
 #endif
 
+#ifndef DWMWA_WINDOW_CORNER_PREFERENCE
+#define DWMWA_WINDOW_CORNER_PREFERENCE 33
+#endif
+
 constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
+constexpr int kTitleBarHeight = 44;
+constexpr int kWindowActionAreaWidth = 130;
 
 /// Registry key for app theme preference.
 ///
@@ -51,6 +58,17 @@ void EnableFullDpiSupportIfAvailable(HWND hwnd) {
     enable_non_client_dpi_scaling(hwnd);
   }
   FreeLibrary(user32_module);
+}
+
+void ConfigureTransparentWindow(HWND window) {
+  constexpr int kDwmWindowCornerDoNotRound = 1;
+
+  MARGINS margins = {-1, -1, -1, -1};
+  DwmExtendFrameIntoClientArea(window, &margins);
+
+  int corner_preference = kDwmWindowCornerDoNotRound;
+  DwmSetWindowAttribute(window, DWMWA_WINDOW_CORNER_PREFERENCE,
+                        &corner_preference, sizeof(corner_preference));
 }
 
 }  // namespace
@@ -135,7 +153,8 @@ bool Win32Window::Create(const std::wstring& title,
   double scale_factor = dpi / 96.0;
 
   HWND window = CreateWindow(
-      window_class, title.c_str(), WS_OVERLAPPEDWINDOW,
+      window_class, title.c_str(),
+      WS_POPUP | WS_SYSMENU | WS_MINIMIZEBOX,
       Scale(origin.x, scale_factor), Scale(origin.y, scale_factor),
       Scale(size.width, scale_factor), Scale(size.height, scale_factor),
       nullptr, nullptr, GetModuleHandle(nullptr), this);
@@ -144,6 +163,7 @@ bool Win32Window::Create(const std::wstring& title,
     return false;
   }
 
+  ConfigureTransparentWindow(window);
   UpdateTheme(window);
 
   return OnCreate();
@@ -179,6 +199,30 @@ Win32Window::MessageHandler(HWND hwnd,
                             WPARAM const wparam,
                             LPARAM const lparam) noexcept {
   switch (message) {
+    case WM_NCHITTEST: {
+      POINT cursor = {GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam)};
+      RECT window_rect;
+      GetWindowRect(hwnd, &window_rect);
+
+      HMONITOR monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+      UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
+      double scale_factor = dpi / 96.0;
+      int title_bar_height = Scale(kTitleBarHeight, scale_factor);
+      int action_area_width = Scale(kWindowActionAreaWidth, scale_factor);
+
+      bool is_in_title_bar =
+          cursor.y >= window_rect.top &&
+          cursor.y < window_rect.top + title_bar_height;
+      bool is_in_action_area =
+          cursor.x >= window_rect.right - action_area_width &&
+          cursor.x < window_rect.right;
+
+      if (is_in_title_bar && !is_in_action_area) {
+        return HTCAPTION;
+      }
+      break;
+    }
+
     case WM_DESTROY:
       window_handle_ = nullptr;
       Destroy();

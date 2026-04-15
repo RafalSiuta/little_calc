@@ -27,6 +27,38 @@ bool FlutterWindow::OnCreate() {
   RegisterPlugins(flutter_controller_->engine());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
+  window_channel_ =
+      std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+          flutter_controller_->engine()->messenger(), "little_calc/window",
+          &flutter::StandardMethodCodec::GetInstance());
+  window_channel_->SetMethodCallHandler(
+      [this](const flutter::MethodCall<flutter::EncodableValue>& call,
+             std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>>
+                 result) {
+        HWND window = GetHandle();
+        if (!window) {
+          result->Error("window_unavailable", "Window handle is unavailable.");
+          return;
+        }
+
+        const std::string& method = call.method_name();
+        if (method == "drag") {
+          ReleaseCapture();
+          SendMessage(window, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+          result->Success();
+        } else if (method == "minimize") {
+          ShowWindow(window, SW_MINIMIZE);
+          result->Success();
+        } else if (method == "toggleMaximize") {
+          result->Success();
+        } else if (method == "close") {
+          PostMessage(window, WM_CLOSE, 0, 0);
+          result->Success();
+        } else {
+          result->NotImplemented();
+        }
+      });
+
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
     this->Show();
   });
@@ -40,6 +72,8 @@ bool FlutterWindow::OnCreate() {
 }
 
 void FlutterWindow::OnDestroy() {
+  window_channel_ = nullptr;
+
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
   }
