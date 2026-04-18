@@ -1,6 +1,10 @@
 #include "flutter_window.h"
 
+#include <cstdint>
 #include <optional>
+#include <variant>
+
+#include <flutter_windows.h>
 
 #include "flutter/generated_plugin_registrant.h"
 
@@ -8,6 +12,24 @@ FlutterWindow::FlutterWindow(const flutter::DartProject& project)
     : project_(project) {}
 
 FlutterWindow::~FlutterWindow() {}
+
+void FlutterWindow::SetCalculatorWidth(int width) {
+  HWND window = GetHandle();
+  if (!window) {
+    return;
+  }
+
+  RECT rect;
+  GetWindowRect(window, &rect);
+
+  HMONITOR monitor = MonitorFromWindow(window, MONITOR_DEFAULTTONEAREST);
+  UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
+  double scale_factor = dpi / 96.0;
+  int scaled_width = static_cast<int>(width * scale_factor);
+
+  SetWindowPos(window, nullptr, rect.left, rect.top, scaled_width,
+               rect.bottom - rect.top, SWP_NOZORDER | SWP_NOACTIVATE);
+}
 
 bool FlutterWindow::OnCreate() {
   if (!Win32Window::OnCreate()) {
@@ -50,6 +72,37 @@ bool FlutterWindow::OnCreate() {
           ShowWindow(window, SW_MINIMIZE);
           result->Success();
         } else if (method == "toggleMaximize") {
+          result->Success();
+        } else if (method == "setCalculatorWidth") {
+          const auto* arguments =
+              std::get_if<flutter::EncodableMap>(call.arguments());
+          if (!arguments) {
+            result->Error("bad_args", "Expected width argument.");
+            return;
+          }
+
+          auto width_it =
+              arguments->find(flutter::EncodableValue("width"));
+          if (width_it == arguments->end()) {
+            result->Error("missing_width", "Expected width argument.");
+            return;
+          }
+
+          int width = 0;
+          if (const auto* int_width =
+                  std::get_if<int32_t>(&width_it->second)) {
+            width = *int_width;
+          } else if (const auto* long_width =
+                         std::get_if<int64_t>(&width_it->second)) {
+            width = static_cast<int>(*long_width);
+          }
+
+          if (width <= 0) {
+            result->Error("invalid_width", "Width must be positive.");
+            return;
+          }
+
+          SetCalculatorWidth(width);
           result->Success();
         } else if (method == "close") {
           PostMessage(window, WM_CLOSE, 0, 0);

@@ -298,6 +298,12 @@ class CalculatorLogic extends ChangeNotifier {
       case '√':
         onSqrt();
         break;
+      case 'square':
+        onPow();
+        break;
+      case 'sqrt':
+        onSqrt();
+        break;
       case '.':
         onDecimal(char);
         break;

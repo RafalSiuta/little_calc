@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/styles/colors.dart';
 
-class NumBtn extends StatelessWidget {
+class NumBtn extends StatefulWidget {
   const NumBtn({
     Key? key,
     required this.label,
@@ -15,21 +15,31 @@ class NumBtn extends StatelessWidget {
   final int flex;
 
   @override
+  State<NumBtn> createState() => _NumBtnState();
+}
+
+class _NumBtnState extends State<NumBtn> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: flex,
+      flex: widget.flex,
       child: SizedBox(
-        height: 58,
+        height: 56,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
             splashColor: AppColors.borderDark,
             highlightColor: AppColors.borderDark,
             hoverColor: AppColors.borderDark,
-            onTap: onPressed,
+            onHighlightChanged: (isHighlighted) {
+              setState(() => _isPressed = isHighlighted);
+            },
+            onTap: widget.onPressed,
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: AppColors.borderDark,
@@ -37,12 +47,13 @@ class NumBtn extends StatelessWidget {
                 ),
               ),
               child: Text(
-                label,
+                widget.label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.text,
+                maxLines: 1,
+                style: TextStyle(
+                  color: _isPressed ? AppColors.accent : AppColors.text,
                   fontFamily: 'Exo',
-                  fontSize: 24,
+                  fontSize: 16,
                   fontWeight: FontWeight.w100,
                   height: 1,
                   letterSpacing: 0,
