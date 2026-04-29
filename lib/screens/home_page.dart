@@ -140,12 +140,15 @@ class _CalculatorViewState extends State<CalculatorView> {
           color: AppColors.background,
           child: Column(
             children: [
-              Expanded(
-                child: CalculatorDisplay(data: data),
-              ),
               CalculatorOptionsBar(
-                onBackspace: data.delete,
+                onSettings: () => debugPrint('settings was pressed'),
                 onToggleCalculatorWidth: _toggleCalculatorWidth,
+              ),
+              Expanded(
+                child: CalculatorDisplay(
+                  data: data,
+                  onBackspace: data.delete,
+                ),
               ),
               const SizedBox(height: 16),
               CalculatorKeyboard(
@@ -176,7 +179,7 @@ class _CalculatorViewState extends State<CalculatorView> {
       case _squareSign:
         return 'square';
       case '()':
-        return '';
+        return '()';
       default:
         return value;
     }

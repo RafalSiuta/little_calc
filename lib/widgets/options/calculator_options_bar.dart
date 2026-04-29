@@ -5,11 +5,11 @@ import '../../utils/styles/colors.dart';
 class CalculatorOptionsBar extends StatelessWidget {
   const CalculatorOptionsBar({
     Key? key,
-    required this.onBackspace,
+    required this.onSettings,
     required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
-  final VoidCallback onBackspace;
+  final VoidCallback onSettings;
   final VoidCallback onToggleCalculatorWidth;
 
   @override
@@ -48,9 +48,9 @@ class CalculatorOptionsBar extends StatelessWidget {
             splashColor: AppColors.borderDark,
             highlightColor: AppColors.borderDark,
             hoverColor: AppColors.borderDark,
-            onPressed: onBackspace,
+            onPressed: onSettings,
             icon: const Icon(
-              Icons.backspace_outlined,
+              Icons.settings_outlined,
               color: AppColors.unselected,
               size: 24,
             ),

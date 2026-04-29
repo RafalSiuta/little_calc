@@ -26,8 +26,9 @@ void FlutterWindow::SetCalculatorWidth(int width) {
   UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
   double scale_factor = dpi / 96.0;
   int scaled_width = static_cast<int>(width * scale_factor);
+  int anchored_left = rect.right - scaled_width;
 
-  SetWindowPos(window, nullptr, rect.left, rect.top, scaled_width,
+  SetWindowPos(window, nullptr, anchored_left, rect.top, scaled_width,
                rect.bottom - rect.top, SWP_NOZORDER | SWP_NOACTIVATE);
 }
 

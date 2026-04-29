@@ -1,0 +1,12 @@
+windows transparewnt window:
+https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background-in-your-flutter-desktop-windows-project-ba44b73bb01d
+
+
+# COMMITS (poniżej dodawaj opis wykonanaych czynności po angielsku według wzoru - data | lista wprowadzonych zmian - krótki opis co zostało zmienione)
+
+2026-04-29 | Updated calculator display order and window resize anchoring - Moved the calculator options bar above the display, placed the info display below the result area, and anchored Windows width changes to the right edge so scientific controls expand from right to left.
+
+2026-04-29 | Swapped settings and backspace actions - Moved the settings IconButton into the calculator options bar with a temporary debug action and moved the active backspace IconButton into the info display.
+
+2026-04-30 | Added live equation display, live result preview, and bracket evaluation - Extended calculator logic to show the selected equation, clear it after equals, preview binary results while typing the second operand, and evaluate bracketed expressions with operator precedence.
+

@@ -4,19 +4,23 @@ import '../../model/calculator_logic.dart';
 import '../../utils/styles/colors.dart';
 
 class CalculatorDisplay extends StatelessWidget {
-  const CalculatorDisplay({Key? key, required this.data}) : super(key: key);
+  const CalculatorDisplay({
+    Key? key,
+    required this.data,
+    required this.onBackspace,
+  }) : super(key: key);
 
   final CalculatorLogic data;
+  final VoidCallback onBackspace;
 
   @override
   Widget build(BuildContext context) {
-    final equation = _equationText();
+    // data.equationDisplay = _equationText();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          _InfoDisplay(showError: data.display == 'Infinity'),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -26,11 +30,11 @@ class CalculatorDisplay extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (equation.isNotEmpty)
+                    if (data.equationDisplay.isNotEmpty)
                       SizedBox(
                         width: double.infinity,
                         child: Text(
-                          equation,
+                          data.equationDisplay,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.right,
@@ -70,35 +74,44 @@ class CalculatorDisplay extends StatelessWidget {
               ),
             ),
           ),
+          _InfoDisplay(
+            showError: data.display == 'Infinity',
+            onBackspace: onBackspace,
+          ),
         ],
       ),
     );
   }
 
-  String _equationText() {
-    if (data.operator.isEmpty) {
-      return '';
-    }
-    final leftSide = data.oldText.isNotEmpty ? data.oldText : data.display;
-    return '$leftSide ${_operatorGlyph(data.operator)}';
-  }
+  // String _equationText() {
+  //   if (data.operator.isEmpty) {
+  //     return '';
+  //   }
+  //   final leftSide = data.oldText.isNotEmpty ? data.oldText : data.display;
+  //   return '$leftSide ${_operatorGlyph(data.operator)}';
+  // }
 
-  String _operatorGlyph(String value) {
-    switch (value) {
-      case '/':
-        return '\u00f7';
-      case '*':
-        return '\u00d7';
-      default:
-        return value;
-    }
-  }
+  // String _operatorGlyph(String value) {
+  //   switch (value) {
+  //     case '/':
+  //       return '\u00f7';
+  //     case '*':
+  //       return '\u00d7';
+  //     default:
+  //       return value;
+  //   }
+  // }
 }
 
 class _InfoDisplay extends StatelessWidget {
-  const _InfoDisplay({Key? key, required this.showError}) : super(key: key);
+  const _InfoDisplay({
+    Key? key,
+    required this.showError,
+    required this.onBackspace,
+  }) : super(key: key);
 
   final bool showError;
+  final VoidCallback onBackspace;
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +136,21 @@ class _InfoDisplay extends StatelessWidget {
                 ),
               ),
             ),
-            const Icon(
-              Icons.settings_outlined,
-              color: AppColors.unselected,
-              size: 24,
+            IconButton(
+              constraints: const BoxConstraints.tightFor(
+                width: 24,
+                height: 24,
+              ),
+              padding: EdgeInsets.zero,
+              splashColor: AppColors.borderDark,
+              highlightColor: AppColors.borderDark,
+              hoverColor: AppColors.borderDark,
+              onPressed: onBackspace,
+              icon: const Icon(
+                Icons.backspace_outlined,
+                color: AppColors.unselected,
+                size: 24,
+              ),
             ),
           ],
         ),
