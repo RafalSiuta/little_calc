@@ -7,11 +7,15 @@ class CalculatorDisplay extends StatelessWidget {
   const CalculatorDisplay({
     Key? key,
     required this.data,
+    required this.isExpanded,
     required this.onBackspace,
+    required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
   final CalculatorLogic data;
+  final bool isExpanded;
   final VoidCallback onBackspace;
+  final VoidCallback onToggleCalculatorWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +80,9 @@ class CalculatorDisplay extends StatelessWidget {
           ),
           _InfoDisplay(
             showError: data.display == 'Infinity',
+            isExpanded: isExpanded,
             onBackspace: onBackspace,
+            onToggleCalculatorWidth: onToggleCalculatorWidth,
           ),
         ],
       ),
@@ -107,11 +113,15 @@ class _InfoDisplay extends StatelessWidget {
   const _InfoDisplay({
     Key? key,
     required this.showError,
+    required this.isExpanded,
     required this.onBackspace,
+    required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
   final bool showError;
+  final bool isExpanded;
   final VoidCallback onBackspace;
+  final VoidCallback onToggleCalculatorWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +146,24 @@ class _InfoDisplay extends StatelessWidget {
                 ),
               ),
             ),
+            IconButton(
+              constraints: const BoxConstraints.tightFor(
+                width: 24,
+                height: 24,
+              ),
+              padding: EdgeInsets.zero,
+              splashColor: AppColors.borderDark,
+              highlightColor: AppColors.borderDark,
+              hoverColor: AppColors.borderDark,
+              tooltip: isExpanded ? 'Zwez kalkulator' : 'Rozszerz kalkulator',
+              onPressed: onToggleCalculatorWidth,
+              icon: Icon(
+                isExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
+                color: AppColors.unselected,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 16),
             IconButton(
               constraints: const BoxConstraints.tightFor(
                 width: 24,

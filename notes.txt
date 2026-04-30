@@ -10,3 +10,13 @@ https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background
 
 2026-04-30 | Added live equation display, live result preview, and bracket evaluation - Extended calculator logic to show the selected equation, clear it after equals, preview binary results while typing the second operand, and evaluate bracketed expressions with operator precedence.
 
+2026-04-30 | Refactored calculator logic around expression tokens - Reworked calculation state so numbers, operators, and brackets are stored as tokens, with Flag kept as the readable input-state layer and equationDisplay rendered from tokens.
+
+2026-04-30 | Added page navigation architecture - Introduced MainScreen with PageController, screen and navigation models, a custom route, and CalculatorOptionsBar-driven switching between calculator sections.
+
+2026-04-30 | Added calculator section pages - Replaced HomePage with CalcPage and added placeholder screens for settings, currency conversion, unit conversion, and calculation history.
+
+2026-04-30 | Moved calculator width toggle into info display - Reassigned the CalculatorOptionsBar calculator icon to page switching, added active accent coloring, and moved window expansion control next to the backspace button in _InfoDisplay.
+
+2026-04-30 | Extracted calculator keyboard symbols - Moved calculator signs and compact or expanded keyboard row definitions into CalcSymbols under utils/calc_symbols.
+

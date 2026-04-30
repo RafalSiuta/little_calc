@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'model/calculator_logic.dart';
-import 'screens/home_page.dart';
+import 'screens/main_screen.dart';
+import 'utils/routes/custom_route.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -33,7 +34,18 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.transparent,
         ),
-        home: const HomePage(),
+        initialRoute: '/',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return CustomPageRoute(
+                child: const MainScreen(),
+                settings: settings,
+              );
+            default:
+              return null;
+          }
+        },
       ),
     );
   }
