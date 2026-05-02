@@ -20,3 +20,12 @@ https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background
 
 2026-04-30 | Extracted calculator keyboard symbols - Moved calculator signs and compact or expanded keyboard row definitions into CalcSymbols under utils/calc_symbols.
 
+2026-05-02 | Refactored option icon buttons and display controls - Extracted OptionIconButton into widgets/buttons, switched it to Flutter IconButton semantics with transparent background feedback, added icon-only hover and pressed accent states, and reused it in CalculatorOptionsBar and CalculatorDisplay.
+
+2026-05-02 | Added shared layout and calculator settings providers - Introduced WindowLayoutProvider to preserve expanded calculator state across page switches and CalculatorSettingsProvider to supply default decimal precision and scientific-notation settings.
+
+2026-05-02 | Added display number formatting - Added numberFormatter with 10-decimal default precision, trailing-zero trimming, Infinity/NaN handling, and automatic scientific notation for very large or very small values.
+
+2026-05-02 | Updated calculator symbol logic - Moved logic value mapping into CalcSymbols, renamed calc_symbols file usage, and connected calculator input to the shared symbol mapping.
+
+2026-05-02 | Improved square and square-root behavior - Updated onPow to show exponent notation and report missing-number errors, added sqrt expression parsing, and made square-root input render as pending √( expressions with live preview after numeric input.

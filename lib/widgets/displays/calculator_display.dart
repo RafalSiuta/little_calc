@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/calculator_logic.dart';
 import '../../utils/styles/colors.dart';
+import '../buttons/option_icon_button.dart';
 
 class CalculatorDisplay extends StatelessWidget {
   const CalculatorDisplay({
@@ -79,6 +80,7 @@ class CalculatorDisplay extends StatelessWidget {
             ),
           ),
           _InfoDisplay(
+            errorMessage: data.errorMessage,
             showError: data.display == 'Infinity',
             isExpanded: isExpanded,
             onBackspace: onBackspace,
@@ -112,12 +114,14 @@ class CalculatorDisplay extends StatelessWidget {
 class _InfoDisplay extends StatelessWidget {
   const _InfoDisplay({
     Key? key,
+    required this.errorMessage,
     required this.showError,
     required this.isExpanded,
     required this.onBackspace,
     required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
+  final String errorMessage;
   final bool showError;
   final bool isExpanded;
   final VoidCallback onBackspace;
@@ -130,10 +134,15 @@ class _InfoDisplay extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
+          spacing: 16,
           children: [
             Expanded(
               child: Text(
-                showError ? 'error - divide by 0' : '',
+                errorMessage.isNotEmpty
+                    ? errorMessage
+                    : showError
+                        ? 'error - divide by 0'
+                        : '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -146,39 +155,21 @@ class _InfoDisplay extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-              constraints: const BoxConstraints.tightFor(
-                width: 24,
-                height: 24,
-              ),
-              padding: EdgeInsets.zero,
-              splashColor: AppColors.borderDark,
-              highlightColor: AppColors.borderDark,
-              hoverColor: AppColors.borderDark,
+
+            OptionIconButton(
+              icon: isExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
               tooltip: isExpanded ? 'Zwez kalkulator' : 'Rozszerz kalkulator',
+              isActive: false,
+              usePressedAccent: true,
               onPressed: onToggleCalculatorWidth,
-              icon: Icon(
-                isExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
-                color: AppColors.unselected,
-                size: 24,
-              ),
             ),
-            const SizedBox(width: 16),
-            IconButton(
-              constraints: const BoxConstraints.tightFor(
-                width: 24,
-                height: 24,
-              ),
-              padding: EdgeInsets.zero,
-              splashColor: AppColors.borderDark,
-              highlightColor: AppColors.borderDark,
-              hoverColor: AppColors.borderDark,
+            // const SizedBox(width: 16),
+            OptionIconButton(
+              icon: Icons.backspace_outlined,
+              tooltip: 'Usun',
+              isActive: false,
+              usePressedAccent: true,
               onPressed: onBackspace,
-              icon: const Icon(
-                Icons.backspace_outlined,
-                color: AppColors.unselected,
-                size: 24,
-              ),
             ),
           ],
         ),

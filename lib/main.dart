@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'model/calculator_logic.dart';
+import 'providers/calculator_settings_provider.dart';
+import 'providers/window_layout_provider.dart';
 import 'screens/main_screen.dart';
 import 'utils/routes/custom_route.dart';
 
@@ -23,11 +25,23 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => CalculatorSettingsProvider(),
+        ),
+        ChangeNotifierProxyProvider<CalculatorSettingsProvider,
+            CalculatorLogic>(
           create: (context) => CalculatorLogic(),
+          update: (context, settings, logic) {
+            final calculatorLogic = logic ?? CalculatorLogic();
+            calculatorLogic.updateSettings(settings);
+            return calculatorLogic;
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WindowLayoutProvider(),
         ),
       ],
       child: MaterialApp(
-        title: 'little_calc',
+        title: 'little calc',
         debugShowCheckedModeBanner: false,
         color: Colors.transparent,
         theme: ThemeData(

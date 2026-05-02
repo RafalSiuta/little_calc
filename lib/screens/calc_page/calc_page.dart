@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/calculator_logic.dart';
-import '../../utils/calc_symbols/calc_symbole.dart';
+import '../../providers/window_layout_provider.dart';
+import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/styles/colors.dart';
 import '../../widgets/displays/calculator_display.dart';
 import '../../widgets/keyboards/calculator_keyboard.dart';
@@ -16,39 +16,10 @@ class CalcPage extends StatefulWidget {
 }
 
 class _CalcPageState extends State<CalcPage> {
-  static const MethodChannel _windowChannel =
-      MethodChannel('little_calc/window');
-  static const int _compactWindowWidth = 390;
-  static const int _expandedWindowWidth = 803;
-
-  bool _isExpanded = false;
-
-  Future<void> _toggleCalculatorWidth() async {
-    final nextIsExpanded = !_isExpanded;
-    final nextWidth =
-        nextIsExpanded ? _expandedWindowWidth : _compactWindowWidth;
-
-    try {
-      await _windowChannel.invokeMethod<void>(
-        'setCalculatorWidth',
-        {'width': nextWidth},
-      );
-      if (!mounted) {
-        return;
-      }
-      setState(() => _isExpanded = nextIsExpanded);
-    } on MissingPluginException {
-      if (!mounted) {
-        return;
-      }
-      setState(() => _isExpanded = nextIsExpanded);
-    } on PlatformException {
-      // Keep the current visual state if the native runner rejects the resize.
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final windowLayout = context.watch<WindowLayoutProvider>();
+
     return Consumer<CalculatorLogic>(
       builder: (context, data, child) {
         return Container(
@@ -60,18 +31,20 @@ class _CalcPageState extends State<CalcPage> {
               Expanded(
                 child: CalculatorDisplay(
                   data: data,
-                  isExpanded: _isExpanded,
+                  isExpanded: windowLayout.isExpanded,
                   onBackspace: data.delete,
-                  onToggleCalculatorWidth: _toggleCalculatorWidth,
+                  onToggleCalculatorWidth: () {
+                    windowLayout.toggleCalculatorWidth();
+                  },
                 ),
               ),
               const SizedBox(height: 16),
               CalculatorKeyboard(
-                rows: _isExpanded
+                rows: windowLayout.isExpanded
                     ? CalcSymbols.expandedRows
                     : CalcSymbols.compactRows,
                 onPressed: (value) {
-                  final logicValue = _logicValue(value);
+                  final logicValue = CalcSymbols.logicValue(value);
                   if (logicValue.isEmpty) {
                     return;
                   }
@@ -83,22 +56,5 @@ class _CalcPageState extends State<CalcPage> {
         );
       },
     );
-  }
-
-  String _logicValue(String value) {
-    switch (value) {
-      case CalcSymbols.divisionSign:
-        return '/';
-      case CalcSymbols.multiplicationSign:
-        return '*';
-      case CalcSymbols.squareRootSign:
-        return 'sqrt';
-      case CalcSymbols.squareSign:
-        return 'square';
-      case '()':
-        return '()';
-      default:
-        return value;
-    }
   }
 }

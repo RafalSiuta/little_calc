@@ -60,4 +60,21 @@ class CalcSymbols {
     ],
     ['ln', 'log', '1/x', '|x|', 'x!', '+/-', '0', '.', '='],
   ];
+
+  static String logicValue(String value) {
+    switch (value) {
+      case divisionSign:
+        return '/';
+      case multiplicationSign:
+        return '*';
+      case squareRootSign:
+        return 'sqrt';
+      case squareSign:
+        return 'square';
+      case '()':
+        return '()';
+      default:
+        return value;
+    }
+  }
 }
