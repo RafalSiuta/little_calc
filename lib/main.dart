@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'model/calculator_logic.dart';
 import 'providers/calculator_settings_provider.dart';
+import 'providers/theme_settings_provider.dart';
 import 'providers/window_layout_provider.dart';
 import 'screens/main_screen.dart';
 import 'utils/routes/custom_route.dart';
@@ -39,12 +40,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => WindowLayoutProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ThemeSettingsProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'little calc',
         debugShowCheckedModeBanner: false,
         color: Colors.transparent,
         theme: ThemeData(
+          brightness: Brightness.dark,
+          colorScheme: const ColorScheme.dark(
+            surface: Colors.transparent,
+          ),
+          canvasColor: Colors.transparent,
+          cardColor: Colors.transparent,
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.transparent,
         ),

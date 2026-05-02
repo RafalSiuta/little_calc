@@ -1,7 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/nav_model/nav_model.dart';
 import '../models/screen_model/screen_model.dart';
+import '../providers/theme_settings_provider.dart';
+import '../utils/extensions/color_formatter.dart';
 import '../utils/styles/colors.dart';
 import '../widgets/options/calculator_options_bar.dart';
 import '../widgets/window/window_title_bar.dart';
@@ -87,29 +92,41 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: ColoredBox(
-        color: AppColors.systemWindow,
-        child: Column(
-          children: [
-            const WindowTitleBar(),
-            CalculatorOptionsBar(
-              items: _pages.map((page) => page.nav).toList(),
-              selectedItem: _currentPage,
-              onItemSelected: _onPageChange,
-            ),
-            Expanded(
-              child: PageView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                itemCount: _pages.length,
-                itemBuilder: (context, index) => _pages[index].page,
+    return Consumer<ThemeSettingsProvider>(
+      builder: (context, themeSettings, child) {
+        return Scaffold(
+          backgroundColor: formatColorOpacity(
+            AppColors.background,
+            themeSettings.backgroundOpacity,
+          ),
+          body: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: themeSettings.backgroundBlur,
+                sigmaY: themeSettings.backgroundBlur,
+              ),
+              child: Column(
+                children: [
+                  const WindowTitleBar(),
+                  CalculatorOptionsBar(
+                    items: _pages.map((page) => page.nav).toList(),
+                    selectedItem: _currentPage,
+                    onItemSelected: _onPageChange,
+                  ),
+                  Expanded(
+                    child: PageView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      itemCount: _pages.length,
+                      itemBuilder: (context, index) => _pages[index].page,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
