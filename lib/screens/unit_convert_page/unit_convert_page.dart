@@ -19,7 +19,7 @@ class _PlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.background,
+      // color: AppColors.background,
       alignment: Alignment.center,
       child: Text(
         title,

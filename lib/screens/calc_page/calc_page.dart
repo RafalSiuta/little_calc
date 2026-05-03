@@ -25,7 +25,7 @@ class _CalcPageState extends State<CalcPage> {
         return Container(
           width: double.infinity,
           height: double.infinity,
-          color: AppColors.background,
+          // color: AppColors.background,
           child: Column(
             children: [
               Expanded(

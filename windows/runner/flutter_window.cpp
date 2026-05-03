@@ -1,5 +1,6 @@
 #include "flutter_window.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <optional>
 #include <variant>
@@ -7,6 +8,106 @@
 #include <flutter_windows.h>
 
 #include "flutter/generated_plugin_registrant.h"
+
+namespace {
+
+enum ACCENT_STATE {
+  ACCENT_DISABLED = 0,
+  ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,
+};
+
+struct ACCENT_POLICY {
+  ACCENT_STATE AccentState;
+  DWORD AccentFlags;
+  DWORD GradientColor;
+  DWORD AnimationId;
+};
+
+struct WINDOWCOMPOSITIONATTRIBDATA {
+  int Attrib;
+  PVOID pvData;
+  SIZE_T cbData;
+};
+
+using SetWindowCompositionAttributeProc =
+    BOOL(WINAPI*)(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
+
+constexpr int kWindowCompositionAttributeAccentPolicy = 19;
+
+DWORD AcrylicTintColor(double blur_value) {
+  double clamped_blur = std::clamp(blur_value, 0.0, 40.0);
+  BYTE alpha = static_cast<BYTE>(40 + (clamped_blur / 40.0) * 120);
+
+  // SetWindowCompositionAttribute expects AABBGGRR.
+  return (static_cast<DWORD>(alpha) << 24) | 0x00191919;
+}
+
+bool ReadBoolArgument(const flutter::EncodableMap& arguments,
+                      const char* name,
+                      bool fallback) {
+  auto it = arguments.find(flutter::EncodableValue(name));
+  if (it == arguments.end()) {
+    return fallback;
+  }
+
+  if (const auto* value = std::get_if<bool>(&it->second)) {
+    return *value;
+  }
+
+  return fallback;
+}
+
+double ReadDoubleArgument(const flutter::EncodableMap& arguments,
+                          const char* name,
+                          double fallback) {
+  auto it = arguments.find(flutter::EncodableValue(name));
+  if (it == arguments.end()) {
+    return fallback;
+  }
+
+  if (const auto* value = std::get_if<double>(&it->second)) {
+    return *value;
+  }
+  if (const auto* value = std::get_if<int32_t>(&it->second)) {
+    return static_cast<double>(*value);
+  }
+  if (const auto* value = std::get_if<int64_t>(&it->second)) {
+    return static_cast<double>(*value);
+  }
+
+  return fallback;
+}
+
+bool SetNativeAcrylicBlur(HWND window, bool enabled, double blur_value) {
+  HMODULE user32_module = GetModuleHandle(L"user32.dll");
+  if (!user32_module) {
+    return false;
+  }
+
+  auto set_window_composition_attribute =
+      reinterpret_cast<SetWindowCompositionAttributeProc>(
+          GetProcAddress(user32_module, "SetWindowCompositionAttribute"));
+  if (!set_window_composition_attribute) {
+    return false;
+  }
+
+  ACCENT_POLICY accent = {
+      enabled ? ACCENT_ENABLE_ACRYLICBLURBEHIND : ACCENT_DISABLED,
+      0,
+      enabled ? AcrylicTintColor(blur_value) : 0,
+      0,
+  };
+
+  WINDOWCOMPOSITIONATTRIBDATA data = {
+      kWindowCompositionAttributeAccentPolicy,
+      &accent,
+      sizeof(accent),
+  };
+
+  return set_window_composition_attribute(window, &data);
+}
+
+}  // namespace
 
 FlutterWindow::FlutterWindow(const flutter::DartProject& project)
     : project_(project) {}
@@ -104,6 +205,24 @@ bool FlutterWindow::OnCreate() {
           }
 
           SetCalculatorWidth(width);
+          result->Success();
+        } else if (method == "setNativeBlur") {
+          const auto* arguments =
+              std::get_if<flutter::EncodableMap>(call.arguments());
+          if (!arguments) {
+            result->Error("bad_args", "Expected blur arguments.");
+            return;
+          }
+
+          bool enabled = ReadBoolArgument(*arguments, "enabled", true);
+          double blur = ReadDoubleArgument(*arguments, "blur", 0.0);
+          bool applied = SetNativeAcrylicBlur(window, enabled, blur);
+          if (!applied) {
+            result->Error("native_blur_unavailable",
+                          "Acrylic blur is unavailable on this Windows host.");
+            return;
+          }
+
           result->Success();
         } else if (method == "close") {
           PostMessage(window, WM_CLOSE, 0, 0);

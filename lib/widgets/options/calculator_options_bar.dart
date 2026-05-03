@@ -33,7 +33,7 @@ class CalculatorOptionsBar extends StatelessWidget {
             width: 0.5,
           ),
         ),
-        color: AppColors.background,
+        // color: AppColors.background,
       ),
       child: Row(
         children: [

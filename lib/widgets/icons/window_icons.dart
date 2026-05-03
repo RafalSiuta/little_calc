@@ -10,7 +10,7 @@ class WindowMinimizeIcon extends StatelessWidget {
     return Container(
       width: 12,
       height: 2,
-      color: AppColors.background,
+      color: AppColors.unselected,
     );
   }
 }
@@ -25,7 +25,7 @@ class WindowMaximizeIcon extends StatelessWidget {
       height: 14,
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppColors.background,
+          color: AppColors.unselected,
           width: 2,
         ),
       ),
@@ -49,8 +49,8 @@ class _WindowCloseIconPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.background
-      ..strokeWidth = 2
+      ..color = AppColors.unselected
+      ..strokeWidth = 1
       ..strokeCap = StrokeCap.square;
     canvas.drawLine(Offset.zero, Offset(size.width, size.height), paint);
     canvas.drawLine(Offset(size.width, 0), Offset(0, size.height), paint);

@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../models/nav_model/nav_model.dart';
 import '../models/screen_model/screen_model.dart';
 import '../providers/theme_settings_provider.dart';
@@ -99,31 +96,23 @@ class _MainScreenState extends State<MainScreen> {
             AppColors.background,
             themeSettings.backgroundOpacity,
           ),
-          body: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: themeSettings.backgroundBlur,
-                sigmaY: themeSettings.backgroundBlur,
+          body: Column(
+            children: [
+              const WindowTitleBar(),
+              CalculatorOptionsBar(
+                items: _pages.map((page) => page.nav).toList(),
+                selectedItem: _currentPage,
+                onItemSelected: _onPageChange,
               ),
-              child: Column(
-                children: [
-                  const WindowTitleBar(),
-                  CalculatorOptionsBar(
-                    items: _pages.map((page) => page.nav).toList(),
-                    selectedItem: _currentPage,
-                    onItemSelected: _onPageChange,
-                  ),
-                  Expanded(
-                    child: PageView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: _pageController,
-                      itemCount: _pages.length,
-                      itemBuilder: (context, index) => _pages[index].page,
-                    ),
-                  ),
-                ],
+              Expanded(
+                child: PageView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  itemCount: _pages.length,
+                  itemBuilder: (context, index) => _pages[index].page,
+                ),
               ),
-            ),
+            ],
           ),
         );
       },

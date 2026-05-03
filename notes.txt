@@ -29,3 +29,5 @@ https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background
 2026-05-02 | Updated calculator symbol logic - Moved logic value mapping into CalcSymbols, renamed calc_symbols file usage, and connected calculator input to the shared symbol mapping.
 
 2026-05-02 | Improved square and square-root behavior - Updated onPow to show exponent notation and report missing-number errors, added sqrt expression parsing, and made square-root input render as pending √( expressions with live preview after numeric input.
+
+2026-05-03 | Added controllable Windows Acrylic window blur - Moved native Windows blur setup into the Flutter window channel, added ThemeSettingsProvider synchronization for setNativeBlur, removed the startup-only blur hook from main.cpp, made app surfaces more transparent for the native effect, updated window control icon contrast, and documented the future macOS NSVisualEffectView approach.

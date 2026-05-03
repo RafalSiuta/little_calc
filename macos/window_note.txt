@@ -1,0 +1,22 @@
+macOS native window blur note
+
+The Windows Acrylic implementation can be mirrored on macOS, but it should use
+macOS-native APIs instead of Windows-style accent policies.
+
+Recommended direction:
+- Keep the existing FlutterMethodChannel name: little_calc/window.
+- Add a setNativeBlur method to MainFlutterWindow.swift when macOS support is
+  needed.
+- Add an NSVisualEffectView behind the FlutterViewController view.
+- Configure the NSVisualEffectView with a material such as .hudWindow,
+  .underWindowBackground, .sidebar, or another material that matches the app.
+- Use blendingMode = .behindWindow so the effect samples the desktop/window
+  content behind the app.
+- Toggle state between .active and .inactive for enabled/disabled blur.
+- There is no direct macOS equivalent of Flutter's ImageFilter sigma value.
+  Treat ThemeSettingsProvider.backgroundBlur as an app-level intensity value
+  and map it to material choice, active/inactive state, and Flutter overlay
+  opacity/tint.
+
+Do not add this yet unless the macOS native window should start responding to
+setNativeBlur.
