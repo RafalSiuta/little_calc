@@ -26,7 +26,7 @@ class _NumBtnState extends State<NumBtn> {
     return Expanded(
       flex: widget.flex,
       child: SizedBox(
-        height: 56,
+        height: AppDimens.keyHeight,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -39,11 +39,11 @@ class _NumBtnState extends State<NumBtn> {
             onTap: widget.onPressed,
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.all(AppDimens.basePadding),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: AppColors.borderDark,
-                  width: 0.3,
+                  width: AppDimens.borderThickness,
                 ),
               ),
               child: Text(
@@ -53,7 +53,7 @@ class _NumBtnState extends State<NumBtn> {
                 style: TextStyle(
                   color: _isPressed ? AppColors.accent : AppColors.text,
                   fontFamily: 'Exo',
-                  fontSize: 16,
+                  fontSize: AppFontSizes.button,
                   fontWeight: FontWeight.w100,
                   height: 1,
                   letterSpacing: 0,

@@ -26,7 +26,7 @@ class _PlaceholderPage extends StatelessWidget {
         style: const TextStyle(
           color: AppColors.accent,
           fontFamily: 'Exo',
-          fontSize: 24,
+          fontSize: AppFontSizes.displayMid,
           fontWeight: FontWeight.w400,
           letterSpacing: 0,
         ),

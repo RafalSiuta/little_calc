@@ -46,7 +46,7 @@ class CalculatorDisplay extends StatelessWidget {
                           style: const TextStyle(
                             color: AppColors.accent,
                             fontFamily: 'Exo',
-                            fontSize: 24,
+                            fontSize: AppFontSizes.displayMid,
                             fontWeight: FontWeight.w400,
                             height: 1,
                             letterSpacing: 0,
@@ -56,20 +56,33 @@ class CalculatorDisplay extends StatelessWidget {
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          data.display,
-                          maxLines: 1,
-                          textAlign: TextAlign.right,
-                          style: const TextStyle(
-                            color: AppColors.accent,
-                            fontFamily: 'Exo',
-                            fontSize: 48,
-                            fontWeight: FontWeight.w200,
-                            height: 1,
-                            letterSpacing: 0,
+                      child: ShaderMask(
+                        shaderCallback: (bounds) {
+                          return const LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            colors: [
+                              AppColors.accent,
+                              AppColors.accent2,
+                            ],
+                          ).createShader(bounds);
+                        },
+                        blendMode: BlendMode.srcIn,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            data.display,
+                            maxLines: 1,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              color: AppColors.accent,
+                              fontFamily: 'Exo',
+                              fontSize: AppFontSizes.displayLarge,
+                              fontWeight: FontWeight.w200,
+                              height: 1,
+                              letterSpacing: 0,
+                            ),
                           ),
                         ),
                       ),
@@ -148,7 +161,7 @@ class _InfoDisplay extends StatelessWidget {
                 style: const TextStyle(
                   color: AppColors.error,
                   fontFamily: 'Exo',
-                  fontSize: 10,
+                  fontSize: AppFontSizes.displaySmall,
                   fontWeight: FontWeight.w200,
                   height: 1,
                   letterSpacing: 0,

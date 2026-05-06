@@ -229,12 +229,16 @@ class CalculatorLogic extends ChangeNotifier {
     _prepareForNumericInput();
     newText = buttonText;
 
-    if (_lastTokenIsCloseBracket()) {
+    if (_lastTokenIsConstant() || _lastTokenIsCloseBracket()) {
       _appendOperatorToken("*");
     }
 
     if (_currentNumber == '0') {
       _replaceLastNumberToken(buttonText);
+    } else if (_currentNumber == '-0') {
+      if (buttonText != '0') {
+        _replaceLastNumberToken('-$buttonText');
+      }
     } else {
       _appendNumberToken(buttonText);
     }
@@ -347,6 +351,188 @@ class CalculatorLogic extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Cubes the active number token, writes the original value as `x^(3)` in
+  // equationDisplay, and keeps the cubed numeric token available for the next
+  // operator or equals press.
+  void onCube() {
+    clearSmallDisplay();
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = 'error - enter number before cube';
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    final sourceText = _formatTokenNumber(value);
+    final result = pow(value, 3).toDouble();
+    final resultText = _formatTokenNumber(result);
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    _tokens[_tokens.length - 1] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '$equationPrefix$sourceText^(3)';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    notifyListeners();
+  }
+
+  // Starts a power expression from the current value. The active number,
+  // constant, or closed bracket becomes the base, `^` is inserted as an
+  // operator, and the next typed value becomes the exponent.
+  void onPower() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (!_lastTokenIsNumber() &&
+        !_lastTokenIsConstant() &&
+        !_lastTokenIsCloseBracket()) {
+      display = '0';
+      errorMessage = 'error - enter base before power';
+      notifyListeners();
+      return;
+    }
+
+    _appendOperatorToken('^');
+    operator = '^';
+    flag = Flag.OPERATOR;
+    _syncEquationDisplay();
+    notifyListeners();
+  }
+
+  // Replaces the active number token with its absolute value, updates the
+  // equationDisplay with `|x|` notation, and keeps the absolute numeric result
+  // available for follow-up operators.
+  void onAbs() {
+    clearSmallDisplay();
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = 'error - enter number before absolute value';
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    final sourceText = _formatTokenNumber(value);
+    final resultText = _formatTokenNumber(value.abs());
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    _tokens[_tokens.length - 1] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '$equationPrefix|$sourceText|';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    notifyListeners();
+  }
+
+  // Replaces the active non-negative integer token with its factorial. Decimal
+  // and negative inputs are rejected because factorial is only supported for
+  // whole numbers in the calculator UI.
+  void onFactorial() {
+    clearSmallDisplay();
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = 'error - enter number before factorial';
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    if (value < 0 || value % 1 != 0) {
+      display = '0';
+      errorMessage = 'error - factorial requires whole number';
+      notifyListeners();
+      return;
+    }
+
+    final sourceText = _formatTokenNumber(value);
+    final resultText = _formatTokenNumber(_factorial(value.toInt()));
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    _tokens[_tokens.length - 1] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '$equationPrefix$sourceText!';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    notifyListeners();
+  }
+
+  // Inserts a mathematical constant as a value token.
+  void onConstant(String constant) {
+    clearSmallDisplay();
+    _prepareForNumericInput();
+
+    final token = _constantToken(constant);
+    if (token == null) {
+      return;
+    }
+
+    if (_lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket()) {
+      _appendOperatorToken('*');
+    } else if (_tokens.isNotEmpty &&
+        !_lastTokenIsOperator() &&
+        _tokens.last != '(') {
+      return;
+    }
+
+    _tokens.add(token);
+    _currentNumber = '';
+    _refreshStateAfterTokenChange();
+    notifyListeners();
+  }
+
+  // Starts an exponential function. It renders as `e^(`, waits for the
+  // exponent inside the bracket, and inserts multiplication automatically when
+  // used after an existing value.
+  void onExp() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (_lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket()) {
+      _appendOperatorToken('*');
+    } else if (_tokens.isNotEmpty &&
+        !_lastTokenIsOperator() &&
+        _tokens.last != '(' &&
+        !_isFunctionToken(_tokens.last)) {
+      return;
+    }
+
+    _tokens
+      ..add('exp')
+      ..add('(');
+    openBrackets++;
+    _currentNumber = '';
+    display = '0';
+    flag = Flag.OPEN_BRACKET;
+    _syncEquationDisplay();
+    notifyListeners();
+  }
+
   // Starts a square-root function. Without a preceding number it opens `sqrt(`
   // and waits for input; after a number it inserts multiplication before sqrt.
   void onSqrt() {
@@ -356,17 +542,51 @@ class CalculatorLogic extends ChangeNotifier {
       _resetExpressionToNumber(parser());
     }
 
-    if (_lastTokenIsNumber() || _lastTokenIsCloseBracket()) {
+    if (_lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket()) {
       _appendOperatorToken('*');
     } else if (_tokens.isNotEmpty &&
         !_lastTokenIsOperator() &&
         _tokens.last != '(' &&
-        _tokens.last != 'sqrt') {
+        !_isFunctionToken(_tokens.last)) {
       return;
     }
 
     _tokens
       ..add('sqrt')
+      ..add('(');
+    openBrackets++;
+    _currentNumber = '';
+    display = '0';
+    flag = Flag.OPEN_BRACKET;
+    _syncEquationDisplay();
+    notifyListeners();
+  }
+
+  // Starts a cube-root function. It opens `cbrt(` when pressed first, inserts
+  // multiplication when pressed after a value, and evaluates negative inputs as
+  // real cube roots instead of rejecting them.
+  void onCubeRoot() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (_lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket()) {
+      _appendOperatorToken('*');
+    } else if (_tokens.isNotEmpty &&
+        !_lastTokenIsOperator() &&
+        _tokens.last != '(' &&
+        !_isFunctionToken(_tokens.last)) {
+      return;
+    }
+
+    _tokens
+      ..add('cbrt')
       ..add('(');
     openBrackets++;
     _currentNumber = '';
@@ -382,7 +602,9 @@ class CalculatorLogic extends ChangeNotifier {
     clearSmallDisplay();
 
     if (_shouldOpenBracket()) {
-      if (_lastTokenIsNumber() || _lastTokenIsCloseBracket()) {
+      if (_lastTokenIsNumber() ||
+          _lastTokenIsConstant() ||
+          _lastTokenIsCloseBracket()) {
         _appendOperatorToken("*");
       }
       _tokens.add('(');
@@ -428,8 +650,32 @@ class CalculatorLogic extends ChangeNotifier {
       case 'square':
         onPow();
         break;
+      case 'x\u00b3':
+      case 'cube':
+        onCube();
+        break;
+      case 'y\u00b2':
+      case 'power':
+        onPower();
+        break;
+      case 'e\u02e3':
+      case 'exp':
+        onExp();
+        break;
+      case '|x|':
+      case 'abs':
+        onAbs();
+        break;
+      case 'x!':
+      case 'factorial':
+        onFactorial();
+        break;
       case 'sqrt':
         onSqrt();
+        break;
+      case '\u00b3\u221a':
+      case 'cbrt':
+        onCubeRoot();
         break;
       case '.':
         onDecimal(char);
@@ -439,6 +685,10 @@ class CalculatorLogic extends ChangeNotifier {
         break;
       case '()':
         onBracket();
+        break;
+      case '\u03c0':
+      case 'e':
+        onConstant(char);
         break;
       case 'C':
         clear();
@@ -507,7 +757,7 @@ class CalculatorLogic extends ChangeNotifier {
       return;
     }
 
-    if (_lastTokenIsNumber()) {
+    if (_lastTokenIsNumber() || _lastTokenIsConstant()) {
       flag = _hasOperatorToken() || openBrackets > 0
           ? Flag.SECOND_OPERAND
           : Flag.FIRST_OPERAND;
@@ -564,6 +814,14 @@ class CalculatorLogic extends ChangeNotifier {
         return '\u00d7';
       case 'sqrt':
         return '\u221a';
+      case 'cbrt':
+        return '\u00b3\u221a';
+      case 'exp':
+        return 'e^';
+      case 'pi':
+        return '\u03c0';
+      case 'e':
+        return 'e';
       default:
         return value;
     }
@@ -574,7 +832,9 @@ class CalculatorLogic extends ChangeNotifier {
     if (_tokens.isEmpty) {
       return false;
     }
-    return _lastTokenIsNumber() || _lastTokenIsCloseBracket();
+    return _lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket();
   }
 
   // Evaluates tokens as an expression, optionally closing open brackets for
@@ -603,7 +863,9 @@ class CalculatorLogic extends ChangeNotifier {
     if (_lastTokenIsOperator() || _tokens.last == '(') {
       return true;
     }
-    if (_lastTokenIsNumber() || _lastTokenIsCloseBracket()) {
+    if (_lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket()) {
       return openBrackets == 0;
     }
     return false;
@@ -612,7 +874,9 @@ class CalculatorLogic extends ChangeNotifier {
   // Decides whether the shared bracket key can close an existing bracket.
   bool _canCloseBracket() {
     return openBrackets > 0 &&
-        (_lastTokenIsNumber() || _lastTokenIsCloseBracket());
+        (_lastTokenIsNumber() ||
+            _lastTokenIsConstant() ||
+            _lastTokenIsCloseBracket());
   }
 
   // Returns true when any binary operator is present in tokens.
@@ -623,6 +887,11 @@ class CalculatorLogic extends ChangeNotifier {
   // Returns true when the last token is a number.
   bool _lastTokenIsNumber() {
     return _tokens.isNotEmpty && _isNumberToken(_tokens.last);
+  }
+
+  // Returns true when the last token is a mathematical constant.
+  bool _lastTokenIsConstant() {
+    return _tokens.isNotEmpty && _isConstantToken(_tokens.last);
   }
 
   // Returns true when the last token is a closing bracket.
@@ -637,12 +906,38 @@ class CalculatorLogic extends ChangeNotifier {
 
   // Returns true when a token is one of the supported binary operators.
   bool _isOperatorToken(String value) {
-    return value == '+' || value == '-' || value == '*' || value == '/';
+    return value == '+' ||
+        value == '-' ||
+        value == '*' ||
+        value == '/' ||
+        value == '^';
+  }
+
+  // Returns true when a token starts a function that consumes the next factor.
+  bool _isFunctionToken(String value) {
+    return value == 'sqrt' || value == 'cbrt' || value == 'exp';
   }
 
   // Returns true when a token can be parsed as a number.
   bool _isNumberToken(String value) {
     return double.tryParse(value) != null;
+  }
+
+  // Returns true when a token is one of the supported mathematical constants.
+  bool _isConstantToken(String value) {
+    return value == 'pi' || value == 'e';
+  }
+
+  // Converts a button label into the matching constant token.
+  String? _constantToken(String value) {
+    switch (value) {
+      case '\u03c0':
+        return 'pi';
+      case 'e':
+        return 'e';
+      default:
+        return null;
+    }
   }
 
   // Formats a number for storing inside the token list.
@@ -660,6 +955,15 @@ class CalculatorLogic extends ChangeNotifier {
       scientificNotationLargeThreshold: _scientificNotationLargeThreshold,
       scientificNotationSmallThreshold: _scientificNotationSmallThreshold,
     );
+  }
+
+  // Calculates n! as a double so it can reuse the existing display formatter.
+  double _factorial(int value) {
+    var result = 1.0;
+    for (var i = 2; i <= value; i++) {
+      result *= i;
+    }
+    return result;
   }
 }
 
@@ -701,20 +1005,32 @@ class _ExpressionParser {
   // Parses multiplication and division before returning control to expression
   // parsing.
   double _parseTerm() {
-    var value = _parseFactor();
+    var value = _parsePower();
     while (_position < _expression.length) {
       final operator = _expression[_position];
       if (operator != '*' && operator != '/') {
         break;
       }
       _position++;
-      final nextValue = _parseFactor();
+      final nextValue = _parsePower();
       value = operator == '*' ? value * nextValue : value / nextValue;
     }
     return value;
   }
 
-  // Parses signs, parentheses, square-root calls, and raw number factors.
+  // Parses exponentiation with right associativity, so `2^3^2` is read as
+  // `2^(3^2)`.
+  double _parsePower() {
+    final value = _parseFactor();
+    if (_position < _expression.length && _expression[_position] == '^') {
+      _position++;
+      return pow(value, _parsePower()).toDouble();
+    }
+    return value;
+  }
+
+  // Parses signs, parentheses, root functions, constants, and raw number
+  // factors.
   double _parseFactor() {
     if (_position >= _expression.length) {
       throw const FormatException('Expected expression factor.');
@@ -745,6 +1061,26 @@ class _ExpressionParser {
         throw const FormatException('Square root of negative number.');
       }
       return sqrt(value);
+    }
+    if (_expression.startsWith('cbrt', _position)) {
+      _position += 4;
+      return _cubeRoot(_parseFactor());
+    }
+    if (_expression.startsWith('exp', _position)) {
+      _position += 3;
+      return exp(_parseFactor());
+    }
+    if (_expression.startsWith('pi', _position)) {
+      _position += 2;
+      return pi;
+    }
+    if (char == '\u03c0') {
+      _position++;
+      return pi;
+    }
+    if (char == 'e') {
+      _position++;
+      return e;
     }
 
     return _parseNumber();
@@ -795,5 +1131,13 @@ class _ExpressionParser {
       throw const FormatException('Expected number.');
     }
     return double.parse(_expression.substring(start, _position));
+  }
+
+  double _cubeRoot(double value) {
+    if (value == 0) {
+      return 0;
+    }
+    final magnitude = pow(value.abs(), 1 / 3).toDouble();
+    return value.isNegative ? -magnitude : magnitude;
   }
 }

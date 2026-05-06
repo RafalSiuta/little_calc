@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../model/calculator_logic.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
-import '../../utils/styles/colors.dart';
 import '../../widgets/displays/calculator_display.dart';
 import '../../widgets/keyboards/calculator_keyboard.dart';
 
@@ -22,7 +21,7 @@ class _CalcPageState extends State<CalcPage> {
 
     return Consumer<CalculatorLogic>(
       builder: (context, data, child) {
-        return Container(
+        return SizedBox(
           width: double.infinity,
           height: double.infinity,
           // color: AppColors.background,
@@ -39,22 +38,62 @@ class _CalcPageState extends State<CalcPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              CalculatorKeyboard(
-                rows: windowLayout.isExpanded
-                    ? CalcSymbols.expandedRows
-                    : CalcSymbols.compactRows,
-                onPressed: (value) {
-                  final logicValue = CalcSymbols.logicValue(value);
-                  if (logicValue.isEmpty) {
-                    return;
-                  }
-                  data.multifunction(logicValue);
-                },
+              _CalculatorKeyboards(
+                isExpanded: windowLayout.isExpanded,
+                onPressed: data.multifunction,
               ),
             ],
           ),
         );
       },
     );
+  }
+}
+
+class _CalculatorKeyboards extends StatelessWidget {
+  const _CalculatorKeyboards({
+    Key? key,
+    required this.isExpanded,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final bool isExpanded;
+  final ValueChanged<String> onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isExpanded) {
+      return CalculatorKeyboard(
+        rows: CalcSymbols.compactRows,
+        onPressed: _handleKeyPress,
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(
+          flex: 5,
+          child: CalculatorKeyboard(
+            rows: CalcSymbols.expandedFunctionRows,
+            onPressed: _handleKeyPress,
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: CalculatorKeyboard(
+            rows: CalcSymbols.expandedBasicRows,
+            onPressed: _handleKeyPress,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _handleKeyPress(String value) {
+    final logicValue = CalcSymbols.logicValue(value);
+    if (logicValue.isEmpty) {
+      return;
+    }
+    onPressed(logicValue);
   }
 }

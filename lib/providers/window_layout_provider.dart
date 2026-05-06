@@ -5,7 +5,7 @@ class WindowLayoutProvider extends ChangeNotifier {
   static const MethodChannel _windowChannel =
       MethodChannel('little_calc/window');
   static const int compactWindowWidth = 390;
-  static const int expandedWindowWidth = 803;
+  static const int expandedWindowWidth = 815;
 
   bool _isExpanded = false;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../utils/styles/colors.dart';
 import '../buttons/window_action_button.dart';
 import '../icons/window_icons.dart';
 
@@ -41,7 +42,7 @@ class WindowTitleBar extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Exo',
-                      fontSize: 10,
+                      fontSize: AppFontSizes.windowTitle,
                       fontWeight: FontWeight.w200,
                       height: 1,
                       letterSpacing: 0,
