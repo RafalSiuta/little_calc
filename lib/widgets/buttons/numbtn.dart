@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/styles/colors.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
+import '../../utils/styles/dimensions/font_sizes.dart';
 
 class NumBtn extends StatefulWidget {
   const NumBtn({
@@ -53,7 +55,7 @@ class _NumBtnState extends State<NumBtn> {
                 style: TextStyle(
                   color: _isPressed ? AppColors.accent : AppColors.text,
                   fontFamily: 'Exo',
-                  fontSize: AppFontSizes.button,
+                  fontSize: AppFontSizes.buttonFontSize,
                   fontWeight: FontWeight.w100,
                   height: 1,
                   letterSpacing: 0,

@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 
-import '../providers/calculator_settings_provider.dart';
-import '../utils/extensions/number_formatter.dart';
+import '../../providers/calculator_settings_provider.dart';
+import '../extensions/number_formatter.dart';
 import 'calc_flags.dart';
 
 class CalculatorLogic extends ChangeNotifier {
@@ -26,6 +26,12 @@ class CalculatorLogic extends ChangeNotifier {
   bool _useScientificNotation = true;
   double _scientificNotationLargeThreshold = 1e12;
   double _scientificNotationSmallThreshold = 1e-9;
+  bool _useRadians = false;
+  String? _lastAngleFunctionKey;
+  String? _lastAngleEquationName;
+  double? _lastAngleSourceValue;
+  int? _lastAngleTokenIndex;
+  String? _lastAngleResultText;
 
   List numList = [
     "1",
@@ -47,6 +53,10 @@ class CalculatorLogic extends ChangeNotifier {
   ];
 
   Flag flag = Flag.RESULT;
+
+  bool get useRadians => _useRadians;
+  String get angleModeButtonLabel => _useRadians ? 'Deg' : 'Rad';
+  String get angleModeDisplay => _useRadians ? 'Rad' : 'Deg';
 
   // Applies display-formatting settings provided by app-level calculator
   // preferences and refreshes the visible result when those settings change.
@@ -118,6 +128,157 @@ class CalculatorLogic extends ChangeNotifier {
     return _previewValue();
   }
 
+  // Toggles the calculator angle mode between degrees and radians. The button
+  // label shows the mode that will be selected next, while the info display
+  // shows the currently active mode. If the current expression was produced by
+  // a trigonometric function, its result is recalculated for the new mode.
+  void onAngleModeToggle() {
+    errorMessage = '';
+    _useRadians = !_useRadians;
+    valueDisplay = angleModeDisplay;
+    _recalculateLastAngleFunctionForMode();
+    notifyListeners();
+  }
+
+  // Replaces the active number token with sine of that value. The argument is
+  // read in the currently selected angle mode: degrees or radians.
+  void onSin() {
+    _applyUnaryNumberFunction(
+      equationName: 'sin',
+      missingError: 'error - enter number before sin',
+      transform: (value) => sin(_angleInputForTrig(value)),
+      showAngleMode: true,
+      angleFunctionKey: 'sin',
+    );
+  }
+
+  // Replaces the active number token with cosine of that value. The argument is
+  // read in the currently selected angle mode: degrees or radians.
+  void onCos() {
+    _applyUnaryNumberFunction(
+      equationName: 'cos',
+      missingError: 'error - enter number before cos',
+      transform: (value) => cos(_angleInputForTrig(value)),
+      showAngleMode: true,
+      angleFunctionKey: 'cos',
+    );
+  }
+
+  // Replaces the active number token with tangent of that value. The argument
+  // is read in the currently selected angle mode: degrees or radians.
+  void onTan() {
+    _applyUnaryNumberFunction(
+      equationName: 'tan',
+      missingError: 'error - enter number before tan',
+      transform: (value) => tan(_angleInputForTrig(value)),
+      showAngleMode: true,
+      angleFunctionKey: 'tan',
+    );
+  }
+
+  // Replaces the active number token with arcsine of that value. The input must
+  // be in the inclusive range from -1 to 1, and the result is shown in the
+  // currently selected angle mode.
+  void onAsin() {
+    _applyUnaryNumberFunction(
+      equationName: 'sin\u207b\u00b9',
+      missingError: 'error - enter number before asin',
+      validationError: 'error - asin requires value from -1 to 1',
+      isValid: (value) => value >= -1 && value <= 1,
+      transform: (value) => _angleOutputFromInverse(asin(value)),
+      showAngleMode: true,
+      angleFunctionKey: 'asin',
+    );
+  }
+
+  // Replaces the active number token with arccosine of that value. The input
+  // must be in the inclusive range from -1 to 1, and the result is shown in the
+  // currently selected angle mode.
+  void onAcos() {
+    _applyUnaryNumberFunction(
+      equationName: 'cos\u207b\u00b9',
+      missingError: 'error - enter number before acos',
+      validationError: 'error - acos requires value from -1 to 1',
+      isValid: (value) => value >= -1 && value <= 1,
+      transform: (value) => _angleOutputFromInverse(acos(value)),
+      showAngleMode: true,
+      angleFunctionKey: 'acos',
+    );
+  }
+
+  // Replaces the active number token with arctangent of that value. The result
+  // is shown in the currently selected angle mode.
+  void onAtan() {
+    _applyUnaryNumberFunction(
+      equationName: 'tan\u207b\u00b9',
+      missingError: 'error - enter number before atan',
+      transform: (value) => _angleOutputFromInverse(atan(value)),
+      showAngleMode: true,
+      angleFunctionKey: 'atan',
+    );
+  }
+
+  // Replaces the active number token with the hyperbolic sine of that value.
+  void onSinh() {
+    _applyUnaryNumberFunction(
+      equationName: 'sinh',
+      missingError: 'error - enter number before sinh',
+      transform: _sinh,
+    );
+  }
+
+  // Replaces the active number token with the hyperbolic cosine of that value.
+  void onCosh() {
+    _applyUnaryNumberFunction(
+      equationName: 'cosh',
+      missingError: 'error - enter number before cosh',
+      transform: _cosh,
+    );
+  }
+
+  // Replaces the active number token with the hyperbolic tangent of that value.
+  void onTanh() {
+    _applyUnaryNumberFunction(
+      equationName: 'tanh',
+      missingError: 'error - enter number before tanh',
+      transform: _tanh,
+    );
+  }
+
+  // Replaces the active number token with inverse hyperbolic sine of that
+  // value.
+  void onAsinh() {
+    _applyUnaryNumberFunction(
+      equationName: 'sinh\u207b\u00b9',
+      missingError: 'error - enter number before asinh',
+      transform: _asinh,
+    );
+  }
+
+  // Replaces the active number token with inverse hyperbolic cosine of that
+  // value. The input must be greater than or equal to 1.
+  void onAcosh() {
+    _applyUnaryNumberFunction(
+      equationName: 'cosh\u207b\u00b9',
+      missingError: 'error - enter number before acosh',
+      validationError: 'error - acosh requires value greater than or equal to 1',
+      isValid: (value) => value >= 1,
+      transform: _acosh,
+    );
+  }
+
+  // Replaces the active number token with inverse hyperbolic tangent of that
+  // value. The input must be greater than -1 and less than 1.
+  void onAtanh() {
+    _applyUnaryNumberFunction(
+      equationName: 'tanh\u207b\u00b9',
+      missingError: 'error - enter number before atanh',
+      validationError: 'error - atanh requires value between -1 and 1',
+      isValid: (value) => value > -1 && value < 1,
+      transform: _atanh,
+    );
+  }
+
   // Evaluates a string expression using operator precedence and parentheses.
   double evaluateExpression(String expression) {
     final parser = _ExpressionParser(expression);
@@ -152,6 +313,7 @@ class CalculatorLogic extends ChangeNotifier {
     _tokens.clear();
     _currentNumber = '';
     openBrackets = 0;
+    _clearAngleFunctionState();
     flag = Flag.RESULT;
     notifyListeners();
   }
@@ -181,6 +343,7 @@ class CalculatorLogic extends ChangeNotifier {
     }
 
     _syncEquationDisplay();
+    _discardInvalidAngleFunctionState();
     _refreshStateAfterTokenChange();
     notifyListeners();
   }
@@ -475,6 +638,128 @@ class CalculatorLogic extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Replaces the active positive number token with its natural logarithm.
+  // Non-positive inputs are rejected because ln is defined only for values
+  // greater than zero in this calculator.
+  void onLn() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = 'error - enter number before ln';
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    if (value <= 0) {
+      display = '0';
+      errorMessage = 'error - ln requires positive number';
+      notifyListeners();
+      return;
+    }
+
+    final sourceText = _formatTokenNumber(value);
+    final resultText = _formatTokenNumber(log(value));
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    _tokens[_tokens.length - 1] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '${equationPrefix}ln($sourceText)';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    notifyListeners();
+  }
+
+  // Replaces the active positive number token with its base-10 logarithm.
+  // Non-positive inputs are rejected because log10 is defined only for values
+  // greater than zero in this calculator.
+  void onLog() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = 'error - enter number before log';
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    if (value <= 0) {
+      display = '0';
+      errorMessage = 'error - log requires positive number';
+      notifyListeners();
+      return;
+    }
+
+    final sourceText = _formatTokenNumber(value);
+    final resultText = _formatTokenNumber(log(value) / ln10);
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    _tokens[_tokens.length - 1] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '${equationPrefix}log($sourceText)';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    notifyListeners();
+  }
+
+  // Replaces the active non-zero number token with its reciprocal value.
+  // Zero is rejected to avoid division by zero.
+  void onReciprocal() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = 'error - enter number before reciprocal';
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    if (value == 0) {
+      display = '0';
+      errorMessage = 'error - reciprocal cannot divide by zero';
+      notifyListeners();
+      return;
+    }
+
+    final sourceText = _formatTokenNumber(value);
+    final resultText = _formatTokenNumber(1 / value);
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    _tokens[_tokens.length - 1] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '${equationPrefix}1/($sourceText)';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    notifyListeners();
+  }
+
   // Inserts a mathematical constant as a value token.
   void onConstant(String constant) {
     clearSmallDisplay();
@@ -670,6 +955,56 @@ class CalculatorLogic extends ChangeNotifier {
       case 'factorial':
         onFactorial();
         break;
+      case 'ln':
+        onLn();
+        break;
+      case 'log':
+        onLog();
+        break;
+      case '1/x':
+        onReciprocal();
+        break;
+      case 'sin':
+        onSin();
+        break;
+      case 'cos':
+        onCos();
+        break;
+      case 'tan':
+        onTan();
+        break;
+      case 'asin':
+        onAsin();
+        break;
+      case 'acos':
+        onAcos();
+        break;
+      case 'atan':
+        onAtan();
+        break;
+      case 'sinh':
+        onSinh();
+        break;
+      case 'cosh':
+        onCosh();
+        break;
+      case 'tanh':
+        onTanh();
+        break;
+      case 'asinh':
+        onAsinh();
+        break;
+      case 'acosh':
+        onAcosh();
+        break;
+      case 'atanh':
+        onAtanh();
+        break;
+      case 'Rad':
+      case 'Deg':
+      case 'angleMode':
+        onAngleModeToggle();
+        break;
       case 'sqrt':
         onSqrt();
         break;
@@ -697,6 +1032,71 @@ class CalculatorLogic extends ChangeNotifier {
         delete();
         break;
     }
+  }
+
+  void _applyUnaryNumberFunction({
+    required String equationName,
+    required String missingError,
+    required double Function(double value) transform,
+    String? validationError,
+    bool Function(double value)? isValid,
+    bool showAngleMode = false,
+    String? angleFunctionKey,
+  }) {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (!_lastTokenIsNumber()) {
+      display = '0';
+      errorMessage = missingError;
+      notifyListeners();
+      return;
+    }
+
+    final value = double.parse(_tokens.last);
+    if (isValid != null && !isValid(value)) {
+      display = '0';
+      errorMessage = validationError ?? missingError;
+      notifyListeners();
+      return;
+    }
+
+    final sourceText = _formatTokenNumber(value);
+    final result = transform(value);
+    if (result.isNaN || result.isInfinite) {
+      display = '0';
+      errorMessage = 'error - invalid function result';
+      notifyListeners();
+      return;
+    }
+
+    final resultText = _formatTokenNumber(result);
+    final equationPrefix =
+        _tokens.take(_tokens.length - 1).map(_equationGlyph).join();
+
+    final tokenIndex = _tokens.length - 1;
+    _tokens[tokenIndex] = resultText;
+    _currentNumber = resultText;
+    equationDisplay = '$equationPrefix$equationName($sourceText)';
+    final previewResult = _evaluateTokens(completeOpenBrackets: true);
+    setText(previewResult);
+    oldValue = previewResult;
+    total = previewResult;
+    flag = Flag.FIRST_OPERAND;
+    if (showAngleMode) {
+      valueDisplay = angleModeDisplay;
+      _lastAngleFunctionKey = angleFunctionKey;
+      _lastAngleEquationName = equationName;
+      _lastAngleSourceValue = value;
+      _lastAngleTokenIndex = tokenIndex;
+      _lastAngleResultText = resultText;
+    } else {
+      _clearAngleFunctionState();
+    }
+    notifyListeners();
   }
 
   // Prepares a fresh token expression when the user starts typing after a
@@ -748,6 +1148,9 @@ class CalculatorLogic extends ChangeNotifier {
   }
 
   // Recalculates display, equation text, and flag state from current tokens.
+  // A single typed operand is shown only in equationDisplay; the main display
+  // stays at 0 until there is an expression worth previewing, for example a
+  // binary operation with a second operand or a pending function expression.
   void _refreshStateAfterTokenChange() {
     _syncEquationDisplay();
 
@@ -786,17 +1189,15 @@ class CalculatorLogic extends ChangeNotifier {
   // Shows either the complete expression preview or the currently typed number.
   void _updatePreviewOrDisplayNumber() {
     try {
-      if (_canEvaluateExpression()) {
+      if (_shouldShowLiveResult()) {
         final result = _evaluateTokens(completeOpenBrackets: true);
         setText(result);
         total = result;
-      } else if (_currentNumber.isNotEmpty) {
-        display = _currentNumber;
+      } else {
+        display = '0';
       }
     } catch (e) {
-      if (_currentNumber.isNotEmpty) {
-        display = _currentNumber;
-      }
+      display = _currentNumber.isNotEmpty ? _currentNumber : '0';
     }
   }
 
@@ -884,6 +1285,14 @@ class CalculatorLogic extends ChangeNotifier {
     return _tokens.any(_isOperatorToken);
   }
 
+  bool _hasFunctionToken() {
+    return _tokens.any(_isFunctionToken);
+  }
+
+  bool _shouldShowLiveResult() {
+    return _canEvaluateExpression() && (_hasOperatorToken() || _hasFunctionToken());
+  }
+
   // Returns true when the last token is a number.
   bool _lastTokenIsNumber() {
     return _tokens.isNotEmpty && _isNumberToken(_tokens.last);
@@ -943,6 +1352,122 @@ class CalculatorLogic extends ChangeNotifier {
   // Formats a number for storing inside the token list.
   String _formatTokenNumber(double value) {
     return _formatDisplayNumber(value);
+  }
+
+  double _angleInputForTrig(double value) {
+    return _useRadians ? value : value * pi / 180;
+  }
+
+  double _angleOutputFromInverse(double value) {
+    return _useRadians ? value : value * 180 / pi;
+  }
+
+  double _computeAngleFunction(String key, double value) {
+    switch (key) {
+      case 'sin':
+        return sin(_angleInputForTrig(value));
+      case 'cos':
+        return cos(_angleInputForTrig(value));
+      case 'tan':
+        return tan(_angleInputForTrig(value));
+      case 'asin':
+        return _angleOutputFromInverse(asin(value));
+      case 'acos':
+        return _angleOutputFromInverse(acos(value));
+      case 'atan':
+        return _angleOutputFromInverse(atan(value));
+      default:
+        throw ArgumentError.value(key, 'key', 'Unsupported angle function.');
+    }
+  }
+
+  void _recalculateLastAngleFunctionForMode() {
+    final key = _lastAngleFunctionKey;
+    final equationName = _lastAngleEquationName;
+    final sourceValue = _lastAngleSourceValue;
+    final tokenIndex = _lastAngleTokenIndex;
+    if (key == null ||
+        equationName == null ||
+        sourceValue == null ||
+        tokenIndex == null ||
+        tokenIndex >= _tokens.length ||
+        _tokens[tokenIndex] != _lastAngleResultText) {
+      _clearAngleFunctionState();
+      return;
+    }
+
+    final result = _computeAngleFunction(key, sourceValue);
+    if (result.isNaN || result.isInfinite) {
+      display = '0';
+      errorMessage = 'error - invalid function result';
+      return;
+    }
+
+    final resultText = _formatTokenNumber(result);
+    _tokens[tokenIndex] = resultText;
+    _lastAngleResultText = resultText;
+    if (tokenIndex == _tokens.length - 1) {
+      _currentNumber = resultText;
+    }
+
+    final sourceText = _formatTokenNumber(sourceValue);
+    if (_tokens.length == 1) {
+      equationDisplay = '$equationName($sourceText)';
+      setText(result);
+      total = result;
+      oldValue = result;
+      return;
+    }
+
+    _syncEquationDisplay();
+    if (_shouldShowLiveResult()) {
+      final previewResult = _evaluateTokens(completeOpenBrackets: true);
+      setText(previewResult);
+      total = previewResult;
+    }
+  }
+
+  void _discardInvalidAngleFunctionState() {
+    final tokenIndex = _lastAngleTokenIndex;
+    if (tokenIndex == null) {
+      return;
+    }
+    if (tokenIndex >= _tokens.length ||
+        _tokens[tokenIndex] != _lastAngleResultText) {
+      _clearAngleFunctionState();
+    }
+  }
+
+  void _clearAngleFunctionState() {
+    _lastAngleFunctionKey = null;
+    _lastAngleEquationName = null;
+    _lastAngleSourceValue = null;
+    _lastAngleTokenIndex = null;
+    _lastAngleResultText = null;
+  }
+
+  double _sinh(double value) {
+    return (exp(value) - exp(-value)) / 2;
+  }
+
+  double _cosh(double value) {
+    return (exp(value) + exp(-value)) / 2;
+  }
+
+  double _tanh(double value) {
+    return _sinh(value) / _cosh(value);
+  }
+
+  double _asinh(double value) {
+    return log(value + sqrt((value * value) + 1));
+  }
+
+  double _acosh(double value) {
+    return log(value + sqrt(value - 1) * sqrt(value + 1));
+  }
+
+  double _atanh(double value) {
+    return 0.5 * log((1 + value) / (1 - value));
   }
 
   // Formats a numeric value for display or calculated tokens using the current

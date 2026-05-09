@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/styles/colors.dart';
+import '../../utils/styles/dimensions/font_sizes.dart';
 
 class SetsPage extends StatelessWidget {
   const SetsPage({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _PlaceholderPage extends StatelessWidget {
         style: const TextStyle(
           color: AppColors.accent,
           fontFamily: 'Exo',
-          fontSize: AppFontSizes.displayMid,
+          fontSize: AppFontSizes.displayMidFontSize,
           fontWeight: FontWeight.w400,
           letterSpacing: 0,
         ),

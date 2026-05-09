@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'model/calculator_logic.dart';
+import 'utils/calc_logic/calculator_logic.dart';
 import 'providers/calculator_settings_provider.dart';
 import 'providers/theme_settings_provider.dart';
 import 'providers/window_layout_provider.dart';

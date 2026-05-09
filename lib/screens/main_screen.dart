@@ -33,19 +33,20 @@ class _MainScreenState extends State<MainScreen> {
       ),
     ),
     ScreenModel(
-      page: CurrencyPage(),
-      nav: NavModel(
-        title: 'waluty',
-        icon: Icons.attach_money,
-      ),
-    ),
-    ScreenModel(
       page: UnitConvertPage(),
       nav: NavModel(
         title: 'jednostki',
         icon: Icons.straighten,
       ),
     ),
+    ScreenModel(
+      page: CurrencyPage(),
+      nav: NavModel(
+        title: 'waluty',
+        icon: Icons.attach_money,
+      ),
+    ),
+
     ScreenModel(
       page: HistoryPage(),
       nav: NavModel(

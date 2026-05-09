@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:little_calc/model/calculator_logic.dart';
+import 'package:little_calc/utils/calc_logic/calculator_logic.dart';
 
 void main() {
   group('CalculatorLogic scientific functions', () {
@@ -23,7 +23,7 @@ void main() {
       logic.onNumbers('7');
 
       expect(logic.equationDisplay, '-7');
-      expect(logic.display, '-7');
+      expect(logic.display, '0');
     });
 
     test('inserts pi as a constant token', () {
@@ -32,7 +32,7 @@ void main() {
       logic.multifunction('\u03c0');
 
       expect(logic.equationDisplay, '\u03c0');
-      expect(logic.display, '3.1415926536');
+      expect(logic.display, '0');
     });
 
     test('inserts e as a constant token', () {
@@ -41,7 +41,7 @@ void main() {
       logic.multifunction('e');
 
       expect(logic.equationDisplay, 'e');
-      expect(logic.display, '2.7182818285');
+      expect(logic.display, '0');
     });
 
     test('uses implicit multiplication before constants', () {
@@ -52,6 +52,36 @@ void main() {
 
       expect(logic.equationDisplay, '2\u00d7\u03c0');
       expect(logic.display, '6.2831853072');
+    });
+
+    test('keeps display at zero while entering the first operand', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('4');
+      logic.onNumbers('5');
+      logic.onNumbers('6');
+
+      expect(logic.equationDisplay, '456');
+      expect(logic.display, '0');
+    });
+
+    test('starts live preview only after the second operand is entered', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('4');
+      logic.onNumbers('5');
+      logic.onNumbers('6');
+      logic.onOperator('+');
+
+      expect(logic.equationDisplay, '456+');
+      expect(logic.display, '0');
+
+      logic.onNumbers('7');
+      logic.onNumbers('8');
+      logic.onNumbers('9');
+
+      expect(logic.equationDisplay, '456+789');
+      expect(logic.display, '1245');
     });
 
     test('squares an active number and shows exponent notation', () {
@@ -198,6 +228,148 @@ void main() {
 
       expect(logic.display, '120');
       expect(logic.equationDisplay, '5!');
+    });
+
+    test('applies natural logarithm to the active number', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('1');
+      logic.multifunction('ln');
+
+      expect(logic.display, '0');
+      expect(logic.equationDisplay, 'ln(1)');
+    });
+
+    test('applies base-10 logarithm to the active number', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('1');
+      logic.onNumbers('0');
+      logic.onNumbers('0');
+      logic.multifunction('log');
+
+      expect(logic.display, '2');
+      expect(logic.equationDisplay, 'log(100)');
+    });
+
+    test('applies reciprocal to the active number', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('4');
+      logic.multifunction('1/x');
+
+      expect(logic.display, '0.25');
+      expect(logic.equationDisplay, '1/(4)');
+    });
+
+    test('toggles angle mode from degrees to radians', () {
+      final logic = CalculatorLogic();
+
+      expect(logic.useRadians, isFalse);
+      expect(logic.angleModeButtonLabel, 'Rad');
+      expect(logic.angleModeDisplay, 'Deg');
+      expect(logic.valueDisplay, isEmpty);
+
+      logic.multifunction('angleMode');
+
+      expect(logic.useRadians, isTrue);
+      expect(logic.angleModeButtonLabel, 'Deg');
+      expect(logic.angleModeDisplay, 'Rad');
+      expect(logic.valueDisplay, 'Rad');
+    });
+
+    test('toggles angle mode back to degrees', () {
+      final logic = CalculatorLogic();
+
+      logic.multifunction('Rad');
+      logic.multifunction('Deg');
+
+      expect(logic.useRadians, isFalse);
+      expect(logic.angleModeButtonLabel, 'Rad');
+      expect(logic.angleModeDisplay, 'Deg');
+      expect(logic.valueDisplay, 'Deg');
+    });
+
+    test('clears angle mode info after equals', () {
+      final logic = CalculatorLogic();
+
+      logic.multifunction('Rad');
+      logic.onNumbers('1');
+      logic.onEqual();
+
+      expect(logic.valueDisplay, isEmpty);
+    });
+
+    test('clears angle mode info after delete', () {
+      final logic = CalculatorLogic();
+
+      logic.multifunction('Rad');
+      logic.onNumbers('1');
+      logic.delete();
+
+      expect(logic.valueDisplay, isEmpty);
+    });
+
+    test('calculates sine using degrees by default', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('9');
+      logic.onNumbers('0');
+      logic.multifunction('sin');
+
+      expect(logic.display, '1');
+      expect(logic.equationDisplay, 'sin(90)');
+      expect(logic.valueDisplay, 'Deg');
+    });
+
+    test('recalculates last trigonometric result when angle mode changes', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('3');
+      logic.onNumbers('0');
+      logic.multifunction('sin');
+
+      expect(logic.display, '0.5');
+      expect(logic.equationDisplay, 'sin(30)');
+      expect(logic.valueDisplay, 'Deg');
+
+      logic.multifunction('Rad');
+
+      expect(logic.display, '-0.9880316241');
+      expect(logic.equationDisplay, 'sin(30)');
+      expect(logic.valueDisplay, 'Rad');
+    });
+
+    test('calculates inverse sine using degrees by default', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('1');
+      logic.multifunction('asin');
+
+      expect(logic.display, '90');
+      expect(logic.equationDisplay, 'sin\u207b\u00b9(1)');
+      expect(logic.valueDisplay, 'Deg');
+    });
+
+    test('calculates hyperbolic sine without angle mode conversion', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('0');
+      logic.multifunction('sinh');
+
+      expect(logic.display, '0');
+      expect(logic.equationDisplay, 'sinh(0)');
+      expect(logic.valueDisplay, isEmpty);
+    });
+
+    test('rejects inverse cosine values outside range', () {
+      final logic = CalculatorLogic();
+
+      logic.onNumbers('2');
+      logic.multifunction('acos');
+
+      expect(logic.display, '0');
+      expect(logic.errorMessage, 'error - acos requires value from -1 to 1');
     });
 
     test('rejects factorial for decimal values', () {

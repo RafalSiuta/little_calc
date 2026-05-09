@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../model/calculator_logic.dart';
+import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/styles/colors.dart';
+import '../../utils/styles/dimensions/font_sizes.dart';
 import '../buttons/option_icon_button.dart';
 
 class CalculatorDisplay extends StatelessWidget {
@@ -46,7 +47,7 @@ class CalculatorDisplay extends StatelessWidget {
                           style: const TextStyle(
                             color: AppColors.accent,
                             fontFamily: 'Exo',
-                            fontSize: AppFontSizes.displayMid,
+                            fontSize: AppFontSizes.displayMidFontSize,
                             fontWeight: FontWeight.w400,
                             height: 1,
                             letterSpacing: 0,
@@ -59,8 +60,8 @@ class CalculatorDisplay extends StatelessWidget {
                       child: ShaderMask(
                         shaderCallback: (bounds) {
                           return const LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
                             colors: [
                               AppColors.accent,
                               AppColors.accent2,
@@ -78,7 +79,7 @@ class CalculatorDisplay extends StatelessWidget {
                             style: const TextStyle(
                               color: AppColors.accent,
                               fontFamily: 'Exo',
-                              fontSize: AppFontSizes.displayLarge,
+                              fontSize: AppFontSizes.displayLargeFontSize,
                               fontWeight: FontWeight.w200,
                               height: 1,
                               letterSpacing: 0,
@@ -93,6 +94,7 @@ class CalculatorDisplay extends StatelessWidget {
             ),
           ),
           _InfoDisplay(
+            infoMessage: data.valueDisplay,
             errorMessage: data.errorMessage,
             showError: data.display == 'Infinity',
             isExpanded: isExpanded,
@@ -127,6 +129,7 @@ class CalculatorDisplay extends StatelessWidget {
 class _InfoDisplay extends StatelessWidget {
   const _InfoDisplay({
     Key? key,
+    required this.infoMessage,
     required this.errorMessage,
     required this.showError,
     required this.isExpanded,
@@ -134,6 +137,7 @@ class _InfoDisplay extends StatelessWidget {
     required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
+  final String infoMessage;
   final String errorMessage;
   final bool showError;
   final bool isExpanded;
@@ -142,6 +146,13 @@ class _InfoDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasError = errorMessage.isNotEmpty || showError;
+    final message = errorMessage.isNotEmpty
+        ? errorMessage
+        : showError
+            ? 'error - divide by 0'
+            : infoMessage;
+
     return SizedBox(
       height: 40,
       child: Padding(
@@ -151,17 +162,13 @@ class _InfoDisplay extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                errorMessage.isNotEmpty
-                    ? errorMessage
-                    : showError
-                        ? 'error - divide by 0'
-                        : '',
-                maxLines: 1,
+                message,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.error,
+                style: TextStyle(
+                  color: hasError ? AppColors.error : AppColors.accent,
                   fontFamily: 'Exo',
-                  fontSize: AppFontSizes.displaySmall,
+                  fontSize: AppFontSizes.displaySmallFontSize,
                   fontWeight: FontWeight.w200,
                   height: 1,
                   letterSpacing: 0,

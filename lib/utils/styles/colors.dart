@@ -12,19 +12,3 @@ class AppColors {
   static const Color unselectedHover = Color(0xff5e5b5b);
   static const Color error = Color(0xffd7263d);
 }
-
-class AppFontSizes {
-  static const double displayLarge = 48;
-  static const double displayMid = 24;
-  static const double displaySmall = 12;
-  static const double button = 18;
-  static const double windowTitle = 10;
-}
-
-class AppDimens {
-  static const double borderThickness = 0.3;
-  static const double basePadding = 16;
-  static const double paddingSmall = 8;
-  static const double itemSpacing = 16;
-  static const double keyHeight = 54;
-}

@@ -20,7 +20,7 @@ class CalcSymbols {
   ];
 
   static const List<List<String>> expandedFunctionRows = [
-    ['sin', 'cos', 'Rad', squareRootSign, squareSign],
+    ['sin', 'cos', 'tan', squareRootSign, squareSign],
     [
       'sin\u207b\u00b9',
       'cos\u207b\u00b9',
@@ -28,9 +28,9 @@ class CalcSymbols {
       cubeRootSign,
       cubeSign
     ],
-    ['sinh', 'cosh', 'tanh', powerSign, expSign],
+    ['sinh', 'cosh', 'tanh', powerSign, '\u03c0'],
     ['sinh\u207b\u00b9', 'cosh\u207b\u00b9', 'tanh\u207b\u00b9', '\u03c0', 'e'],
-    ['ln', 'log', '1/x', absoluteSign, factorialSign],
+    ['Rad', 'log', 'ln', absoluteSign, factorialSign],
   ];
 
   static const List<List<String>> expandedBasicRows = compactRows;
@@ -39,7 +39,7 @@ class CalcSymbols {
     [
       'sin',
       'cos',
-      'Rad',
+      'tan',
       squareRootSign,
       squareSign,
       'C',
@@ -63,7 +63,7 @@ class CalcSymbols {
       'cosh',
       'tanh',
       powerSign,
-      expSign,
+      '\u03c0',
       '4',
       '5',
       '6',
@@ -80,7 +80,7 @@ class CalcSymbols {
       '3',
       '+',
     ],
-    ['ln', 'log', '1/x', absoluteSign, factorialSign, '+/-', '0', '.', '='],
+    ['Rad', 'log', 'ln', absoluteSign, factorialSign, '+/-', '0', '.', '='],
   ];
 
   static String logicValue(String value) {
@@ -99,12 +99,27 @@ class CalcSymbols {
         return 'power';
       case expSign:
         return 'exp';
+      case 'sin\u207b\u00b9':
+        return 'asin';
+      case 'cos\u207b\u00b9':
+        return 'acos';
+      case 'tan\u207b\u00b9':
+        return 'atan';
+      case 'sinh\u207b\u00b9':
+        return 'asinh';
+      case 'cosh\u207b\u00b9':
+        return 'acosh';
+      case 'tanh\u207b\u00b9':
+        return 'atanh';
       case absoluteSign:
         return 'abs';
       case factorialSign:
         return 'factorial';
       case cubeRootSign:
         return 'cbrt';
+      case 'Rad':
+      case 'Deg':
+        return 'angleMode';
       case '()':
         return '()';
       default:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/calculator_logic.dart';
+import '../../utils/calc_logic/calculator_logic.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../widgets/displays/calculator_display.dart';
@@ -40,6 +40,7 @@ class _CalcPageState extends State<CalcPage> {
               const SizedBox(height: 16),
               _CalculatorKeyboards(
                 isExpanded: windowLayout.isExpanded,
+                angleModeButtonLabel: data.angleModeButtonLabel,
                 onPressed: data.multifunction,
               ),
             ],
@@ -54,10 +55,12 @@ class _CalculatorKeyboards extends StatelessWidget {
   const _CalculatorKeyboards({
     Key? key,
     required this.isExpanded,
+    required this.angleModeButtonLabel,
     required this.onPressed,
   }) : super(key: key);
 
   final bool isExpanded;
+  final String angleModeButtonLabel;
   final ValueChanged<String> onPressed;
 
   @override
@@ -74,7 +77,7 @@ class _CalculatorKeyboards extends StatelessWidget {
         Expanded(
           flex: 5,
           child: CalculatorKeyboard(
-            rows: CalcSymbols.expandedFunctionRows,
+            rows: _rowsWithAngleMode(CalcSymbols.expandedFunctionRows),
             onPressed: _handleKeyPress,
           ),
         ),
@@ -95,5 +98,17 @@ class _CalculatorKeyboards extends StatelessWidget {
       return;
     }
     onPressed(logicValue);
+  }
+
+  List<List<String>> _rowsWithAngleMode(List<List<String>> rows) {
+    return rows
+        .map(
+          (row) => row
+              .map((value) => value == 'Rad' || value == 'Deg'
+                  ? angleModeButtonLabel
+                  : value)
+              .toList(),
+        )
+        .toList();
   }
 }
