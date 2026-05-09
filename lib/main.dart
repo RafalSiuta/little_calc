@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:little_calc/utils/styles/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/calc_logic/calculator_logic.dart';
@@ -48,16 +49,17 @@ class MyApp extends StatelessWidget {
         title: 'little calc',
         debugShowCheckedModeBanner: false,
         color: Colors.transparent,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          colorScheme: const ColorScheme.dark(
-            surface: Colors.transparent,
-          ),
-          canvasColor: Colors.transparent,
-          cardColor: Colors.transparent,
-          primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.transparent,
-        ),
+        theme: calcTheme,
+        // ThemeData(
+        //   brightness: Brightness.dark,
+        //   colorScheme: const ColorScheme.dark(
+        //     surface: Colors.transparent,
+        //   ),
+        //   canvasColor: Colors.transparent,
+        //   cardColor: Colors.transparent,
+        //   primarySwatch: Colors.blue,
+        //   scaffoldBackgroundColor: Colors.transparent,
+        // ),
         initialRoute: '/',
         onGenerateRoute: (settings) {
           switch (settings.name) {

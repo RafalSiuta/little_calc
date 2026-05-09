@@ -261,7 +261,8 @@ class CalculatorLogic extends ChangeNotifier {
     _applyUnaryNumberFunction(
       equationName: 'cosh\u207b\u00b9',
       missingError: 'error - enter number before acosh',
-      validationError: 'error - acosh requires value greater than or equal to 1',
+      validationError:
+          'error - acosh requires value greater than or equal to 1',
       isValid: (value) => value >= 1,
       transform: _acosh,
     );
@@ -1290,7 +1291,10 @@ class CalculatorLogic extends ChangeNotifier {
   }
 
   bool _shouldShowLiveResult() {
-    return _canEvaluateExpression() && (_hasOperatorToken() || _hasFunctionToken());
+    return _canEvaluateExpression() &&
+        (_hasOperatorToken() ||
+            _hasFunctionToken() ||
+            (_tokens.length == 1 && _lastTokenIsConstant()));
   }
 
   // Returns true when the last token is a number.

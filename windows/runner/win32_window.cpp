@@ -21,6 +21,10 @@ namespace {
 #define DWMWA_WINDOW_CORNER_PREFERENCE 33
 #endif
 
+#ifndef DWMWA_BORDER_COLOR
+#define DWMWA_BORDER_COLOR 34
+#endif
+
 constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
 constexpr int kTitleBarHeight = 44;
 constexpr int kWindowActionAreaWidth = 130;
@@ -61,14 +65,19 @@ void EnableFullDpiSupportIfAvailable(HWND hwnd) {
 }
 
 void ConfigureTransparentWindow(HWND window) {
-  constexpr int kDwmWindowCornerDoNotRound = 1;
+  constexpr int kDwmWindowCornerRound = 2;
+  constexpr COLORREF kDwmColorNone = 0xFFFFFFFE;
 
   MARGINS margins = {-1, -1, -1, -1};
   DwmExtendFrameIntoClientArea(window, &margins);
 
-  int corner_preference = kDwmWindowCornerDoNotRound;
+  int corner_preference = kDwmWindowCornerRound;
   DwmSetWindowAttribute(window, DWMWA_WINDOW_CORNER_PREFERENCE,
                         &corner_preference, sizeof(corner_preference));
+
+  COLORREF border_color = kDwmColorNone;
+  DwmSetWindowAttribute(window, DWMWA_BORDER_COLOR,
+                        &border_color, sizeof(border_color));
 }
 
 }  // namespace

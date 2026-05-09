@@ -28,7 +28,7 @@ class CalcSymbols {
       cubeRootSign,
       cubeSign
     ],
-    ['sinh', 'cosh', 'tanh', powerSign, '\u03c0'],
+    ['sinh', 'cosh', 'tanh', powerSign, expSign],
     ['sinh\u207b\u00b9', 'cosh\u207b\u00b9', 'tanh\u207b\u00b9', '\u03c0', 'e'],
     ['Rad', 'log', 'ln', absoluteSign, factorialSign],
   ];
@@ -63,7 +63,7 @@ class CalcSymbols {
       'cosh',
       'tanh',
       powerSign,
-      '\u03c0',
+      expSign,
       '4',
       '5',
       '6',

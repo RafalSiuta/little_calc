@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
-import '../../utils/styles/colors.dart';
+import '../../providers/window_layout_provider.dart';
 import '../../utils/styles/dimensions/font_sizes.dart';
 import '../buttons/window_action_button.dart';
 import '../icons/window_icons.dart';
@@ -33,7 +34,8 @@ class WindowTitleBar extends StatelessWidget {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onPanStart: (_) => _invokeWindowAction('drag'),
-                onDoubleTap: () => _invokeWindowAction('toggleMaximize'),
+                onDoubleTap:
+                    context.read<WindowLayoutProvider>().toggleCalculatorWidth,
                 child: const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -59,9 +61,14 @@ class WindowTitleBar extends StatelessWidget {
               child: const WindowMinimizeIcon(),
             ),
             const SizedBox(width: 16),
-            WindowActionButton(
-              semanticLabel: 'Maximize',
-              onPressed: () => _invokeWindowAction('toggleMaximize'),
+            Consumer<WindowLayoutProvider>(
+              builder: (context, windowLayout, child) {
+                return WindowActionButton(
+                  semanticLabel: 'Maximize',
+                  onPressed: windowLayout.toggleCalculatorWidth,
+                  child: child!,
+                );
+              },
               child: const WindowMaximizeIcon(),
             ),
             const SizedBox(width: 16),

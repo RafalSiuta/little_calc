@@ -46,7 +46,6 @@ class _MainScreenState extends State<MainScreen> {
         icon: Icons.attach_money,
       ),
     ),
-
     ScreenModel(
       page: HistoryPage(),
       nav: NavModel(

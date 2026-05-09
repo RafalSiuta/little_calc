@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/styles/colors.dart';
-import '../../utils/styles/dimensions/font_sizes.dart';
 import '../buttons/option_icon_button.dart';
 
 class CalculatorDisplay extends StatelessWidget {
@@ -21,7 +20,7 @@ class CalculatorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // data.equationDisplay = _equationText();
+    final textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -44,14 +43,7 @@ class CalculatorDisplay extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.right,
-                          style: const TextStyle(
-                            color: AppColors.accent,
-                            fontFamily: 'Exo',
-                            fontSize: AppFontSizes.displayMidFontSize,
-                            fontWeight: FontWeight.w400,
-                            height: 1,
-                            letterSpacing: 0,
-                          ),
+                          style: textTheme.displayMedium,
                         ),
                       ),
                     const SizedBox(height: 16),
@@ -76,14 +68,7 @@ class CalculatorDisplay extends StatelessWidget {
                             data.display,
                             maxLines: 1,
                             textAlign: TextAlign.right,
-                            style: const TextStyle(
-                              color: AppColors.accent,
-                              fontFamily: 'Exo',
-                              fontSize: AppFontSizes.displayLargeFontSize,
-                              fontWeight: FontWeight.w200,
-                              height: 1,
-                              letterSpacing: 0,
-                            ),
+                            style: textTheme.displayLarge,
                           ),
                         ),
                       ),
@@ -147,6 +132,8 @@ class _InfoDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasError = errorMessage.isNotEmpty || showError;
+    final hasInfo = !hasError && infoMessage.isNotEmpty;
+    final textTheme = Theme.of(context).textTheme;
     final message = errorMessage.isNotEmpty
         ? errorMessage
         : showError
@@ -161,18 +148,26 @@ class _InfoDisplay extends StatelessWidget {
           spacing: 16,
           children: [
             Expanded(
-              child: Text(
-                message,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: hasError ? AppColors.error : AppColors.accent,
-                  fontFamily: 'Exo',
-                  fontSize: AppFontSizes.displaySmallFontSize,
-                  fontWeight: FontWeight.w200,
-                  height: 1,
-                  letterSpacing: 0,
-                ),
+              child: Row(
+                spacing: 8,
+                children: [
+                  if (hasError || hasInfo)
+                    Icon(
+                      hasError ? Icons.warning_amber : Icons.info_outline,
+                      color: hasError ? AppColors.error : AppColors.accent,
+                      size: 16,
+                    ),
+                  Expanded(
+                    child: Text(
+                      message,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.displaySmall?.copyWith(
+                        color: hasError ? AppColors.error : AppColors.accent,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:little_calc/utils/calc_logic/calculator_logic.dart';
+import 'package:little_calc/utils/calc_symbols/calc_symbols.dart';
 
 void main() {
   group('CalculatorLogic scientific functions', () {
@@ -32,7 +33,7 @@ void main() {
       logic.multifunction('\u03c0');
 
       expect(logic.equationDisplay, '\u03c0');
-      expect(logic.display, '0');
+      expect(logic.display, '3.1415926536');
     });
 
     test('inserts e as a constant token', () {
@@ -41,7 +42,7 @@ void main() {
       logic.multifunction('e');
 
       expect(logic.equationDisplay, 'e');
-      expect(logic.display, '0');
+      expect(logic.display, '2.7182818285');
     });
 
     test('uses implicit multiplication before constants', () {
@@ -206,6 +207,28 @@ void main() {
 
       expect(logic.display, '7.3890560989');
       expect(logic.equationDisplay, 'e^(2');
+    });
+
+    test('starts an exponential expression from the e to x button label', () {
+      final logic = CalculatorLogic();
+
+      logic.multifunction(CalcSymbols.expSign);
+      logic.onNumbers('2');
+
+      expect(logic.display, '7.3890560989');
+      expect(logic.equationDisplay, 'e^(2');
+    });
+
+    test('matches the expanded function keyboard order from Figma', () {
+      expect(CalcSymbols.expandedFunctionRows[2][4], CalcSymbols.expSign);
+      expect(CalcSymbols.expandedFunctionRows[3][3], '\u03c0');
+      expect(CalcSymbols.expandedFunctionRows[3][4], 'e');
+      expect(
+        CalcSymbols.expandedFunctionRows.expand((row) => row).where(
+              (value) => value == '\u03c0',
+            ),
+        hasLength(1),
+      );
     });
 
     test('applies absolute value to the active number', () {

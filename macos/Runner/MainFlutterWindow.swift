@@ -61,6 +61,10 @@ class MainFlutterWindow: NSWindow {
 
     contentView?.wantsLayer = true
     contentView?.layer?.backgroundColor = NSColor.clear.cgColor
+    contentView?.layer?.cornerRadius = 16
+    contentView?.layer?.masksToBounds = true
+    contentView?.layer?.borderWidth = 0
+    contentView?.layer?.borderColor = NSColor.clear.cgColor
     contentView?.alphaValue = 1
   }
 
