@@ -4,6 +4,8 @@ https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background
 
 # COMMITS (poniżej dodawaj opis wykonanaych czynności po angielsku według wzoru - data | lista wprowadzonych zmian - krótki opis co zostało zmienione)
 
+2026-05-09 | Added macOS native transparent blur support - Mirrored the Windows setNativeBlur channel on macOS with a passthrough NSVisualEffectView behind the Flutter view, mapped ThemeSettingsProvider backgroundBlur to native visual effect materials, preserved Flutter hit testing and window dragging, and kept backgroundOpacity as the app-level overlay tint control.
+
 2026-05-09 | Refined calculator display preview and angle-mode recalculation - Kept the main display at zero while entering the first operand, started live preview only when a binary expression has a second operand or a function can be evaluated, recalculated the latest trigonometric result after Rad/Deg toggles, updated scientific keyboard mappings from Figma, and documented the behavior.
 
 2026-05-06 | Added scientific calculator logic and split expanded keyboard - Fixed negative-zero input after +/- toggles, added constants and scientific functions (pi, e, cube, cube root, power, exp, abs, factorial) with tests, updated Figma-based color and font tokens, and split the expanded keyboard into separate function and basic key grids.

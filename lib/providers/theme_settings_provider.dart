@@ -7,21 +7,21 @@ class ThemeSettingsProvider extends ChangeNotifier {
   static const MethodChannel _windowChannel =
       MethodChannel('little_calc/window');
 
-  double backgroundBlur = 0.5;
-  double backgroundOpacity = 0.7;
+  double backgroundBlur = 0.8;
+  double backgroundOpacity = 0.5;
 
   ThemeSettingsProvider() {
     _syncNativeBlur();
   }
 
-  Future<void> setBackgroundBlur(double value) async {
-    backgroundBlur = value;
+  Future<void> setBackgroundBlur(bool value) async {
+    backgroundBlur = value == true ? 0.8 : 0;
     notifyListeners();
     await _syncNativeBlur();
   }
 
   Future<void> _syncNativeBlur() async {
-    if (!Platform.isWindows) {
+    if (!Platform.isWindows && !Platform.isMacOS) {
       return;
     }
 
