@@ -6,6 +6,8 @@ import '../../providers/calculator_settings_provider.dart';
 import '../extensions/number_formatter.dart';
 import 'calc_flags.dart';
 
+const double _goldenRatio = 1.618033988749895;
+
 class CalculatorLogic extends ChangeNotifier {
   String newText = "";
   String oldText = "";
@@ -761,6 +763,37 @@ class CalculatorLogic extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Starts a base-2 exponential function. It renders as `2^(` and waits for
+  // the exponent inside the bracket.
+  void onTwoPower() {
+    clearSmallDisplay();
+
+    if (_tokens.isEmpty && display != '0' && flag == Flag.RESULT) {
+      _resetExpressionToNumber(parser());
+    }
+
+    if (_lastTokenIsNumber() ||
+        _lastTokenIsConstant() ||
+        _lastTokenIsCloseBracket()) {
+      _appendOperatorToken('*');
+    } else if (_tokens.isNotEmpty &&
+        !_lastTokenIsOperator() &&
+        _tokens.last != '(' &&
+        !_isFunctionToken(_tokens.last)) {
+      return;
+    }
+
+    _tokens
+      ..add('twoPower')
+      ..add('(');
+    openBrackets++;
+    _currentNumber = '';
+    display = '0';
+    flag = Flag.OPEN_BRACKET;
+    _syncEquationDisplay();
+    notifyListeners();
+  }
+
   // Inserts a mathematical constant as a value token.
   void onConstant(String constant) {
     clearSmallDisplay();
@@ -965,6 +998,9 @@ class CalculatorLogic extends ChangeNotifier {
       case '1/x':
         onReciprocal();
         break;
+      case 'twoPower':
+        onTwoPower();
+        break;
       case 'sin':
         onSin();
         break;
@@ -1024,6 +1060,7 @@ class CalculatorLogic extends ChangeNotifier {
         break;
       case '\u03c0':
       case 'e':
+      case 'phi':
         onConstant(char);
         break;
       case 'C':
@@ -1220,10 +1257,14 @@ class CalculatorLogic extends ChangeNotifier {
         return '\u00b3\u221a';
       case 'exp':
         return 'e^';
+      case 'twoPower':
+        return '2^';
       case 'pi':
         return '\u03c0';
       case 'e':
         return 'e';
+      case 'phi':
+        return 'f';
       default:
         return value;
     }
@@ -1328,7 +1369,10 @@ class CalculatorLogic extends ChangeNotifier {
 
   // Returns true when a token starts a function that consumes the next factor.
   bool _isFunctionToken(String value) {
-    return value == 'sqrt' || value == 'cbrt' || value == 'exp';
+    return value == 'sqrt' ||
+        value == 'cbrt' ||
+        value == 'exp' ||
+        value == 'twoPower';
   }
 
   // Returns true when a token can be parsed as a number.
@@ -1338,7 +1382,7 @@ class CalculatorLogic extends ChangeNotifier {
 
   // Returns true when a token is one of the supported mathematical constants.
   bool _isConstantToken(String value) {
-    return value == 'pi' || value == 'e';
+    return value == 'pi' || value == 'e' || value == 'phi';
   }
 
   // Converts a button label into the matching constant token.
@@ -1348,6 +1392,8 @@ class CalculatorLogic extends ChangeNotifier {
         return 'pi';
       case 'e':
         return 'e';
+      case 'phi':
+        return 'phi';
       default:
         return null;
     }
@@ -1599,9 +1645,17 @@ class _ExpressionParser {
       _position += 3;
       return exp(_parseFactor());
     }
+    if (_expression.startsWith('twoPower', _position)) {
+      _position += 8;
+      return pow(2, _parseFactor()).toDouble();
+    }
     if (_expression.startsWith('pi', _position)) {
       _position += 2;
       return pi;
+    }
+    if (_expression.startsWith('phi', _position)) {
+      _position += 3;
+      return _goldenRatio;
     }
     if (char == '\u03c0') {
       _position++;

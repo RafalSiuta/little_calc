@@ -66,17 +66,17 @@ class _OptionIconButtonState extends State<OptionIconButton> {
 
   Color get _iconColor {
     if (widget.usePressedAccent && _isPressed) {
-      return AppColors.accent;
+      return AppDefaultColors.accent;
     }
 
     if (widget.isActive) {
-      return AppColors.accent;
+      return AppDefaultColors.accent;
     }
 
     if (_isHovered) {
-      return AppColors.unselectedHover;
+      return AppDefaultColors.unselectedHover;
     }
 
-    return AppColors.unselected;
+    return AppDefaultColors.unselected;
   }
 }

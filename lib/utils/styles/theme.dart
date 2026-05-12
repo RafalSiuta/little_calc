@@ -15,21 +15,21 @@ final ThemeData calcTheme = ThemeData(
   scaffoldBackgroundColor: Colors.transparent,
   textTheme: TextTheme(
     displayLarge: GoogleFonts.exo2(
-      color: AppColors.accent,
+      color: AppDefaultColors.accent,
       fontSize: AppFontSizes.displayLargeFontSize,
       fontWeight: FontWeight.w100,
       height: 1,
       letterSpacing: 0,
     ),
     displayMedium: GoogleFonts.exo2(
-      color: AppColors.accent,
+      color: AppDefaultColors.accent,
       fontSize: AppFontSizes.displayMidFontSize,
       fontWeight: FontWeight.w100,
       height: 1,
       letterSpacing: 0,
     ),
     displaySmall: GoogleFonts.exo2(
-      color: AppColors.accent,
+      color: AppDefaultColors.accent,
       fontSize: AppFontSizes.displaySmallFontSize,
       fontWeight: FontWeight.w400,
       height: 1,

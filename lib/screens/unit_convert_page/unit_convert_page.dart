@@ -20,12 +20,12 @@ class _PlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: AppColors.background,
+      // color: AppDefaultColors.background,
       alignment: Alignment.center,
       child: Text(
         title,
         style: const TextStyle(
-          color: AppColors.accent,
+          color: AppDefaultColors.accent,
           fontFamily: 'Exo',
           fontSize: AppFontSizes.displayMidFontSize,
           fontWeight: FontWeight.w400,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/styles/colors.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/dimensions/font_sizes.dart';
@@ -10,11 +11,13 @@ class NumBtn extends StatefulWidget {
     required this.label,
     required this.onPressed,
     this.flex = 1,
+    this.type = CalcKeyType.number,
   }) : super(key: key);
 
   final String label;
   final VoidCallback onPressed;
   final int flex;
+  final CalcKeyType type;
 
   @override
   State<NumBtn> createState() => _NumBtnState();
@@ -32,9 +35,9 @@ class _NumBtnState extends State<NumBtn> {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            splashColor: AppColors.borderDark,
-            highlightColor: AppColors.borderDark,
-            hoverColor: AppColors.borderDark,
+            splashColor: AppDefaultColors.borderDark,
+            highlightColor: AppDefaultColors.borderDark,
+            hoverColor: AppDefaultColors.borderDark,
             onHighlightChanged: (isHighlighted) {
               setState(() => _isPressed = isHighlighted);
             },
@@ -44,7 +47,7 @@ class _NumBtnState extends State<NumBtn> {
               padding: const EdgeInsets.all(AppDimens.basePadding),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.borderDark,
+                  color: AppDefaultColors.borderDark,
                   width: AppDimens.borderThickness,
                 ),
               ),
@@ -53,7 +56,7 @@ class _NumBtnState extends State<NumBtn> {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 style: TextStyle(
-                  color: _isPressed ? AppColors.accent : AppColors.text,
+                  color: _isPressed ? AppDefaultColors.accent : _textColor(),
                   fontFamily: 'Exo',
                   fontSize: AppFontSizes.buttonFontSize,
                   fontWeight: FontWeight.w100,
@@ -66,5 +69,16 @@ class _NumBtnState extends State<NumBtn> {
         ),
       ),
     );
+  }
+
+  Color _textColor() {
+    switch (widget.type) {
+      case CalcKeyType.function:
+        return AppDefaultColors.functionsText;
+      case CalcKeyType.operator:
+        return AppDefaultColors.operatorsText;
+      case CalcKeyType.number:
+        return AppDefaultColors.numbersText;
+    }
   }
 }

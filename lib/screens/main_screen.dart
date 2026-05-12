@@ -93,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
       builder: (context, themeSettings, child) {
         return Scaffold(
           backgroundColor: formatColorOpacity(
-            AppColors.background,
+            AppDefaultColors.background,
             themeSettings.backgroundOpacity,
           ),
           body: Column(

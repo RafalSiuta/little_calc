@@ -219,13 +219,39 @@ void main() {
       expect(logic.equationDisplay, 'e^(2');
     });
 
+    test('starts a base-2 exponential expression from the 2 to x button label',
+        () {
+      final logic = CalculatorLogic();
+
+      logic.multifunction(CalcSymbols.twoPowerSign);
+      logic.onNumbers('3');
+
+      expect(logic.display, '8');
+      expect(logic.equationDisplay, '2^(3');
+    });
+
+    test('inserts phi as the golden ratio constant', () {
+      final logic = CalculatorLogic();
+
+      logic.multifunction('phi');
+
+      expect(logic.display, '1.6180339887');
+      expect(logic.equationDisplay, 'f');
+    });
+
     test('matches the expanded function keyboard order from Figma', () {
-      expect(CalcSymbols.expandedFunctionRows[2][4], CalcSymbols.expSign);
-      expect(CalcSymbols.expandedFunctionRows[3][3], '\u03c0');
-      expect(CalcSymbols.expandedFunctionRows[3][4], 'e');
+      expect(CalcSymbols.expandedFunctionRows[0][1].label, 'e');
+      expect(CalcSymbols.expandedFunctionRows[0][2].label, '\u03c0');
+      expect(CalcSymbols.expandedFunctionRows[0][3].label, 'f');
+      expect(CalcSymbols.expandedFunctionRows[2][2].label,
+          CalcSymbols.twoPowerSign);
+      expect(CalcSymbols.expandedFunctionRows[2][3].label,
+          CalcSymbols.reciprocalSign);
+      expect(CalcSymbols.expandedFunctionRows[4][3].label,
+          CalcSymbols.trigToggleSign);
       expect(
         CalcSymbols.expandedFunctionRows.expand((row) => row).where(
-              (value) => value == '\u03c0',
+              (value) => value.label == '\u03c0',
             ),
         hasLength(1),
       );

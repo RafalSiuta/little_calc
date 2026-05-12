@@ -29,11 +29,11 @@ class CalculatorOptionsBar extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: AppColors.unselected,
+            color: AppDefaultColors.unselected,
             width: 0.5,
           ),
         ),
-        // color: AppColors.background,
+        // color: AppDefaultColors.background,
       ),
       child: Row(
         children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/calc_symbols/calc_symbols.dart';
 import '../buttons/numbtn.dart';
 
 class CalculatorKeyboard extends StatelessWidget {
@@ -9,7 +10,7 @@ class CalculatorKeyboard extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  final List<List<String>> rows;
+  final List<List<CalcKey>> rows;
   final ValueChanged<String> onPressed;
 
   @override
@@ -21,8 +22,10 @@ class CalculatorKeyboard extends StatelessWidget {
             children: [
               for (final value in row)
                 NumBtn(
-                  label: value,
-                  onPressed: () => onPressed(value),
+                  label: value.label,
+                  type: value.type,
+                  onPressed: () => onPressed(value.label),
+                  flex: value.flex,
                 ),
             ],
           ),

@@ -55,8 +55,8 @@ class CalculatorDisplay extends StatelessWidget {
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
                             colors: [
-                              AppColors.accent,
-                              AppColors.accent2,
+                              AppDefaultColors.accent,
+                              AppDefaultColors.accent2,
                             ],
                           ).createShader(bounds);
                         },
@@ -154,7 +154,7 @@ class _InfoDisplay extends StatelessWidget {
                   if (hasError || hasInfo)
                     Icon(
                       hasError ? Icons.warning_amber : Icons.info_outline,
-                      color: hasError ? AppColors.error : AppColors.accent,
+                      color: hasError ? AppDefaultColors.error : AppDefaultColors.accent,
                       size: 16,
                     ),
                   Expanded(
@@ -163,7 +163,7 @@ class _InfoDisplay extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.displaySmall?.copyWith(
-                        color: hasError ? AppColors.error : AppColors.accent,
+                        color: hasError ? AppDefaultColors.error : AppDefaultColors.accent,
                       ),
                     ),
                   ),
