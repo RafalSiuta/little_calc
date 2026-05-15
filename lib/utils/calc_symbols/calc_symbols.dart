@@ -68,8 +68,8 @@ class CalcSymbols {
       CalcKey('+', type: _op),
     ],
     [
-      CalcKey('0'),
       CalcKey('.', type: _op),
+      CalcKey('0'),
       CalcKey('=', type: _op, flex: 2),
     ],
   ];

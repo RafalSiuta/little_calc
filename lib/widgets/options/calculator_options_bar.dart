@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../models/nav_model/nav_model.dart';
-import '../../utils/styles/colors.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
+import '../../utils/styles/theme.dart';
 import '../buttons/option_icon_button.dart';
 
 class CalculatorOptionsBar extends StatelessWidget {
@@ -18,40 +19,38 @@ class CalculatorOptionsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calcTheme = context.calcTheme;
+    final itemSpacing = AppDimens.currentItemSpacing();
     final leftItems =
         items.length > 1 ? items.take(items.length - 1).toList() : items;
     final rightItem = items.length > 1 ? items.last : null;
 
     return Container(
-      height: 78,
+      height: AppDimens.calculatorOptionsBarHeight(),
       // margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: AppDefaultColors.unselected,
+            color: calcTheme.unselected,
             width: 0.5,
           ),
         ),
-        // color: AppDefaultColors.background,
       ),
       child: Row(
         children: [
           Expanded(
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: leftItems.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 16),
-              itemBuilder: (context, index) {
-                final item = leftItems[index];
-                return OptionIconButton(
-                  icon: item.icon,
-                  tooltip: item.title,
-                  isActive: index == selectedItem,
-                  onPressed: () => onItemSelected(index),
-                );
-              },
+            child: Row(
+              spacing: itemSpacing,
+              children: [
+                for (var index = 0; index < leftItems.length; index++)
+                  OptionIconButton(
+                    icon: leftItems[index].icon,
+                    tooltip: leftItems[index].title,
+                    isActive: index == selectedItem,
+                    onPressed: () => onItemSelected(index),
+                  ),
+              ],
             ),
           ),
           if (rightItem != null)

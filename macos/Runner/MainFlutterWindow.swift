@@ -16,6 +16,7 @@ class MainFlutterWindow: NSWindow {
 
   private var windowChannel: FlutterMethodChannel?
   private var nativeBlurView: NSVisualEffectView?
+  private var isBlur = true
 
   override var canBecomeKey: Bool {
     return true
@@ -190,19 +191,39 @@ class MainFlutterWindow: NSWindow {
 
     let enabled = boolArgument(in: arguments, named: "enabled", fallback: true)
     let blur = doubleArgument(in: arguments, named: "blur", fallback: 0)
-    applyNativeBlur(enabled: enabled, blur: blur)
+    isBlur = enabled
+    applyNativeWindowBackground(isBlur: isBlur, blur: blur)
     result(nil)
   }
 
-  private func applyNativeBlur(enabled: Bool, blur: Double) {
+  private func applyNativeWindowBackground(isBlur: Bool, blur: Double) {
+    applyTransparentWindowState()
+
     guard let nativeBlurView = nativeBlurView else {
+      return
+    }
+
+    if !isBlur {
+      nativeBlurView.state = .inactive
+      nativeBlurView.isHidden = true
       return
     }
 
     let normalizedBlur = normalizedBlurValue(blur)
     nativeBlurView.material = material(for: normalizedBlur)
-    nativeBlurView.state = enabled && normalizedBlur > 0 ? .active : .inactive
-    nativeBlurView.isHidden = !enabled || normalizedBlur <= 0
+    nativeBlurView.state = normalizedBlur > 0 ? .active : .inactive
+    nativeBlurView.isHidden = normalizedBlur <= 0
+  }
+
+  private func applyTransparentWindowState() {
+    isOpaque = false
+    backgroundColor = .clear
+    contentView?.wantsLayer = true
+    contentView?.layer?.backgroundColor = NSColor.clear.cgColor
+    contentView?.alphaValue = 1
+    contentViewController?.view.wantsLayer = true
+    contentViewController?.view.layer?.backgroundColor = NSColor.clear.cgColor
+    contentViewController?.view.alphaValue = 1
   }
 
   private func normalizedBlurValue(_ blur: Double) -> Double {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/styles/theme.dart';
+
 class WindowActionButton extends StatelessWidget {
   const WindowActionButton({
     Key? key,
@@ -14,19 +16,21 @@ class WindowActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calcTheme = context.calcTheme;
+
     return Semantics(
       button: true,
       label: semanticLabel,
       child: SizedBox(
-        width: 24,
-        height: 24,
+        width: calcTheme.windowActionButtonSize.width,
+        height: calcTheme.windowActionButtonSize.height,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(4),
-            hoverColor: Colors.white.withOpacity(0.08),
-            splashColor: Colors.white.withOpacity(0.12),
-            highlightColor: Colors.white.withOpacity(0.08),
+            borderRadius: calcTheme.windowActionBorderRadius,
+            hoverColor: calcTheme.windowActionHoverColor,
+            splashColor: calcTheme.windowActionSplashColor,
+            highlightColor: calcTheme.windowActionHighlightColor,
             onTap: onPressed,
             child: Center(child: child),
           ),

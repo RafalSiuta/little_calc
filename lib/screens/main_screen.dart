@@ -4,7 +4,9 @@ import '../models/nav_model/nav_model.dart';
 import '../models/screen_model/screen_model.dart';
 import '../providers/theme_settings_provider.dart';
 import '../utils/extensions/color_formatter.dart';
-import '../utils/styles/colors.dart';
+import '../utils/system/system_helper.dart';
+import '../utils/styles/dimensions/dimensions.dart';
+import '../utils/styles/theme.dart';
 import '../widgets/options/calculator_options_bar.dart';
 import '../widgets/window/window_title_bar.dart';
 import 'calc_page/calc_page.dart';
@@ -91,28 +93,34 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Consumer<ThemeSettingsProvider>(
       builder: (context, themeSettings, child) {
+        final calcTheme = context.calcTheme;
+
         return Scaffold(
           backgroundColor: formatColorOpacity(
-            AppDefaultColors.background,
+            calcTheme.background,
             themeSettings.backgroundOpacity,
           ),
-          body: Column(
-            children: [
-              const WindowTitleBar(),
-              CalculatorOptionsBar(
-                items: _pages.map((page) => page.nav).toList(),
-                selectedItem: _currentPage,
-                onItemSelected: _onPageChange,
-              ),
-              Expanded(
-                child: PageView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: _pageController,
-                  itemCount: _pages.length,
-                  itemBuilder: (context, index) => _pages[index].page,
+          body: SafeArea(
+            child: Column(
+              children: [
+                if (!SystemHelper.isMobileSystem) const WindowTitleBar(),
+                CalculatorOptionsBar(
+                  items: _pages.map((page) => page.nav).toList(),
+                  selectedItem: _currentPage,
+                  onItemSelected: _onPageChange,
                 ),
-              ),
-            ],
+                if (SystemHelper.isMobileSystem)
+                  SizedBox(height: AppDimens.currentItemSpacing()),
+                Expanded(
+                  child: PageView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    itemCount: _pages.length,
+                    itemBuilder: (context, index) => _pages[index].page,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

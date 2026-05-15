@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../utils/calc_logic/calculator_logic.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
+import '../../utils/system/system_helper.dart';
 import '../../widgets/displays/calculator_display.dart';
 import '../../widgets/keyboards/calculator_keyboard.dart';
 
@@ -24,7 +26,6 @@ class _CalcPageState extends State<CalcPage> {
         return SizedBox(
           width: double.infinity,
           height: double.infinity,
-          // color: AppDefaultColors.background,
           child: Column(
             children: [
               Expanded(
@@ -37,7 +38,7 @@ class _CalcPageState extends State<CalcPage> {
                   },
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppDimens.currentItemSpacing()),
               _CalculatorKeyboards(
                 isExpanded: windowLayout.isExpanded,
                 angleModeButtonLabel: data.angleModeButtonLabel,
@@ -82,6 +83,32 @@ class _CalculatorKeyboardsState extends State<_CalculatorKeyboards> {
     final functionRows = _showHyperbolicFunctions
         ? CalcSymbols.expandedHyperbolicFunctionRows
         : CalcSymbols.expandedFunctionRows;
+
+    if (SystemHelper.isMobileSystem) {
+      return SizedBox(
+        height: AppDimens.calculatorKeyboardHeight(isExpanded: true),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: CalculatorKeyboard(
+                rows: _rowsWithAngleMode(functionRows),
+                onPressed: _handleKeyPress,
+                isExpandedLayout: true,
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: CalculatorKeyboard(
+                rows: CalcSymbols.expandedBasicRows,
+                onPressed: _handleKeyPress,
+                isExpandedLayout: true,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Row(
       children: [

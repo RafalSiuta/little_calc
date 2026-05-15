@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/styles/colors.dart';
-import '../../utils/styles/dimensions/font_sizes.dart';
+import '../../utils/styles/theme.dart';
 
 class UnitConvertPage extends StatelessWidget {
   const UnitConvertPage({Key? key}) : super(key: key);
@@ -20,17 +19,10 @@ class _PlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: AppDefaultColors.background,
       alignment: Alignment.center,
       child: Text(
         title,
-        style: const TextStyle(
-          color: AppDefaultColors.accent,
-          fontFamily: 'Exo',
-          fontSize: AppFontSizes.displayMidFontSize,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0,
-        ),
+        style: context.calcTheme.placeholderTextStyle,
       ),
     );
   }

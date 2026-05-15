@@ -5,6 +5,7 @@
 #include <optional>
 #include <variant>
 
+#include <dwmapi.h>
 #include <flutter_windows.h>
 
 #include "flutter/generated_plugin_registrant.h"
@@ -33,6 +34,7 @@ using SetWindowCompositionAttributeProc =
     BOOL(WINAPI*)(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
 
 constexpr int kWindowCompositionAttributeAccentPolicy = 19;
+bool g_is_blur = true;
 
 DWORD AcrylicTintColor(double blur_value) {
   double clamped_blur = std::clamp(blur_value, 0.0, 40.0);
@@ -40,6 +42,11 @@ DWORD AcrylicTintColor(double blur_value) {
 
   // SetWindowCompositionAttribute expects AABBGGRR.
   return (static_cast<DWORD>(alpha) << 24) | 0x00191919;
+}
+
+void ConfigureTransparentDwmFrame(HWND window) {
+  MARGINS margins = {-1, -1, -1, -1};
+  DwmExtendFrameIntoClientArea(window, &margins);
 }
 
 bool ReadBoolArgument(const flutter::EncodableMap& arguments,
@@ -78,7 +85,7 @@ double ReadDoubleArgument(const flutter::EncodableMap& arguments,
   return fallback;
 }
 
-bool SetNativeAcrylicBlur(HWND window, bool enabled, double blur_value) {
+bool ApplyAccentPolicy(HWND window, const ACCENT_POLICY& accent) {
   HMODULE user32_module = GetModuleHandle(L"user32.dll");
   if (!user32_module) {
     return false;
@@ -91,20 +98,36 @@ bool SetNativeAcrylicBlur(HWND window, bool enabled, double blur_value) {
     return false;
   }
 
-  ACCENT_POLICY accent = {
-      enabled ? ACCENT_ENABLE_ACRYLICBLURBEHIND : ACCENT_DISABLED,
-      0,
-      enabled ? AcrylicTintColor(blur_value) : 0,
-      0,
-  };
-
   WINDOWCOMPOSITIONATTRIBDATA data = {
       kWindowCompositionAttributeAccentPolicy,
-      &accent,
+      const_cast<ACCENT_POLICY*>(&accent),
       sizeof(accent),
   };
 
   return set_window_composition_attribute(window, &data);
+}
+
+bool ApplyNativeWindowBackground(HWND window, bool is_blur, double blur_value) {
+  if (is_blur) {
+    ACCENT_POLICY accent = {
+        ACCENT_ENABLE_ACRYLICBLURBEHIND,
+        0,
+        AcrylicTintColor(blur_value),
+        0,
+    };
+    return ApplyAccentPolicy(window, accent);
+  }
+
+  ACCENT_POLICY accent = {
+      ACCENT_DISABLED,
+      0,
+      0,
+      0,
+  };
+  const bool applied = ApplyAccentPolicy(window, accent);
+  ConfigureTransparentDwmFrame(window);
+  InvalidateRect(window, nullptr, TRUE);
+  return applied;
 }
 
 }  // namespace
@@ -214,12 +237,12 @@ bool FlutterWindow::OnCreate() {
             return;
           }
 
-          bool enabled = ReadBoolArgument(*arguments, "enabled", true);
+          g_is_blur = ReadBoolArgument(*arguments, "enabled", true);
           double blur = ReadDoubleArgument(*arguments, "blur", 0.0);
-          bool applied = SetNativeAcrylicBlur(window, enabled, blur);
+          bool applied = ApplyNativeWindowBackground(window, g_is_blur, blur);
           if (!applied) {
             result->Error("native_blur_unavailable",
-                          "Acrylic blur is unavailable on this Windows host.");
+                          "Native window background is unavailable on this Windows host.");
             return;
           }
 

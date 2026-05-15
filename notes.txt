@@ -39,3 +39,7 @@ https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background
 2026-05-02 | Improved square and square-root behavior - Updated onPow to show exponent notation and report missing-number errors, added sqrt expression parsing, and made square-root input render as pending √( expressions with live preview after numeric input.
 
 2026-05-03 | Added controllable Windows Acrylic window blur - Moved native Windows blur setup into the Flutter window channel, added ThemeSettingsProvider synchronization for setNativeBlur, removed the startup-only blur hook from main.cpp, made app surfaces more transparent for the native effect, updated window control icon contrast, and documented the future macOS NSVisualEffectView approach.
+
+2026-05-15 | Added Figma-based settings UI, theme cards, mobile settings, native transparency modes, and persisted preferences - Rebuilt the settings page with a scrollable top-indicator TabBar, separate settings subpages, Figma-matched SettingsCard and ThemeCard components, responsive theme grids for expanded desktop, compact desktop, and mobile, CalcTheme tokens for cards, sliders, switches, tabs, shadows, and typography, Android/iOS settings behavior without desktop blur controls, independent native blur and app opacity controls, Windows and macOS transparent window fallback modes when blur is off, shared_preferences-backed persistence for blur, opacity, and selected theme, and keyboard updates including the swapped dot/zero layout and corrected mini theme-card function symbols.
+
+

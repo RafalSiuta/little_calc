@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/styles/colors.dart';
-import '../../utils/styles/dimensions/font_sizes.dart';
+import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
+import 'about_page.dart';
+import 'advanced_page.dart';
+import 'sets_currency_page.dart';
+import 'themes_page.dart';
 
 class SetsPage extends StatelessWidget {
   const SetsPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return const _PlaceholderPage(title: 'Ustawienia');
-  }
-}
-
-class _PlaceholderPage extends StatelessWidget {
-  const _PlaceholderPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  static const List<String> _tabs = [
+    'themes',
+    'advanced',
+    'currency',
+    'about',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // color: AppDefaultColors.background,
-      alignment: Alignment.center,
-      child: Text(
-        title,
-        style: const TextStyle(
-          color: AppDefaultColors.accent,
-          fontFamily: 'Exo',
-          fontSize: AppFontSizes.displayMidFontSize,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0,
-        ),
+    return DefaultTabController(
+      length: _tabs.length,
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CalcTabBar(tabs: _tabs),
+          Expanded(
+            child: TabBarView(
+              children: [
+                ThemesPage(),
+                AdvancedPage(),
+                SetsCurrencyPage(),
+                AboutPage(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

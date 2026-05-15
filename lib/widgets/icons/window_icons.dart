@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/styles/colors.dart';
+import '../../utils/styles/theme.dart';
 
 class WindowMinimizeIcon extends StatelessWidget {
   const WindowMinimizeIcon({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class WindowMinimizeIcon extends StatelessWidget {
     return Container(
       width: 12,
       height: 2,
-      color: AppDefaultColors.unselected,
+      color: context.calcTheme.unselected,
     );
   }
 }
@@ -20,12 +20,14 @@ class WindowMaximizeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calcTheme = context.calcTheme;
+
     return Container(
       width: 14,
       height: 14,
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppDefaultColors.unselected,
+          color: calcTheme.unselected,
           width: 2,
         ),
       ),
@@ -38,18 +40,24 @@ class WindowCloseIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calcTheme = context.calcTheme;
+
     return CustomPaint(
       size: const Size(14, 14),
-      painter: _WindowCloseIconPainter(),
+      painter: _WindowCloseIconPainter(color: calcTheme.unselected),
     );
   }
 }
 
 class _WindowCloseIconPainter extends CustomPainter {
+  const _WindowCloseIconPainter({required this.color});
+
+  final Color color;
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppDefaultColors.unselected
+      ..color = color
       ..strokeWidth = 1
       ..strokeCap = StrokeCap.square;
     canvas.drawLine(Offset.zero, Offset(size.width, size.height), paint);
@@ -57,5 +65,7 @@ class _WindowCloseIconPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _WindowCloseIconPainter oldDelegate) {
+    return oldDelegate.color != color;
+  }
 }

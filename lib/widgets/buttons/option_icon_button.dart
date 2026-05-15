@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/styles/colors.dart';
+import '../../utils/styles/theme.dart';
 
 class OptionIconButton extends StatefulWidget {
   const OptionIconButton({
@@ -28,6 +28,8 @@ class _OptionIconButtonState extends State<OptionIconButton> {
 
   @override
   Widget build(BuildContext context) {
+    final calcTheme = context.calcTheme;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() {
@@ -43,11 +45,11 @@ class _OptionIconButtonState extends State<OptionIconButton> {
         onPointerUp: (_) => setState(() => _isPressed = false),
         onPointerCancel: (_) => setState(() => _isPressed = false),
         child: IconButton(
-          constraints: const BoxConstraints.tightFor(
-            width: 24,
-            height: 24,
+          constraints: BoxConstraints.tightFor(
+            width: calcTheme.optionIconButtonSize.width,
+            height: calcTheme.optionIconButtonSize.height,
           ),
-          padding: EdgeInsets.zero,
+          padding: calcTheme.optionIconButtonPadding,
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           hoverColor: Colors.transparent,
@@ -56,27 +58,20 @@ class _OptionIconButtonState extends State<OptionIconButton> {
           onPressed: widget.onPressed,
           icon: Icon(
             widget.icon,
-            color: _iconColor,
-            size: 24,
+            color: _iconColor(calcTheme),
+            size: calcTheme.optionIconSize,
           ),
         ),
       ),
     );
   }
 
-  Color get _iconColor {
-    if (widget.usePressedAccent && _isPressed) {
-      return AppDefaultColors.accent;
-    }
-
-    if (widget.isActive) {
-      return AppDefaultColors.accent;
-    }
-
-    if (_isHovered) {
-      return AppDefaultColors.unselectedHover;
-    }
-
-    return AppDefaultColors.unselected;
+  Color _iconColor(CalcTheme calcTheme) {
+    return calcTheme.optionIconColor(
+      isActive: widget.isActive,
+      isHovered: _isHovered,
+      isPressed: _isPressed,
+      usePressedAccent: widget.usePressedAccent,
+    );
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:io' show Platform;
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +14,44 @@ import 'providers/window_layout_provider.dart';
 import 'screens/main_screen.dart';
 import 'utils/routes/custom_route.dart';
 
-void main() {
+Future<int> getAndroidVersion() async {
+  if (Platform.isAndroid) {
+    final deviceInfo = DeviceInfoPlugin();
+    final androidInfo = await deviceInfo.androidInfo;
+    return androidInfo.version.sdkInt;
+  }
+
+  return 0;
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final int androidVersion = await getAndroidVersion();
+
+  if (Platform.isAndroid && androidVersion >= 35) {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+  } else {
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [],
+    );
+  }
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
@@ -45,32 +85,26 @@ class MyApp extends StatelessWidget {
           create: (context) => ThemeSettingsProvider(),
         ),
       ],
-      child: MaterialApp(
-        title: 'little calc',
-        debugShowCheckedModeBanner: false,
-        color: Colors.transparent,
-        theme: calcTheme,
-        // ThemeData(
-        //   brightness: Brightness.dark,
-        //   colorScheme: const ColorScheme.dark(
-        //     surface: Colors.transparent,
-        //   ),
-        //   canvasColor: Colors.transparent,
-        //   cardColor: Colors.transparent,
-        //   primarySwatch: Colors.blue,
-        //   scaffoldBackgroundColor: Colors.transparent,
-        // ),
-        initialRoute: '/',
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case '/':
-              return CustomPageRoute(
-                child: const MainScreen(),
-                settings: settings,
-              );
-            default:
-              return null;
-          }
+      child: Consumer<ThemeSettingsProvider>(
+        builder: (context, themeSettings, child) {
+          return MaterialApp(
+            title: 'little calc',
+            debugShowCheckedModeBanner: false,
+            color: Colors.transparent,
+            theme: CalcTheme.themeData(themeSettings.currentTheme),
+            initialRoute: '/',
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case '/':
+                  return CustomPageRoute(
+                    child: const MainScreen(),
+                    settings: settings,
+                  );
+                default:
+                  return null;
+              }
+            },
+          );
         },
       ),
     );

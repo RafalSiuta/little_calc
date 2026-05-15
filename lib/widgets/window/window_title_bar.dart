@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/window_layout_provider.dart';
-import '../../utils/styles/dimensions/font_sizes.dart';
+import '../../utils/styles/theme.dart';
 import '../buttons/window_action_button.dart';
 import '../icons/window_icons.dart';
 
@@ -24,6 +24,8 @@ class WindowTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calcTheme = context.calcTheme;
+
     return SizedBox(
       height: height,
       child: Padding(
@@ -36,20 +38,13 @@ class WindowTitleBar extends StatelessWidget {
                 onPanStart: (_) => _invokeWindowAction('drag'),
                 onDoubleTap:
                     context.read<WindowLayoutProvider>().toggleCalculatorWidth,
-                child: const Align(
+                child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'little_calc',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Exo',
-                      fontSize: AppFontSizes.windowTitleFontSize,
-                      fontWeight: FontWeight.w200,
-                      height: 1,
-                      letterSpacing: 0,
-                    ),
+                    style: calcTheme.windowTitleTextStyle,
                   ),
                 ),
               ),

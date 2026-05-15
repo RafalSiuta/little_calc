@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../utils/calc_logic/calculator_logic.dart';
-import '../../utils/styles/colors.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
+import '../../utils/styles/theme.dart';
 import '../buttons/option_icon_button.dart';
 
 class CalculatorDisplay extends StatelessWidget {
@@ -20,7 +22,8 @@ class CalculatorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final calcTheme = context.calcTheme;
+    final displayValue = data.display == 'Infinity' ? 'Error' : data.display;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -38,37 +41,51 @@ class CalculatorDisplay extends StatelessWidget {
                     if (data.equationDisplay.isNotEmpty)
                       SizedBox(
                         width: double.infinity,
-                        child: Text(
-                          data.equationDisplay,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
-                          style: textTheme.displayMedium,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onLongPress: () => _copyToClipboard(
+                            context,
+                            data.equationDisplay,
+                          ),
+                          child: Text(
+                            data.equationDisplay,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.right,
+                            style: calcTheme.displayMidTextStyle,
+                          ),
                         ),
                       ),
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
-                      child: ShaderMask(
-                        shaderCallback: (bounds) {
-                          return const LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              AppDefaultColors.accent,
-                              AppDefaultColors.accent2,
-                            ],
-                          ).createShader(bounds);
-                        },
-                        blendMode: BlendMode.srcIn,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            data.display,
-                            maxLines: 1,
-                            textAlign: TextAlign.right,
-                            style: textTheme.displayLarge,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onLongPress: () => _copyToClipboard(
+                          context,
+                          displayValue,
+                        ),
+                        child: ShaderMask(
+                          shaderCallback: (bounds) {
+                            return LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                calcTheme.accent,
+                                calcTheme.accent2,
+                              ],
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.srcIn,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              displayValue,
+                              maxLines: 1,
+                              textAlign: TextAlign.right,
+                              style: calcTheme.displayLargeTextStyle,
+                            ),
                           ),
                         ),
                       ),
@@ -109,6 +126,28 @@ class CalculatorDisplay extends StatelessWidget {
   //       return value;
   //   }
   // }
+
+  Future<void> _copyToClipboard(BuildContext context, String value) async {
+    if (value.isEmpty) {
+      return;
+    }
+
+    await Clipboard.setData(ClipboardData(text: value));
+    await HapticFeedback.selectionClick();
+
+    if (!context.mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(
+          content: Text('Skopiowano'),
+          duration: Duration(milliseconds: 900),
+        ),
+      );
+  }
 }
 
 class _InfoDisplay extends StatelessWidget {
@@ -133,61 +172,59 @@ class _InfoDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasError = errorMessage.isNotEmpty || showError;
     final hasInfo = !hasError && infoMessage.isNotEmpty;
-    final textTheme = Theme.of(context).textTheme;
+    final calcTheme = context.calcTheme;
+    final itemSpacing = AppDimens.currentItemSpacing();
     final message = errorMessage.isNotEmpty
         ? errorMessage
         : showError
             ? 'error - divide by 0'
             : infoMessage;
 
-    return SizedBox(
-      height: 40,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          spacing: 16,
-          children: [
-            Expanded(
-              child: Row(
-                spacing: 8,
-                children: [
-                  if (hasError || hasInfo)
-                    Icon(
-                      hasError ? Icons.warning_amber : Icons.info_outline,
-                      color: hasError ? AppDefaultColors.error : AppDefaultColors.accent,
-                      size: 16,
-                    ),
-                  Expanded(
-                    child: Text(
-                      message,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.displaySmall?.copyWith(
-                        color: hasError ? AppDefaultColors.error : AppDefaultColors.accent,
-                      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        spacing: itemSpacing,
+        children: [
+          Expanded(
+            child: Row(
+              spacing: 8,
+              children: [
+                if (hasError || hasInfo)
+                  Icon(
+                    hasError ? Icons.warning_amber : Icons.info_outline,
+                    color: hasError ? calcTheme.error : calcTheme.accent,
+                    size: 16,
+                  ),
+                Expanded(
+                  child: Text(
+                    message,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: calcTheme.displaySmallTextStyle.copyWith(
+                      color: hasError ? calcTheme.error : calcTheme.accent,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
 
-            OptionIconButton(
-              icon: isExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
-              tooltip: isExpanded ? 'Zwez kalkulator' : 'Rozszerz kalkulator',
-              isActive: false,
-              usePressedAccent: true,
-              onPressed: onToggleCalculatorWidth,
-            ),
-            // const SizedBox(width: 16),
-            OptionIconButton(
-              icon: Icons.backspace_outlined,
-              tooltip: 'Usun',
-              isActive: false,
-              usePressedAccent: true,
-              onPressed: onBackspace,
-            ),
-          ],
-        ),
+          OptionIconButton(
+            icon: isExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
+            tooltip: isExpanded ? 'Zwez kalkulator' : 'Rozszerz kalkulator',
+            isActive: false,
+            usePressedAccent: true,
+            onPressed: onToggleCalculatorWidth,
+          ),
+          // const SizedBox(width: 16),
+          OptionIconButton(
+            icon: Icons.backspace_outlined,
+            tooltip: 'Usun',
+            isActive: false,
+            usePressedAccent: true,
+            onPressed: onBackspace,
+          ),
+        ],
       ),
     );
   }
