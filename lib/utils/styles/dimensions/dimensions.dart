@@ -14,6 +14,7 @@ class AppDimens {
   static const double buttonPaddingHorizontal = 16;
   static const double buttonPaddingVertical = 16;
   static const double mobileExpandedButtonPaddingVertical = 8;
+  static const double cornerMedium = 12;
 
   static double buttonHorizontalPadding() {
     if (SystemHelper.isMobileSystem) {

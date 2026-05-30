@@ -1,0 +1,47 @@
+windows transparewnt window:
+https://sezerufukyavuz.medium.com/how-to-create-a-blurred-transparent-background-in-your-flutter-desktop-windows-project-ba44b73bb01d
+
+
+# COMMITS (poniżej dodawaj opis wykonanaych czynności po angielsku według wzoru - data | lista wprowadzonych zmian - krótki opis co zostało zmienione)
+
+2026-05-30 | Added Figma-based currency converter UI, JSON-backed currency data, and third theme - Added AppThemeTwoColors and theme selection support, moved flags data and flag images into assets/data, expanded currency JSON with IDs and chart-ready sample values, added Currency and CurrencyValue models, implemented CurrenciesProvider JSON parsing through rootBundle for future API replacement, added fl_chart and new CurrencyCard and CurrencyChoiceDisplay widgets, and rebuilt the currency page with compact converter and expanded desktop list-plus-converter layouts.
+
+2026-05-12 | Updated Figma calculator keyboard and theme color modes - Renamed AppColors to AppDefaultColors, added AppThemeOneColors from the new Figma theme-one variable mode, rebuilt the compact and expanded calculator keyboards as 4-column by 6-row grids, added memory placeholders, 2ˣ, 1/x, phi, and the trigonometric/hyperbolic toggle, and extended calculator logic and tests for the new 2ˣ and phi inputs.
+
+2026-05-09 | Added macOS native transparent blur support - Mirrored the Windows setNativeBlur channel on macOS with a passthrough NSVisualEffectView behind the Flutter view, mapped ThemeSettingsProvider backgroundBlur to native visual effect materials, preserved Flutter hit testing and window dragging, and kept backgroundOpacity as the app-level overlay tint control.
+
+2026-05-09 | Refined calculator display preview and angle-mode recalculation - Kept the main display at zero while entering the first operand, started live preview only when a binary expression has a second operand or a function can be evaluated, recalculated the latest trigonometric result after Rad/Deg toggles, updated scientific keyboard mappings from Figma, and documented the behavior.
+
+2026-05-06 | Added scientific calculator logic and split expanded keyboard - Fixed negative-zero input after +/- toggles, added constants and scientific functions (pi, e, cube, cube root, power, exp, abs, factorial) with tests, updated Figma-based color and font tokens, and split the expanded keyboard into separate function and basic key grids.
+
+2026-04-29 | Updated calculator display order and window resize anchoring - Moved the calculator options bar above the display, placed the info display below the result area, and anchored Windows width changes to the right edge so scientific controls expand from right to left.
+
+2026-04-29 | Swapped settings and backspace actions - Moved the settings IconButton into the calculator options bar with a temporary debug action and moved the active backspace IconButton into the info display.
+
+2026-04-30 | Added live equation display, live result preview, and bracket evaluation - Extended calculator logic to show the selected equation, clear it after equals, preview binary results while typing the second operand, and evaluate bracketed expressions with operator precedence.
+
+2026-04-30 | Refactored calculator logic around expression tokens - Reworked calculation state so numbers, operators, and brackets are stored as tokens, with Flag kept as the readable input-state layer and equationDisplay rendered from tokens.
+
+2026-04-30 | Added page navigation architecture - Introduced MainScreen with PageController, screen and navigation models, a custom route, and CalculatorOptionsBar-driven switching between calculator sections.
+
+2026-04-30 | Added calculator section pages - Replaced HomePage with CalcPage and added placeholder screens for settings, currency conversion, unit conversion, and calculation history.
+
+2026-04-30 | Moved calculator width toggle into info display - Reassigned the CalculatorOptionsBar calculator icon to page switching, added active accent coloring, and moved window expansion control next to the backspace button in _InfoDisplay.
+
+2026-04-30 | Extracted calculator keyboard symbols - Moved calculator signs and compact or expanded keyboard row definitions into CalcSymbols under utils/calc_symbols.
+
+2026-05-02 | Refactored option icon buttons and display controls - Extracted OptionIconButton into widgets/buttons, switched it to Flutter IconButton semantics with transparent background feedback, added icon-only hover and pressed accent states, and reused it in CalculatorOptionsBar and CalculatorDisplay.
+
+2026-05-02 | Added shared layout and calculator settings providers - Introduced WindowLayoutProvider to preserve expanded calculator state across page switches and CalculatorSettingsProvider to supply default decimal precision and scientific-notation settings.
+
+2026-05-02 | Added display number formatting - Added numberFormatter with 10-decimal default precision, trailing-zero trimming, Infinity/NaN handling, and automatic scientific notation for very large or very small values.
+
+2026-05-02 | Updated calculator symbol logic - Moved logic value mapping into CalcSymbols, renamed calc_symbols file usage, and connected calculator input to the shared symbol mapping.
+
+2026-05-02 | Improved square and square-root behavior - Updated onPow to show exponent notation and report missing-number errors, added sqrt expression parsing, and made square-root input render as pending √( expressions with live preview after numeric input.
+
+2026-05-03 | Added controllable Windows Acrylic window blur - Moved native Windows blur setup into the Flutter window channel, added ThemeSettingsProvider synchronization for setNativeBlur, removed the startup-only blur hook from main.cpp, made app surfaces more transparent for the native effect, updated window control icon contrast, and documented the future macOS NSVisualEffectView approach.
+
+2026-05-15 | Added Figma-based settings UI, theme cards, mobile settings, native transparency modes, and persisted preferences - Rebuilt the settings page with a scrollable top-indicator TabBar, separate settings subpages, Figma-matched SettingsCard and ThemeCard components, responsive theme grids for expanded desktop, compact desktop, and mobile, CalcTheme tokens for cards, sliders, switches, tabs, shadows, and typography, Android/iOS settings behavior without desktop blur controls, independent native blur and app opacity controls, Windows and macOS transparent window fallback modes when blur is off, shared_preferences-backed persistence for blur, opacity, and selected theme, and keyboard updates including the swapped dot/zero layout and corrected mini theme-card function symbols.
+
+

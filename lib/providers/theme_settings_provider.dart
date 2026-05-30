@@ -13,7 +13,7 @@ class ThemeSettingsProvider extends ChangeNotifier {
   double backgroundBlur = SystemHelper.isMobileSystem ? 0 : 0.8;
   double backgroundOpacity = SystemHelper.isMobileSystem ? 1 : 0.7;
 
-  List<int> themesList = [1, 2];
+  List<int> themesList = [1, 2, 3];
   int currentTheme = 1; // themesList[1];
 
   ThemeSettingsProvider() {

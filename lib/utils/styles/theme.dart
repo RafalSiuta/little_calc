@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
+import 'dimensions/dimensions.dart';
 import 'dimensions/font_sizes.dart';
 
 class CalcTheme extends ThemeExtension<CalcTheme> {
@@ -107,6 +108,8 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
 
   static CalcTheme fromThemeId(int themeId) {
     switch (themeId) {
+      case 3:
+        return _themeTwo;
       case 2:
         return _themeOne;
       case 1:
@@ -532,11 +535,11 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       windowActionHoverColor: text.withValues(alpha: 0.08),
       windowActionSplashColor: text.withValues(alpha: 0.12),
       windowActionHighlightColor: text.withValues(alpha: 0.08),
-      basePadding: 16,
-      paddingSmall: 8,
-      itemSpacing: 16,
-      borderThickness: 0.3,
-      cardBorderRadius: 10,
+      basePadding: AppDimens.basePadding,
+      paddingSmall: AppDimens.paddingSmall,
+      itemSpacing: AppDimens.itemSpacing,
+      borderThickness: AppDimens.borderThickness,
+      cardBorderRadius: AppDimens.cornerMedium,
       windowBorderRadius: 16,
       menuIndicatorHeight: 2,
       backgroundShadow: const Color(0x59000000),
@@ -624,6 +627,21 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     unselected: AppThemeOneColors.unselected,
     unselectedHover: AppThemeOneColors.unselectedHover,
     error: AppThemeOneColors.error,
+  );
+
+  static final CalcTheme _themeTwo = CalcTheme._build(
+    systemWindow: AppThemeTwoColors.systemWindow,
+    background: AppThemeTwoColors.background,
+    borderDark: AppThemeTwoColors.borderDark,
+    text: AppThemeTwoColors.text,
+    numbersText: AppThemeTwoColors.numbersText,
+    operatorsText: AppThemeTwoColors.operatorsText,
+    functionsText: AppThemeTwoColors.functionsText,
+    accent: AppThemeTwoColors.accent,
+    accent2: AppThemeTwoColors.accent2,
+    unselected: AppThemeTwoColors.unselected,
+    unselectedHover: AppThemeTwoColors.unselectedHover,
+    error: AppThemeTwoColors.error,
   );
 }
 

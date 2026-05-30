@@ -30,3 +30,18 @@ class AppThemeOneColors {
   static const Color unselectedHover = Color(0xff5e5b5b);
   static const Color error = Color(0xffd7263d);
 }
+
+class AppThemeTwoColors {
+  static const Color systemWindow = Colors.transparent;
+  static const Color background = Color(0xff1d1d1d);
+  static const Color borderDark = Color(0xff141414);
+  static const Color text = Color(0xffe5e5e5);
+  static const Color numbersText = Color(0xff648646);
+  static const Color operatorsText = Color(0xffcc8600);
+  static const Color functionsText = Color(0xff3395ce);
+  static const Color accent = Color(0xffcc8600);
+  static const Color accent2 = Color(0xff648645);
+  static const Color unselected = Color(0xff333333);
+  static const Color unselectedHover = Color(0xff5e5b5b);
+  static const Color error = Color(0xff97302d);
+}
