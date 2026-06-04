@@ -166,26 +166,24 @@ class _CurrencyChart extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Expanded(
-      child: LineChart(
-        LineChartData(
-          minX: 0,
-          maxX: (spots.length - 1).toDouble(),
-          gridData: const FlGridData(show: false),
-          titlesData: const FlTitlesData(show: false),
-          borderData: FlBorderData(show: false),
-          lineTouchData: const LineTouchData(enabled: false),
-          lineBarsData: [
-            LineChartBarData(
-              spots: spots,
-              isCurved: true,
-              barWidth: 1,
-              color: color,
-              dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(show: false),
-            ),
-          ],
-        ),
+    return LineChart(
+      LineChartData(
+        minX: 0,
+        maxX: (spots.length - 1).toDouble(),
+        gridData: const FlGridData(show: false),
+        titlesData: const FlTitlesData(show: false),
+        borderData: FlBorderData(show: false),
+        lineTouchData: const LineTouchData(enabled: false),
+        lineBarsData: [
+          LineChartBarData(
+            spots: spots,
+            isCurved: true,
+            barWidth: 1,
+            color: color,
+            dotData: const FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+          ),
+        ],
       ),
     );
   }

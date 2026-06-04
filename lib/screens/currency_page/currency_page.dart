@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../models/currency_model/currency.dart';
 import '../../providers/currencies_provider.dart';
 import '../../providers/window_layout_provider.dart';
+import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
@@ -62,9 +63,9 @@ class _CurrenciesTab extends StatelessWidget {
     }
 
     if (windowLayout.isExpanded) {
-      return Row(
+      return const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Expanded(child: _CurrenciesList()),
           Expanded(child: _CurrencyConverter()),
         ],
@@ -166,8 +167,44 @@ class _CurrencyListHeader extends StatelessWidget {
   }
 }
 
-class _CurrencyConverter extends StatelessWidget {
+class _CurrencyConverter extends StatefulWidget {
   const _CurrencyConverter({Key? key}) : super(key: key);
+
+  @override
+  State<_CurrencyConverter> createState() => _CurrencyConverterState();
+}
+
+class _CurrencyConverterState extends State<_CurrencyConverter> {
+  late final CalculatorLogic _calculatorLogic;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculatorLogic = CalculatorLogic()..addListener(_handleCalculatorChange);
+  }
+
+  @override
+  void dispose() {
+    _calculatorLogic
+      ..removeListener(_handleCalculatorChange)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _handleCalculatorChange() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void _handleKeyPress(String value) {
+    final logicValue = CalcSymbols.logicValue(value);
+    if (logicValue.isEmpty) {
+      return;
+    }
+
+    _calculatorLogic.multifunction(logicValue);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,16 +224,21 @@ class _CurrencyConverter extends StatelessWidget {
               base: base,
               target: target,
               currencies: provider.currencies,
+              equationDisplay: _calculatorLogic.equationDisplay,
+              resultDisplay: _calculatorLogic.display == 'Infinity'
+                  ? 'Error'
+                  : _calculatorLogic.display,
               isExpanded: windowLayout.isExpanded,
               onBaseSelected: provider.setBaseCurrency,
               onTargetSelected: provider.setTargetCurrency,
               onToggleCalculatorWidth: windowLayout.toggleCalculatorWidth,
+              onBackspace: _calculatorLogic.delete,
             ),
           ),
         ),
         CalculatorKeyboard(
           rows: CalcSymbols.compactRows,
-          onPressed: (_) {},
+          onPressed: _handleKeyPress,
         ),
       ],
     );
@@ -209,19 +251,25 @@ class _CurrencyDisplay extends StatelessWidget {
     required this.base,
     required this.target,
     required this.currencies,
+    required this.equationDisplay,
+    required this.resultDisplay,
     required this.isExpanded,
     required this.onBaseSelected,
     required this.onTargetSelected,
     required this.onToggleCalculatorWidth,
+    required this.onBackspace,
   }) : super(key: key);
 
   final Currency base;
   final Currency target;
   final List<Currency> currencies;
+  final String equationDisplay;
+  final String resultDisplay;
   final bool isExpanded;
   final ValueChanged<Currency> onBaseSelected;
   final ValueChanged<Currency> onTargetSelected;
   final VoidCallback onToggleCalculatorWidth;
+  final VoidCallback onBackspace;
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +301,7 @@ class _CurrencyDisplay extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: Text(
-            '5078.34+1205.67+123.54',
+            equationDisplay,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.right,
@@ -299,7 +347,7 @@ class _CurrencyDisplay extends StatelessWidget {
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.centerRight,
                     child: Text(
-                      '6407.55',
+                      resultDisplay,
                       maxLines: 1,
                       textAlign: TextAlign.right,
                       style: calcTheme.displayLargeTextStyle,
@@ -315,6 +363,7 @@ class _CurrencyDisplay extends StatelessWidget {
           target: target,
           isExpanded: isExpanded,
           onToggleCalculatorWidth: onToggleCalculatorWidth,
+          onBackspace: onBackspace,
         ),
       ],
     );
@@ -328,12 +377,14 @@ class _CurrencyInfoDisplay extends StatelessWidget {
     required this.target,
     required this.isExpanded,
     required this.onToggleCalculatorWidth,
+    required this.onBackspace,
   }) : super(key: key);
 
   final Currency base;
   final Currency target;
   final bool isExpanded;
   final VoidCallback onToggleCalculatorWidth;
+  final VoidCallback onBackspace;
 
   @override
   Widget build(BuildContext context) {
@@ -403,7 +454,7 @@ class _CurrencyInfoDisplay extends StatelessWidget {
               tooltip: 'Usun',
               isActive: false,
               usePressedAccent: true,
-              onPressed: () {},
+              onPressed: onBackspace,
             ),
           ],
         ),
