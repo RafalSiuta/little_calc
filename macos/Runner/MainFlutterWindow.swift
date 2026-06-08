@@ -14,6 +14,10 @@ class MainFlutterWindow: NSWindow {
     static let height: CGFloat = 864
   }
 
+  private enum WindowStyle {
+    static let cornerRadius: CGFloat = 16
+  }
+
   private var windowChannel: FlutterMethodChannel?
   private var nativeBlurView: NSVisualEffectView?
   private var isBlur = true
@@ -60,19 +64,13 @@ class MainFlutterWindow: NSWindow {
     maxSize = NSSize(width: WindowSize.expandedWidth, height: WindowSize.height)
     collectionBehavior.insert(.fullScreenNone)
 
-    contentView?.wantsLayer = true
-    contentView?.layer?.backgroundColor = NSColor.clear.cgColor
-    contentView?.layer?.cornerRadius = 16
-    contentView?.layer?.masksToBounds = true
-    contentView?.layer?.borderWidth = 0
-    contentView?.layer?.borderColor = NSColor.clear.cgColor
+    configureRoundedTransparentLayer(for: contentView)
     contentView?.alphaValue = 1
   }
 
   private func configureTransparentFlutterSurface(for flutterViewController: FlutterViewController) {
     flutterViewController.backgroundColor = .clear
-    flutterViewController.view.wantsLayer = true
-    flutterViewController.view.layer?.backgroundColor = NSColor.clear.cgColor
+    configureRoundedTransparentLayer(for: flutterViewController.view)
     flutterViewController.view.alphaValue = 1
   }
 
@@ -86,6 +84,7 @@ class MainFlutterWindow: NSWindow {
     blurView.blendingMode = .behindWindow
     blurView.material = .hudWindow
     blurView.state = .active
+    configureRoundedTransparentLayer(for: blurView)
 
     frameView.addSubview(blurView, positioned: .below, relativeTo: flutterView)
     nativeBlurView = blurView
@@ -218,12 +217,25 @@ class MainFlutterWindow: NSWindow {
   private func applyTransparentWindowState() {
     isOpaque = false
     backgroundColor = .clear
-    contentView?.wantsLayer = true
-    contentView?.layer?.backgroundColor = NSColor.clear.cgColor
+    configureRoundedTransparentLayer(for: contentView)
     contentView?.alphaValue = 1
-    contentViewController?.view.wantsLayer = true
-    contentViewController?.view.layer?.backgroundColor = NSColor.clear.cgColor
+    configureRoundedTransparentLayer(for: contentViewController?.view)
     contentViewController?.view.alphaValue = 1
+    configureRoundedTransparentLayer(for: nativeBlurView)
+  }
+
+  private func configureRoundedTransparentLayer(for view: NSView?) {
+    guard let view = view else {
+      return
+    }
+
+    view.wantsLayer = true
+    view.layer?.backgroundColor = NSColor.clear.cgColor
+    view.layer?.cornerRadius = WindowStyle.cornerRadius
+    view.layer?.masksToBounds = true
+    view.layer?.borderWidth = 0
+    view.layer?.borderColor = NSColor.clear.cgColor
+    view.layer?.shadowOpacity = 0
   }
 
   private func normalizedBlurValue(_ blur: Double) -> Double {

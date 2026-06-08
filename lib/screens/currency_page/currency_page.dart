@@ -4,13 +4,14 @@ import 'package:provider/provider.dart';
 import '../../models/currency_model/currency.dart';
 import '../../providers/currencies_provider.dart';
 import '../../providers/window_layout_provider.dart';
-import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
+import '../../utils/currency_logic/currency_logic.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 import '../../widgets/buttons/option_icon_button.dart';
 import '../../widgets/cards/currency_card.dart';
 import '../../widgets/displays/currency_choice_display.dart';
+import '../../widgets/displays/currency_equation_display.dart';
 import '../../widgets/keyboards/calculator_keyboard.dart';
 import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
 
@@ -167,43 +168,16 @@ class _CurrencyListHeader extends StatelessWidget {
   }
 }
 
-class _CurrencyConverter extends StatefulWidget {
+class _CurrencyConverter extends StatelessWidget {
   const _CurrencyConverter({Key? key}) : super(key: key);
 
-  @override
-  State<_CurrencyConverter> createState() => _CurrencyConverterState();
-}
-
-class _CurrencyConverterState extends State<_CurrencyConverter> {
-  late final CalculatorLogic _calculatorLogic;
-
-  @override
-  void initState() {
-    super.initState();
-    _calculatorLogic = CalculatorLogic()..addListener(_handleCalculatorChange);
-  }
-
-  @override
-  void dispose() {
-    _calculatorLogic
-      ..removeListener(_handleCalculatorChange)
-      ..dispose();
-    super.dispose();
-  }
-
-  void _handleCalculatorChange() {
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _handleKeyPress(String value) {
+  void _handleKeyPress(CurrencyLogic logic, String value) {
     final logicValue = CalcSymbols.logicValue(value);
     if (logicValue.isEmpty) {
       return;
     }
 
-    _calculatorLogic.multifunction(logicValue);
+    logic.handleKeyPress(logicValue);
   }
 
   @override
@@ -214,6 +188,8 @@ class _CurrencyConverterState extends State<_CurrencyConverter> {
     final base = provider.baseCurrency ?? provider.currencies.first;
     final target = provider.targetCurrency ??
         (provider.currencies.length > 1 ? provider.currencies[1] : base);
+    final logic = provider.currencyLogic;
+    final resultCurrency = logic.resultCurrency ?? target;
 
     return Column(
       children: [
@@ -224,21 +200,26 @@ class _CurrencyConverterState extends State<_CurrencyConverter> {
               base: base,
               target: target,
               currencies: provider.currencies,
-              equationDisplay: _calculatorLogic.equationDisplay,
-              resultDisplay: _calculatorLogic.display == 'Infinity'
-                  ? 'Error'
-                  : _calculatorLogic.display,
+              baseValue: logic.baseValueDisplay,
+              targetValue: logic.targetValueDisplay,
+              baseLabel: logic.baseLabel(base, target),
+              targetLabel: logic.targetLabel(base, target),
+              equationDisplay: logic.equationDisplay,
+              resultDisplay: logic.resultDisplay,
+              resultCurrency: resultCurrency,
+              rateDisplay: logic.rateDisplay(base, target),
               isExpanded: windowLayout.isExpanded,
               onBaseSelected: provider.setBaseCurrency,
               onTargetSelected: provider.setTargetCurrency,
+              onSwapCurrencies: provider.swapCurrencies,
               onToggleCalculatorWidth: windowLayout.toggleCalculatorWidth,
-              onBackspace: _calculatorLogic.delete,
+              onBackspace: logic.delete,
             ),
           ),
         ),
         CalculatorKeyboard(
           rows: CalcSymbols.compactRows,
-          onPressed: _handleKeyPress,
+          onPressed: (value) => _handleKeyPress(logic, value),
         ),
       ],
     );
@@ -251,11 +232,18 @@ class _CurrencyDisplay extends StatelessWidget {
     required this.base,
     required this.target,
     required this.currencies,
+    required this.baseValue,
+    required this.targetValue,
+    required this.baseLabel,
+    required this.targetLabel,
     required this.equationDisplay,
     required this.resultDisplay,
+    required this.resultCurrency,
+    required this.rateDisplay,
     required this.isExpanded,
     required this.onBaseSelected,
     required this.onTargetSelected,
+    required this.onSwapCurrencies,
     required this.onToggleCalculatorWidth,
     required this.onBackspace,
   }) : super(key: key);
@@ -263,17 +251,25 @@ class _CurrencyDisplay extends StatelessWidget {
   final Currency base;
   final Currency target;
   final List<Currency> currencies;
+  final String baseValue;
+  final String targetValue;
+  final String baseLabel;
+  final String targetLabel;
   final String equationDisplay;
   final String resultDisplay;
+  final Currency resultCurrency;
+  final String rateDisplay;
   final bool isExpanded;
   final ValueChanged<Currency> onBaseSelected;
   final ValueChanged<Currency> onTargetSelected;
+  final VoidCallback onSwapCurrencies;
   final VoidCallback onToggleCalculatorWidth;
   final VoidCallback onBackspace;
 
   @override
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
+    final activeDisplay = context.watch<CurrenciesProvider>().isActiveDisplay;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -282,9 +278,9 @@ class _CurrencyDisplay extends StatelessWidget {
           currency: base,
           currencies: currencies,
           valueSymbol: _currencyGlyph(base),
-          value: '1078.34',
-          label: 'from: ${base.valueName}',
-          isActive: true,
+          value: baseValue,
+          label: baseLabel,
+          isActive: activeDisplay == CurrencyActiveDisplay.base,
           onSelected: onBaseSelected,
         ),
         SizedBox(height: calcTheme.itemSpacing),
@@ -292,21 +288,15 @@ class _CurrencyDisplay extends StatelessWidget {
           currency: target,
           currencies: currencies,
           valueSymbol: _currencyGlyph(target),
-          value: '5078.34',
-          label: 'to: ${target.valueName}',
-          isActive: false,
+          value: targetValue,
+          label: targetLabel,
+          isActive: activeDisplay == CurrencyActiveDisplay.target,
           onSelected: onTargetSelected,
         ),
         SizedBox(height: calcTheme.itemSpacing),
-        SizedBox(
-          width: double.infinity,
-          child: Text(
-            equationDisplay,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.right,
-            style: calcTheme.displayMidTextStyle,
-          ),
+        CurrencyEquationDisplay(
+          equationDisplay: equationDisplay,
+          isActive: activeDisplay == CurrencyActiveDisplay.equation,
         ),
         Expanded(
           child: Row(
@@ -324,7 +314,7 @@ class _CurrencyDisplay extends StatelessWidget {
                 },
                 blendMode: BlendMode.srcIn,
                 child: Text(
-                  _currencyGlyph(target),
+                  _currencyGlyph(resultCurrency),
                   maxLines: 1,
                   style: calcTheme.displayLargeTextStyle,
                 ),
@@ -359,9 +349,9 @@ class _CurrencyDisplay extends StatelessWidget {
           ),
         ),
         _CurrencyInfoDisplay(
-          base: base,
-          target: target,
+          rateDisplay: rateDisplay,
           isExpanded: isExpanded,
+          onSwapCurrencies: onSwapCurrencies,
           onToggleCalculatorWidth: onToggleCalculatorWidth,
           onBackspace: onBackspace,
         ),
@@ -373,16 +363,16 @@ class _CurrencyDisplay extends StatelessWidget {
 class _CurrencyInfoDisplay extends StatelessWidget {
   const _CurrencyInfoDisplay({
     Key? key,
-    required this.base,
-    required this.target,
+    required this.rateDisplay,
     required this.isExpanded,
+    required this.onSwapCurrencies,
     required this.onToggleCalculatorWidth,
     required this.onBackspace,
   }) : super(key: key);
 
-  final Currency base;
-  final Currency target;
+  final String rateDisplay;
   final bool isExpanded;
+  final VoidCallback onSwapCurrencies;
   final VoidCallback onToggleCalculatorWidth;
   final VoidCallback onBackspace;
 
@@ -395,16 +385,17 @@ class _CurrencyInfoDisplay extends StatelessWidget {
       children: [
         Expanded(
           child: Row(
+            spacing: itemSpacing,
             children: [
               Icon(
                 Icons.info_outline,
                 color: calcTheme.accent,
                 size: 14,
               ),
-              SizedBox(width: itemSpacing),
+              // SizedBox(width: itemSpacing),
               Expanded(
                 child: Text(
-                  '1 ${base.symbol} = 3.6257 ${target.symbol}',
+                  rateDisplay,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: calcTheme.displaySmallTextStyle.copyWith(
@@ -416,15 +407,16 @@ class _CurrencyInfoDisplay extends StatelessWidget {
           ),
         ),
         Row(
+          spacing: itemSpacing,
           children: [
             OptionIconButton(
               icon: Icons.autorenew,
               tooltip: 'Zamien waluty',
               isActive: false,
               usePressedAccent: true,
-              onPressed: () {},
+              onPressed: onSwapCurrencies,
             ),
-            SizedBox(width: itemSpacing),
+            // SizedBox(width: itemSpacing),
             OptionIconButton(
               icon: isExpanded ? Icons.calculate_outlined : Icons.list,
               tooltip: isExpanded ? 'Zwin liste walut' : 'Pokaz liste walut',
@@ -432,23 +424,31 @@ class _CurrencyInfoDisplay extends StatelessWidget {
               usePressedAccent: true,
               onPressed: onToggleCalculatorWidth,
             ),
-            SizedBox(width: itemSpacing),
-            OptionIconButton(
-              icon: Icons.arrow_upward,
-              tooltip: 'Poprzednia wartosc',
-              isActive: false,
-              usePressedAccent: true,
-              onPressed: () {},
+            // SizedBox(width: itemSpacing),
+            Consumer<CurrenciesProvider>(
+              builder: (context, provider, child) {
+                return OptionIconButton(
+                  icon: Icons.arrow_upward,
+                  tooltip: 'Poprzednia wartosc',
+                  isActive: false,
+                  usePressedAccent: true,
+                  onPressed: () => provider.toggleActiveDisplay(next: false),
+                );
+              },
             ),
-            SizedBox(width: itemSpacing),
-            OptionIconButton(
-              icon: Icons.arrow_downward,
-              tooltip: 'Nastepna wartosc',
-              isActive: false,
-              usePressedAccent: true,
-              onPressed: () {},
+            // SizedBox(width: itemSpacing),
+            Consumer<CurrenciesProvider>(
+              builder: (context, provider, child) {
+                return OptionIconButton(
+                  icon: Icons.arrow_downward,
+                  tooltip: 'Nastepna wartosc',
+                  isActive: false,
+                  usePressedAccent: true,
+                  onPressed: () => provider.toggleActiveDisplay(next: true),
+                );
+              },
             ),
-            SizedBox(width: itemSpacing),
+            // SizedBox(width: itemSpacing),
             OptionIconButton(
               icon: Icons.backspace_outlined,
               tooltip: 'Usun',

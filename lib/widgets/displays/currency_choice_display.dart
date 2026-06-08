@@ -52,14 +52,14 @@ class CurrencyChoiceDisplay extends StatelessWidget {
                   PopupMenuItem<Currency>(
                     value: item,
                     child: Row(
+                      spacing: 8.0,
                       children: [
                         CurrencyFlag(currency: item),
-                        const SizedBox(width: 8),
                         Text(
                           item.symbol,
                           style: calcTheme.settingsCardTextStyle,
                         ),
-                        const SizedBox(width: 8),
+                        // const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             item.countryName,
@@ -131,6 +131,7 @@ class CurrencyFlag extends StatelessWidget {
     return Container(
       width: width,
       height: height,
+      margin: const EdgeInsets.only(right: 2.0),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: calcTheme.unselected,

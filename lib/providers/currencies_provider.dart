@@ -4,14 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../models/currency_model/currency.dart';
+import '../utils/currency_logic/currency_logic.dart';
 
 class CurrenciesProvider extends ChangeNotifier {
   CurrenciesProvider() {
+    currencyLogic.addListener(_handleCurrencyLogicChange);
     loadCurrencies();
   }
 
   static const String currenciesAssetPath = 'assets/data/flags.json';
   static const String flagsAssetDir = 'assets/data/';
+  final CurrencyLogic currencyLogic = CurrencyLogic();
 
   List<Currency> _dummyCurrencies = [];
   Currency? _baseCurrency;
@@ -22,6 +25,7 @@ class CurrenciesProvider extends ChangeNotifier {
   List<Currency> get currencies => List.unmodifiable(_dummyCurrencies);
   Currency? get baseCurrency => _baseCurrency;
   Currency? get targetCurrency => _targetCurrency;
+  CurrencyActiveDisplay get isActiveDisplay => currencyLogic.activeDisplay;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -62,6 +66,7 @@ class CurrenciesProvider extends ChangeNotifier {
     }
 
     _baseCurrency = currency;
+    _syncCurrencyLogic();
     notifyListeners();
   }
 
@@ -71,7 +76,25 @@ class CurrenciesProvider extends ChangeNotifier {
     }
 
     _targetCurrency = currency;
+    _syncCurrencyLogic();
     notifyListeners();
+  }
+
+  void swapCurrencies() {
+    final base = _baseCurrency;
+    final target = _targetCurrency;
+    if (base == null || target == null) {
+      return;
+    }
+
+    _baseCurrency = target;
+    _targetCurrency = base;
+    _syncCurrencyLogic();
+    notifyListeners();
+  }
+
+  void toggleActiveDisplay({required bool next}) {
+    currencyLogic.toggleActiveDisplay(next: next);
   }
 
   Currency? findBySymbol(String symbol) {
@@ -92,6 +115,29 @@ class CurrenciesProvider extends ChangeNotifier {
         findBySymbol('EUR') ??
         (_dummyCurrencies.length > 1 ? _dummyCurrencies[1] : _baseCurrency);
     _isLoading = false;
+    _syncCurrencyLogic();
     notifyListeners();
+  }
+
+  void _syncCurrencyLogic() {
+    final base = _baseCurrency;
+    final target = _targetCurrency;
+    if (base == null || target == null) {
+      return;
+    }
+
+    currencyLogic.updateCurrencies(base: base, target: target);
+  }
+
+  void _handleCurrencyLogicChange() {
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    currencyLogic
+      ..removeListener(_handleCurrencyLogicChange)
+      ..dispose();
+    super.dispose();
   }
 }
