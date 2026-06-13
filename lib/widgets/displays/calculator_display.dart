@@ -5,6 +5,7 @@ import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 import '../buttons/option_icon_button.dart';
+import 'equation_display.dart';
 
 class CalculatorDisplay extends StatelessWidget {
   const CalculatorDisplay({
@@ -28,36 +29,28 @@ class CalculatorDisplay extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
+        spacing: 16,
         children: [
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    if (data.equationDisplay.isNotEmpty)
-                      SizedBox(
-                        width: double.infinity,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onLongPress: () => _copyToClipboard(
-                            context,
-                            data.equationDisplay,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: data.equationDisplay.isEmpty
+                        ? const SizedBox.shrink()
+                        : EquationDisplay(
+                            equation: data.equationDisplay,
+                            onLongPress: () => _copyToClipboard(
+                              context,
+                              data.equationDisplay,
+                            ),
                           ),
-                          child: Text(
-                            data.equationDisplay,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
-                            style: calcTheme.displayMidTextStyle,
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 16),
-                    SizedBox(
+                  ),
+                  // const SizedBox(height: 16),
+                  Expanded(
+                    child: SizedBox(
                       width: double.infinity,
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
@@ -90,8 +83,8 @@ class CalculatorDisplay extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
