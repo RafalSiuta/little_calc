@@ -4,6 +4,7 @@ class Currency {
     required this.countryName,
     required this.valueName,
     required this.qty,
+    required this.codeIso,
     required this.symbol,
     required this.flagImg,
     required this.currencyValues,
@@ -13,6 +14,7 @@ class Currency {
   final String countryName;
   final String valueName;
   final int qty;
+  final String codeIso;
   final String symbol;
   final String flagImg;
   final List<CurrencyValue> currencyValues;
@@ -23,6 +25,7 @@ class Currency {
       countryName: json['country_name'] as String? ?? '',
       valueName: json['value_name'] as String? ?? '',
       qty: json['qty'] as int? ?? 1,
+      codeIso: json['code_iso'] as String? ?? '',
       symbol: json['symbol'] as String? ?? '',
       flagImg: json['flag_img'] as String? ?? '',
       currencyValues: (json['currency_values'] as List<dynamic>? ?? [])
@@ -37,6 +40,7 @@ class Currency {
       'country_name': countryName,
       'value_name': valueName,
       'qty': qty,
+      'code_iso': codeIso,
       'symbol': symbol,
       'flag_img': flagImg,
       'currency_values': [

@@ -1,7 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/currency_model/currency.dart';
+import '../../providers/currencies_provider.dart';
 import '../../utils/styles/theme.dart';
 import '../displays/currency_choice_display.dart';
 
@@ -18,8 +20,13 @@ class CurrencyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
+    final decimalPlaces = context.select<CurrenciesProvider, int>(
+      (provider) => provider.currencyDecimalPlaces(),
+    );
     final values = currency.currencyValues;
-    final latestValue = values.isNotEmpty ? values.last.value : '-';
+    final latestValue = values.isNotEmpty
+        ? values.last.numericValue.toStringAsFixed(decimalPlaces)
+        : '-';
     final isRising = values.length < 2 ||
         values.last.numericValue >= values[values.length - 2].numericValue;
     final accentColor = isRising ? calcTheme.accent : calcTheme.error;
@@ -63,7 +70,7 @@ class CurrencyCard extends StatelessWidget {
                 // mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    currency.symbol == 'GBP' ? 'L' : '\$',
+                    currency.symbol,
                     style: calcTheme.numButtonNumberTextStyle.copyWith(
                       color: accentColor,
                     ),
@@ -113,7 +120,7 @@ class _CurrencyCardLabel extends StatelessWidget {
           children: [
             CurrencyFlag(currency: currency),
             Text(
-              currency.symbol,
+              currency.codeIso,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: calcTheme.numButtonNumberTextStyle.copyWith(
@@ -154,9 +161,8 @@ class _CurrencyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chartValues = values.length > 5
-        ? values.sublist(values.length - 5)
-        : values;
+    final chartValues =
+        values.length > 5 ? values.sublist(values.length - 5) : values;
     final spots = <FlSpot>[
       for (var i = 0; i < chartValues.length; i++)
         FlSpot(i.toDouble(), chartValues[i].numericValue),

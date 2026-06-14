@@ -200,14 +200,19 @@ class _CurrencyConverter extends StatelessWidget {
               base: base,
               target: target,
               currencies: provider.currencies,
-              baseValue: logic.baseValueDisplay,
-              targetValue: logic.targetValueDisplay,
+              baseValue: provider.formatCurrencyValue(logic.baseValueDisplay),
+              targetValue:
+                  provider.formatCurrencyValue(logic.targetValueDisplay),
               baseLabel: logic.baseLabel(base, target),
               targetLabel: logic.targetLabel(base, target),
               equationDisplay: logic.equationDisplay,
-              resultDisplay: logic.resultDisplay,
+              resultDisplay: provider.formatCurrencyValue(logic.resultDisplay),
               resultCurrency: resultCurrency,
-              rateDisplay: logic.rateDisplay(base, target),
+              rateDisplay: logic.rateDisplay(
+                base,
+                target,
+                decimalPlaces: provider.currencyDecimalPlaces(),
+              ),
               isExpanded: windowLayout.isExpanded,
               onBaseSelected: provider.setBaseCurrency,
               onTargetSelected: provider.setTargetCurrency,
@@ -481,18 +486,7 @@ class _PlaceholderPage extends StatelessWidget {
 }
 
 String _currencyGlyph(Currency currency) {
-  switch (currency.symbol) {
-    case 'PLN':
-      return 'zł';
-    case 'EUR':
-      return '€';
-    case 'GBP':
-      return 'L';
-    case 'JPY':
-      return '¥';
-    default:
-      return '\$';
-  }
+  return currency.symbol;
 }
 
 String _monthName(int month) {

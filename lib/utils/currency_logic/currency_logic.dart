@@ -86,17 +86,22 @@ class CurrencyLogic extends ChangeNotifier {
     return 'to: ${target.valueName}';
   }
 
-  String rateDisplay(Currency base, Currency target) {
+  String rateDisplay(
+    Currency base,
+    Currency target, {
+    int decimalPlaces = 4,
+  }) {
     final rate = conversionRate(base, target);
-    return '1 ${base.symbol} = ${rate.toStringAsFixed(2)} ${target.symbol}';
+    return '1 ${base.codeIso} = '
+        '${rate.toStringAsFixed(decimalPlaces)} ${target.codeIso}';
   }
 
   void updateCurrencies({
     required Currency base,
     required Currency target,
   }) {
-    final didChange = _baseCurrency?.symbol != base.symbol ||
-        _targetCurrency?.symbol != target.symbol;
+    final didChange = _baseCurrency?.codeIso != base.codeIso ||
+        _targetCurrency?.codeIso != target.codeIso;
 
     _baseCurrency = base;
     _targetCurrency = target;

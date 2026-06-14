@@ -56,7 +56,7 @@ class CurrencyChoiceDisplay extends StatelessWidget {
                       children: [
                         CurrencyFlag(currency: item),
                         Text(
-                          item.symbol,
+                          item.codeIso,
                           style: calcTheme.settingsCardTextStyle,
                         ),
                         // const SizedBox(width: 8),
@@ -171,7 +171,7 @@ class _CurrencyChoice extends StatelessWidget {
             CurrencyFlag(currency: currency),
             const SizedBox(width: 5),
             Text(
-              currency.symbol,
+              currency.codeIso,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: calcTheme.numButtonNumberTextStyle.copyWith(

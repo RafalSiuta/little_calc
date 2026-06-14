@@ -14,6 +14,7 @@ class CurrenciesProvider extends ChangeNotifier {
 
   static const String currenciesAssetPath = 'assets/data/flags.json';
   static const String flagsAssetDir = 'assets/data/';
+  static const List<int> supportedCurrencyDecimalPlaces = [2, 3, 4];
   final CurrencyLogic currencyLogic = CurrencyLogic();
 
   List<Currency> _dummyCurrencies = [];
@@ -28,6 +29,19 @@ class CurrenciesProvider extends ChangeNotifier {
   CurrencyActiveDisplay get isActiveDisplay => currencyLogic.activeDisplay;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+
+  int currencyDecimalPlaces() {
+    return 4;
+  }
+
+  String formatCurrencyValue(String value) {
+    final numericValue = double.tryParse(value.replaceAll(',', '.'));
+    if (numericValue == null || !numericValue.isFinite) {
+      return value;
+    }
+
+    return numericValue.toStringAsFixed(currencyDecimalPlaces());
+  }
 
   Future<void> loadCurrencies({
     String assetPath = currenciesAssetPath,
@@ -61,7 +75,7 @@ class CurrenciesProvider extends ChangeNotifier {
   }
 
   void setBaseCurrency(Currency currency) {
-    if (_baseCurrency?.symbol == currency.symbol) {
+    if (_baseCurrency?.codeIso == currency.codeIso) {
       return;
     }
 
@@ -71,7 +85,7 @@ class CurrenciesProvider extends ChangeNotifier {
   }
 
   void setTargetCurrency(Currency currency) {
-    if (_targetCurrency?.symbol == currency.symbol) {
+    if (_targetCurrency?.codeIso == currency.codeIso) {
       return;
     }
 
@@ -97,9 +111,9 @@ class CurrenciesProvider extends ChangeNotifier {
     currencyLogic.toggleActiveDisplay(next: next);
   }
 
-  Currency? findBySymbol(String symbol) {
+  Currency? findByCodeIso(String codeIso) {
     for (final currency in _dummyCurrencies) {
-      if (currency.symbol == symbol) {
+      if (currency.codeIso == codeIso) {
         return currency;
       }
     }
@@ -109,10 +123,10 @@ class CurrenciesProvider extends ChangeNotifier {
 
   void _setCurrencies(List<Currency> currencies) {
     _dummyCurrencies = List.unmodifiable(currencies);
-    _baseCurrency = findBySymbol('USD') ??
+    _baseCurrency = findByCodeIso('USD') ??
         (_dummyCurrencies.isNotEmpty ? _dummyCurrencies.first : null);
-    _targetCurrency = findBySymbol('PLN') ??
-        findBySymbol('EUR') ??
+    _targetCurrency = findByCodeIso('PLN') ??
+        findByCodeIso('EUR') ??
         (_dummyCurrencies.length > 1 ? _dummyCurrencies[1] : _baseCurrency);
     _isLoading = false;
     _syncCurrencyLogic();

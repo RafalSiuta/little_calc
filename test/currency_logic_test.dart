@@ -93,7 +93,18 @@ void main() {
       final pln = _currency('PLN', value: 1);
       final logic = CurrencyLogic()..updateCurrencies(base: usd, target: pln);
 
-      expect(logic.rateDisplay(usd, pln), '1 USD = 3.63 PLN');
+      expect(logic.rateDisplay(usd, pln), '1 USD = 3.6257 PLN');
+    });
+
+    test('distinguishes currencies that share the same display symbol', () {
+      final usd = _currency('USD', value: 4);
+      final cad = _currency('CAD', value: 3);
+      final pln = _currency('PLN', value: 1);
+      final logic = CurrencyLogic()..updateCurrencies(base: usd, target: pln);
+
+      logic.updateCurrencies(base: cad, target: pln);
+
+      expect(logic.rateDisplay(cad, pln), '1 CAD = 3.0000 PLN');
     });
 
     test('clear resets currency inputs and equation on every active display',
@@ -131,7 +142,8 @@ Currency _currency(
     countryName: symbol,
     valueName: valueName ?? symbol,
     qty: qty,
-    symbol: symbol,
+    codeIso: symbol,
+    symbol: symbol == 'PLN' ? 'zł' : '\$',
     flagImg: '',
     currencyValues: [
       CurrencyValue(

@@ -1,2104 +1,2139 @@
-﻿{
-    "flags_list":  [
-                       {
-                           "id":  "pln",
-                           "country_name":  "Polska",
-                           "value_name":  "złoty polski",
-                           "qty":  1,
-                           "symbol":  "PLN",
-                           "flag_img":  "flags_img/pl.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "pln-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "1.00"
-                                                   },
-                                                   {
-                                                       "id":  "pln-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "1.00"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "thb",
-                           "country_name":  "Tajlandia",
-                           "value_name":  "bat",
-                           "qty":  1,
-                           "symbol":  "THB",
-                           "flag_img":  "flags_img/th.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "thb-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "thb-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "thb-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "thb-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "thb-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "thb-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "thb-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "thb-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "thb-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "thb-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "usd",
-                           "country_name":  "USA",
-                           "value_name":  "dolar",
-                           "qty":  1,
-                           "symbol":  "USD",
-                           "flag_img":  "flags_img/us.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "usd-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "usd-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "usd-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "usd-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "usd-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "usd-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "usd-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "usd-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "usd-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "usd-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "aud",
-                           "country_name":  "Australia",
-                           "value_name":  "dolar",
-                           "qty":  1,
-                           "symbol":  "AUD",
-                           "flag_img":  "flags_img/au.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "aud-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "aud-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "aud-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "aud-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "aud-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "aud-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "aud-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "aud-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "aud-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "aud-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "hkd",
-                           "country_name":  "Hongkong \n(dolar Hongkongu)",
-                           "value_name":  "dolar",
-                           "qty":  1,
-                           "symbol":  "HKD",
-                           "flag_img":  "flags_img/hk.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "hkd-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "hkd-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "cad",
-                           "country_name":  "Kanada",
-                           "value_name":  "dolar",
-                           "qty":  1,
-                           "symbol":  "CAD",
-                           "flag_img":  "flags_img/ca.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "cad-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "cad-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "cad-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "cad-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "cad-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "cad-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "cad-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "cad-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "cad-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "cad-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "nzd",
-                           "country_name":  "Nowa Zelandia",
-                           "value_name":  "dolar",
-                           "qty":  1,
-                           "symbol":  "NZD",
-                           "flag_img":  "flags_img/nz.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "nzd-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "nzd-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "sgd",
-                           "country_name":  "Singapur \n(dolar Singapurski)",
-                           "value_name":  "dolar",
-                           "qty":  1,
-                           "symbol":  "SGD",
-                           "flag_img":  "flags_img/sg.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "sgd-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "sgd-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "eur",
-                           "country_name":  "euro",
-                           "value_name":  "euro",
-                           "qty":  1,
-                           "symbol":  "EUR",
-                           "flag_img":  "flags_img/eu.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "eur-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "eur-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "eur-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "eur-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "eur-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "eur-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "eur-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "eur-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "eur-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "eur-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "huf",
-                           "country_name":  "Węgry",
-                           "value_name":  "forint",
-                           "qty":  1,
-                           "symbol":  "HUF",
-                           "flag_img":  "flags_img/hu.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "huf-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "huf-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "huf-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "huf-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "huf-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "huf-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "huf-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "huf-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "huf-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "huf-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "chf",
-                           "country_name":  "Szwajcaria",
-                           "value_name":  "frank",
-                           "qty":  1,
-                           "symbol":  "CHF",
-                           "flag_img":  "flags_img/ch.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "chf-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "chf-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "chf-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "chf-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "chf-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "chf-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "chf-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "chf-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "chf-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "chf-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "gbp",
-                           "country_name":  "Wielka Brytania",
-                           "value_name":  "funt szterling",
-                           "qty":  1,
-                           "symbol":  "GBP",
-                           "flag_img":  "flags_img/gb.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "gbp-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "gbp-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "uah",
-                           "country_name":  "Ukraina",
-                           "value_name":  "hrywna",
-                           "qty":  1,
-                           "symbol":  "UAH",
-                           "flag_img":  "flags_img/ua.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "uah-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "uah-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "uah-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "uah-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "uah-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "uah-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "uah-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "uah-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "uah-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "uah-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "jpy",
-                           "country_name":  "Japonia",
-                           "value_name":  "jen",
-                           "qty":  100,
-                           "symbol":  "JPY",
-                           "flag_img":  "flags_img/jp.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "jpy-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "jpy-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "czk",
-                           "country_name":  "Czechy",
-                           "value_name":  "korona",
-                           "qty":  1,
-                           "symbol":  "CZK",
-                           "flag_img":  "flags_img/cz.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "czk-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "czk-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "czk-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "czk-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "czk-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "czk-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "czk-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "czk-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "czk-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "czk-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "dkk",
-                           "country_name":  "Dania",
-                           "value_name":  "korona",
-                           "qty":  1,
-                           "symbol":  "DKK",
-                           "flag_img":  "flags_img/dk.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "dkk-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "dkk-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "isk",
-                           "country_name":  "Islandia",
-                           "value_name":  "korona",
-                           "qty":  100,
-                           "symbol":  "ISK",
-                           "flag_img":  "flags_img/is.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "isk-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "isk-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "isk-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "isk-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "isk-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "isk-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "isk-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "isk-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "isk-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "isk-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "nok",
-                           "country_name":  "Norwegia",
-                           "value_name":  "korona",
-                           "qty":  1,
-                           "symbol":  "NOK",
-                           "flag_img":  "flags_img/no.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "nok-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "nok-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "nok-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "nok-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "nok-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "nok-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "nok-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "nok-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "nok-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "nok-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "sek",
-                           "country_name":  "Szwecja",
-                           "value_name":  "korona",
-                           "qty":  1,
-                           "symbol":  "SEK",
-                           "flag_img":  "flags_img/se.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "sek-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "sek-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "sek-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "sek-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "sek-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "sek-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "sek-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "sek-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "sek-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "sek-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "hrk",
-                           "country_name":  "Chorwacja",
-                           "value_name":  "kuna",
-                           "qty":  1,
-                           "symbol":  "HRK",
-                           "flag_img":  "flags_img/hr.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "hrk-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "hrk-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "ron",
-                           "country_name":  "Rumunia",
-                           "value_name":  "lej",
-                           "qty":  1,
-                           "symbol":  "RON",
-                           "flag_img":  "flags_img/ro.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "ron-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "ron-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "ron-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "ron-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "ron-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "ron-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "ron-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "ron-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "ron-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "ron-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "bgn",
-                           "country_name":  "Bułgaria",
-                           "value_name":  "lew",
-                           "qty":  1,
-                           "symbol":  "BGN",
-                           "flag_img":  "flags_img/bg.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "bgn-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "bgn-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "try",
-                           "country_name":  "Turcja",
-                           "value_name":  "lira",
-                           "qty":  1,
-                           "symbol":  "TRY",
-                           "flag_img":  "flags_img/tr.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "try-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "try-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "try-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "try-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "try-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "try-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "try-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "try-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "try-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "try-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "ils",
-                           "country_name":  "Izrael",
-                           "value_name":  "szekel",
-                           "qty":  1,
-                           "symbol":  "ILS",
-                           "flag_img":  "flags_img/il.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "ils-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "ils-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "ils-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "ils-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "ils-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "ils-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "ils-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "ils-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "ils-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "ils-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "clp",
-                           "country_name":  "Chile",
-                           "value_name":  "peso",
-                           "qty":  100,
-                           "symbol":  "CLP",
-                           "flag_img":  "flags_img/cl.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "clp-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "clp-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "clp-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "clp-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "clp-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "clp-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "clp-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "clp-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "clp-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "clp-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "php",
-                           "country_name":  "Filipiny",
-                           "value_name":  "peso",
-                           "qty":  1,
-                           "symbol":  "PHP",
-                           "flag_img":  "flags_img/ph.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "php-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "php-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "php-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "php-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "php-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "php-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "php-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "php-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "php-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "php-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "mxn",
-                           "country_name":  "Meksyk",
-                           "value_name":  "peso",
-                           "qty":  1,
-                           "symbol":  "MXN",
-                           "flag_img":  "flags_img/mx.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "mxn-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "mxn-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "zar",
-                           "country_name":  "RPA",
-                           "value_name":  "rand",
-                           "qty":  1,
-                           "symbol":  "ZAR",
-                           "flag_img":  "flags_img/za.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "zar-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "zar-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "zar-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "zar-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "zar-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "zar-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "zar-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "zar-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "zar-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "zar-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "brl",
-                           "country_name":  "Brazylia",
-                           "value_name":  "real",
-                           "qty":  1,
-                           "symbol":  "BRL",
-                           "flag_img":  "flags_img/br.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "brl-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "brl-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "brl-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "brl-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "brl-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "brl-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "brl-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "brl-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "brl-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "brl-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "myr",
-                           "country_name":  "Malezja",
-                           "value_name":  "ringgit",
-                           "qty":  1,
-                           "symbol":  "MYR",
-                           "flag_img":  "flags_img/my.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "myr-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "myr-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "myr-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "myr-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "myr-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "myr-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "myr-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "myr-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "myr-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "myr-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "idr",
-                           "country_name":  "Indonezja",
-                           "value_name":  "rupia",
-                           "qty":  10000,
-                           "symbol":  "IDR",
-                           "flag_img":  "flags_img/id.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "idr-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "idr-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "idr-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "idr-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "idr-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "idr-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "idr-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "idr-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "idr-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "idr-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "inr",
-                           "country_name":  "Indie",
-                           "value_name":  "rupia",
-                           "qty":  100,
-                           "symbol":  "INR",
-                           "flag_img":  "flags_img/in.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "inr-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "inr-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "inr-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "inr-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "inr-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "inr-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "inr-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "inr-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "inr-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "inr-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "krw",
-                           "country_name":  "Korea Południowa",
-                           "value_name":  "won",
-                           "qty":  100,
-                           "symbol":  "KRW",
-                           "flag_img":  "flags_img/kr.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "krw-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "krw-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "krw-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "krw-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "krw-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "krw-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "krw-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "krw-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "krw-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "krw-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "cny",
-                           "country_name":  "Chiny",
-                           "value_name":  "yuan",
-                           "qty":  1,
-                           "symbol":  "CNY",
-                           "flag_img":  "flags_img/cn.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "cny-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "cny-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "cny-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "cny-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "cny-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "cny-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "cny-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "cny-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "cny-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "cny-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       },
-                       {
-                           "id":  "xdr",
-                           "country_name":  "SDR (MFW)",
-                           "value_name":  "SDR",
-                           "qty":  1,
-                           "symbol":  "XDR",
-                           "flag_img":  "flags_img/pl.png",
-                           "currency_values":  [
-                                                   {
-                                                       "id":  "xdr-01",
-                                                       "date":  "01.01.2026",
-                                                       "value":  "3.50"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-02",
-                                                       "date":  "02.01.2026",
-                                                       "value":  "3.54"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-03",
-                                                       "date":  "03.01.2026",
-                                                       "value":  "3.59"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-04",
-                                                       "date":  "04.01.2026",
-                                                       "value":  "3.63"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-05",
-                                                       "date":  "05.01.2026",
-                                                       "value":  "3.53"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-06",
-                                                       "date":  "06.01.2026",
-                                                       "value":  "3.57"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-07",
-                                                       "date":  "07.01.2026",
-                                                       "value":  "3.62"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-08",
-                                                       "date":  "08.01.2026",
-                                                       "value":  "3.66"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-09",
-                                                       "date":  "09.01.2026",
-                                                       "value":  "3.71"
-                                                   },
-                                                   {
-                                                       "id":  "xdr-10",
-                                                       "date":  "10.01.2026",
-                                                       "value":  "3.60"
-                                                   }
-                                               ]
-                       }
-                   ]
+{
+  "flags_list": [
+    {
+      "id": "pln",
+      "country_name": "Polska",
+      "value_name": "złoty polski",
+      "qty": 1,
+      "code_iso": "PLN",
+      "symbol": "zł",
+      "flag_img": "flags_img/pl.png",
+      "currency_values": [
+        {
+          "id": "pln-01",
+          "date": "01.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-02",
+          "date": "02.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-03",
+          "date": "03.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-04",
+          "date": "04.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-05",
+          "date": "05.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-06",
+          "date": "06.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-07",
+          "date": "07.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-08",
+          "date": "08.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-09",
+          "date": "09.01.2026",
+          "value": "1.0000"
+        },
+        {
+          "id": "pln-10",
+          "date": "10.01.2026",
+          "value": "1.0000"
+        }
+      ]
+    },
+    {
+      "id": "thb",
+      "country_name": "Tajlandia",
+      "value_name": "bat",
+      "qty": 1,
+      "code_iso": "THB",
+      "symbol": "฿",
+      "flag_img": "flags_img/th.png",
+      "currency_values": [
+        {
+          "id": "thb-01",
+          "date": "01.01.2026",
+          "value": "0.1140"
+        },
+        {
+          "id": "thb-02",
+          "date": "02.01.2026",
+          "value": "0.1130"
+        },
+        {
+          "id": "thb-03",
+          "date": "03.01.2026",
+          "value": "0.1120"
+        },
+        {
+          "id": "thb-04",
+          "date": "04.01.2026",
+          "value": "0.1100"
+        },
+        {
+          "id": "thb-05",
+          "date": "05.01.2026",
+          "value": "0.1110"
+        },
+        {
+          "id": "thb-06",
+          "date": "06.01.2026",
+          "value": "0.1100"
+        },
+        {
+          "id": "thb-07",
+          "date": "07.01.2026",
+          "value": "0.1090"
+        },
+        {
+          "id": "thb-08",
+          "date": "08.01.2026",
+          "value": "0.1110"
+        },
+        {
+          "id": "thb-09",
+          "date": "09.01.2026",
+          "value": "0.1100"
+        },
+        {
+          "id": "thb-10",
+          "date": "10.01.2026",
+          "value": "0.1120"
+        }
+      ]
+    },
+    {
+      "id": "usd",
+      "country_name": "USA",
+      "value_name": "dolar",
+      "qty": 1,
+      "code_iso": "USD",
+      "symbol": "$",
+      "flag_img": "flags_img/us.png",
+      "currency_values": [
+        {
+          "id": "usd-01",
+          "date": "01.01.2026",
+          "value": "3.9300"
+        },
+        {
+          "id": "usd-02",
+          "date": "02.01.2026",
+          "value": "3.9900"
+        },
+        {
+          "id": "usd-03",
+          "date": "03.01.2026",
+          "value": "4.0400"
+        },
+        {
+          "id": "usd-04",
+          "date": "04.01.2026",
+          "value": "3.9700"
+        },
+        {
+          "id": "usd-05",
+          "date": "05.01.2026",
+          "value": "3.9000"
+        },
+        {
+          "id": "usd-06",
+          "date": "06.01.2026",
+          "value": "3.9400"
+        },
+        {
+          "id": "usd-07",
+          "date": "07.01.2026",
+          "value": "4.0200"
+        },
+        {
+          "id": "usd-08",
+          "date": "08.01.2026",
+          "value": "4.0700"
+        },
+        {
+          "id": "usd-09",
+          "date": "09.01.2026",
+          "value": "4.0000"
+        },
+        {
+          "id": "usd-10",
+          "date": "10.01.2026",
+          "value": "3.9500"
+        }
+      ]
+    },
+    {
+      "id": "aud",
+      "country_name": "Australia",
+      "value_name": "dolar",
+      "qty": 1,
+      "code_iso": "AUD",
+      "symbol": "A$",
+      "flag_img": "flags_img/au.png",
+      "currency_values": [
+        {
+          "id": "aud-01",
+          "date": "01.01.2026",
+          "value": "2.6000"
+        },
+        {
+          "id": "aud-02",
+          "date": "02.01.2026",
+          "value": "2.5600"
+        },
+        {
+          "id": "aud-03",
+          "date": "03.01.2026",
+          "value": "2.5300"
+        },
+        {
+          "id": "aud-04",
+          "date": "04.01.2026",
+          "value": "2.5500"
+        },
+        {
+          "id": "aud-05",
+          "date": "05.01.2026",
+          "value": "2.5900"
+        },
+        {
+          "id": "aud-06",
+          "date": "06.01.2026",
+          "value": "2.6300"
+        },
+        {
+          "id": "aud-07",
+          "date": "07.01.2026",
+          "value": "2.6000"
+        },
+        {
+          "id": "aud-08",
+          "date": "08.01.2026",
+          "value": "2.5700"
+        },
+        {
+          "id": "aud-09",
+          "date": "09.01.2026",
+          "value": "2.6100"
+        },
+        {
+          "id": "aud-10",
+          "date": "10.01.2026",
+          "value": "2.5800"
+        }
+      ]
+    },
+    {
+      "id": "hkd",
+      "country_name": "Hongkong \n(dolar Hongkongu)",
+      "value_name": "dolar",
+      "qty": 1,
+      "code_iso": "HKD",
+      "symbol": "HK$",
+      "flag_img": "flags_img/hk.png",
+      "currency_values": [
+        {
+          "id": "hkd-01",
+          "date": "01.01.2026",
+          "value": "0.4930"
+        },
+        {
+          "id": "hkd-02",
+          "date": "02.01.2026",
+          "value": "0.4990"
+        },
+        {
+          "id": "hkd-03",
+          "date": "03.01.2026",
+          "value": "0.5070"
+        },
+        {
+          "id": "hkd-04",
+          "date": "04.01.2026",
+          "value": "0.5030"
+        },
+        {
+          "id": "hkd-05",
+          "date": "05.01.2026",
+          "value": "0.5130"
+        },
+        {
+          "id": "hkd-06",
+          "date": "06.01.2026",
+          "value": "0.5200"
+        },
+        {
+          "id": "hkd-07",
+          "date": "07.01.2026",
+          "value": "0.5110"
+        },
+        {
+          "id": "hkd-08",
+          "date": "08.01.2026",
+          "value": "0.5160"
+        },
+        {
+          "id": "hkd-09",
+          "date": "09.01.2026",
+          "value": "0.5090"
+        },
+        {
+          "id": "hkd-10",
+          "date": "10.01.2026",
+          "value": "0.5050"
+        }
+      ]
+    },
+    {
+      "id": "cad",
+      "country_name": "Kanada",
+      "value_name": "dolar",
+      "qty": 1,
+      "code_iso": "CAD",
+      "symbol": "C$",
+      "flag_img": "flags_img/ca.png",
+      "currency_values": [
+        {
+          "id": "cad-01",
+          "date": "01.01.2026",
+          "value": "2.8400"
+        },
+        {
+          "id": "cad-02",
+          "date": "02.01.2026",
+          "value": "2.8600"
+        },
+        {
+          "id": "cad-03",
+          "date": "03.01.2026",
+          "value": "2.9100"
+        },
+        {
+          "id": "cad-04",
+          "date": "04.01.2026",
+          "value": "2.9300"
+        },
+        {
+          "id": "cad-05",
+          "date": "05.01.2026",
+          "value": "2.8800"
+        },
+        {
+          "id": "cad-06",
+          "date": "06.01.2026",
+          "value": "2.9200"
+        },
+        {
+          "id": "cad-07",
+          "date": "07.01.2026",
+          "value": "2.9500"
+        },
+        {
+          "id": "cad-08",
+          "date": "08.01.2026",
+          "value": "2.9200"
+        },
+        {
+          "id": "cad-09",
+          "date": "09.01.2026",
+          "value": "2.9700"
+        },
+        {
+          "id": "cad-10",
+          "date": "10.01.2026",
+          "value": "2.8900"
+        }
+      ]
+    },
+    {
+      "id": "nzd",
+      "country_name": "Nowa Zelandia",
+      "value_name": "dolar",
+      "qty": 1,
+      "code_iso": "NZD",
+      "symbol": "NZ$",
+      "flag_img": "flags_img/nz.png",
+      "currency_values": [
+        {
+          "id": "nzd-01",
+          "date": "01.01.2026",
+          "value": "2.3900"
+        },
+        {
+          "id": "nzd-02",
+          "date": "02.01.2026",
+          "value": "2.3700"
+        },
+        {
+          "id": "nzd-03",
+          "date": "03.01.2026",
+          "value": "2.3400"
+        },
+        {
+          "id": "nzd-04",
+          "date": "04.01.2026",
+          "value": "2.3100"
+        },
+        {
+          "id": "nzd-05",
+          "date": "05.01.2026",
+          "value": "2.3300"
+        },
+        {
+          "id": "nzd-06",
+          "date": "06.01.2026",
+          "value": "2.3100"
+        },
+        {
+          "id": "nzd-07",
+          "date": "07.01.2026",
+          "value": "2.2800"
+        },
+        {
+          "id": "nzd-08",
+          "date": "08.01.2026",
+          "value": "2.3200"
+        },
+        {
+          "id": "nzd-09",
+          "date": "09.01.2026",
+          "value": "2.3000"
+        },
+        {
+          "id": "nzd-10",
+          "date": "10.01.2026",
+          "value": "2.3500"
+        }
+      ]
+    },
+    {
+      "id": "sgd",
+      "country_name": "Singapur \n(dolar Singapurski)",
+      "value_name": "dolar",
+      "qty": 1,
+      "code_iso": "SGD",
+      "symbol": "S$",
+      "flag_img": "flags_img/sg.png",
+      "currency_values": [
+        {
+          "id": "sgd-01",
+          "date": "01.01.2026",
+          "value": "3.0500"
+        },
+        {
+          "id": "sgd-02",
+          "date": "02.01.2026",
+          "value": "3.1000"
+        },
+        {
+          "id": "sgd-03",
+          "date": "03.01.2026",
+          "value": "3.1400"
+        },
+        {
+          "id": "sgd-04",
+          "date": "04.01.2026",
+          "value": "3.0900"
+        },
+        {
+          "id": "sgd-05",
+          "date": "05.01.2026",
+          "value": "3.0300"
+        },
+        {
+          "id": "sgd-06",
+          "date": "06.01.2026",
+          "value": "3.0600"
+        },
+        {
+          "id": "sgd-07",
+          "date": "07.01.2026",
+          "value": "3.1200"
+        },
+        {
+          "id": "sgd-08",
+          "date": "08.01.2026",
+          "value": "3.1700"
+        },
+        {
+          "id": "sgd-09",
+          "date": "09.01.2026",
+          "value": "3.1100"
+        },
+        {
+          "id": "sgd-10",
+          "date": "10.01.2026",
+          "value": "3.0700"
+        }
+      ]
+    },
+    {
+      "id": "eur",
+      "country_name": "euro",
+      "value_name": "euro",
+      "qty": 1,
+      "code_iso": "EUR",
+      "symbol": "€",
+      "flag_img": "flags_img/eu.png",
+      "currency_values": [
+        {
+          "id": "eur-01",
+          "date": "01.01.2026",
+          "value": "4.3100"
+        },
+        {
+          "id": "eur-02",
+          "date": "02.01.2026",
+          "value": "4.2500"
+        },
+        {
+          "id": "eur-03",
+          "date": "03.01.2026",
+          "value": "4.1900"
+        },
+        {
+          "id": "eur-04",
+          "date": "04.01.2026",
+          "value": "4.2300"
+        },
+        {
+          "id": "eur-05",
+          "date": "05.01.2026",
+          "value": "4.3000"
+        },
+        {
+          "id": "eur-06",
+          "date": "06.01.2026",
+          "value": "4.3600"
+        },
+        {
+          "id": "eur-07",
+          "date": "07.01.2026",
+          "value": "4.3100"
+        },
+        {
+          "id": "eur-08",
+          "date": "08.01.2026",
+          "value": "4.2600"
+        },
+        {
+          "id": "eur-09",
+          "date": "09.01.2026",
+          "value": "4.3300"
+        },
+        {
+          "id": "eur-10",
+          "date": "10.01.2026",
+          "value": "4.2800"
+        }
+      ]
+    },
+    {
+      "id": "huf",
+      "country_name": "Węgry",
+      "value_name": "forint",
+      "qty": 100,
+      "code_iso": "HUF",
+      "symbol": "Ft",
+      "flag_img": "flags_img/hu.png",
+      "currency_values": [
+        {
+          "id": "huf-01",
+          "date": "01.01.2026",
+          "value": "1.0400"
+        },
+        {
+          "id": "huf-02",
+          "date": "02.01.2026",
+          "value": "1.0600"
+        },
+        {
+          "id": "huf-03",
+          "date": "03.01.2026",
+          "value": "1.0700"
+        },
+        {
+          "id": "huf-04",
+          "date": "04.01.2026",
+          "value": "1.0700"
+        },
+        {
+          "id": "huf-05",
+          "date": "05.01.2026",
+          "value": "1.0900"
+        },
+        {
+          "id": "huf-06",
+          "date": "06.01.2026",
+          "value": "1.1000"
+        },
+        {
+          "id": "huf-07",
+          "date": "07.01.2026",
+          "value": "1.0800"
+        },
+        {
+          "id": "huf-08",
+          "date": "08.01.2026",
+          "value": "1.0900"
+        },
+        {
+          "id": "huf-09",
+          "date": "09.01.2026",
+          "value": "1.0800"
+        },
+        {
+          "id": "huf-10",
+          "date": "10.01.2026",
+          "value": "1.0700"
+        }
+      ]
+    },
+    {
+      "id": "chf",
+      "country_name": "Szwajcaria",
+      "value_name": "frank",
+      "qty": 1,
+      "code_iso": "CHF",
+      "symbol": "Fr",
+      "flag_img": "flags_img/ch.png",
+      "currency_values": [
+        {
+          "id": "chf-01",
+          "date": "01.01.2026",
+          "value": "4.4700"
+        },
+        {
+          "id": "chf-02",
+          "date": "02.01.2026",
+          "value": "4.5100"
+        },
+        {
+          "id": "chf-03",
+          "date": "03.01.2026",
+          "value": "4.5800"
+        },
+        {
+          "id": "chf-04",
+          "date": "04.01.2026",
+          "value": "4.6100"
+        },
+        {
+          "id": "chf-05",
+          "date": "05.01.2026",
+          "value": "4.5400"
+        },
+        {
+          "id": "chf-06",
+          "date": "06.01.2026",
+          "value": "4.5900"
+        },
+        {
+          "id": "chf-07",
+          "date": "07.01.2026",
+          "value": "4.6500"
+        },
+        {
+          "id": "chf-08",
+          "date": "08.01.2026",
+          "value": "4.6000"
+        },
+        {
+          "id": "chf-09",
+          "date": "09.01.2026",
+          "value": "4.6800"
+        },
+        {
+          "id": "chf-10",
+          "date": "10.01.2026",
+          "value": "4.5500"
+        }
+      ]
+    },
+    {
+      "id": "gbp",
+      "country_name": "Wielka Brytania",
+      "value_name": "funt szterling",
+      "qty": 1,
+      "code_iso": "GBP",
+      "symbol": "£",
+      "flag_img": "flags_img/gb.png",
+      "currency_values": [
+        {
+          "id": "gbp-01",
+          "date": "01.01.2026",
+          "value": "5.1700"
+        },
+        {
+          "id": "gbp-02",
+          "date": "02.01.2026",
+          "value": "5.1300"
+        },
+        {
+          "id": "gbp-03",
+          "date": "03.01.2026",
+          "value": "5.0600"
+        },
+        {
+          "id": "gbp-04",
+          "date": "04.01.2026",
+          "value": "5.0000"
+        },
+        {
+          "id": "gbp-05",
+          "date": "05.01.2026",
+          "value": "5.0400"
+        },
+        {
+          "id": "gbp-06",
+          "date": "06.01.2026",
+          "value": "4.9800"
+        },
+        {
+          "id": "gbp-07",
+          "date": "07.01.2026",
+          "value": "4.9400"
+        },
+        {
+          "id": "gbp-08",
+          "date": "08.01.2026",
+          "value": "5.0200"
+        },
+        {
+          "id": "gbp-09",
+          "date": "09.01.2026",
+          "value": "4.9700"
+        },
+        {
+          "id": "gbp-10",
+          "date": "10.01.2026",
+          "value": "5.0800"
+        }
+      ]
+    },
+    {
+      "id": "uah",
+      "country_name": "Ukraina",
+      "value_name": "hrywna",
+      "qty": 1,
+      "code_iso": "UAH",
+      "symbol": "₴",
+      "flag_img": "flags_img/ua.png",
+      "currency_values": [
+        {
+          "id": "uah-01",
+          "date": "01.01.2026",
+          "value": "0.0944"
+        },
+        {
+          "id": "uah-02",
+          "date": "02.01.2026",
+          "value": "0.0960"
+        },
+        {
+          "id": "uah-03",
+          "date": "03.01.2026",
+          "value": "0.0973"
+        },
+        {
+          "id": "uah-04",
+          "date": "04.01.2026",
+          "value": "0.0956"
+        },
+        {
+          "id": "uah-05",
+          "date": "05.01.2026",
+          "value": "0.0938"
+        },
+        {
+          "id": "uah-06",
+          "date": "06.01.2026",
+          "value": "0.0948"
+        },
+        {
+          "id": "uah-07",
+          "date": "07.01.2026",
+          "value": "0.0966"
+        },
+        {
+          "id": "uah-08",
+          "date": "08.01.2026",
+          "value": "0.0979"
+        },
+        {
+          "id": "uah-09",
+          "date": "09.01.2026",
+          "value": "0.0962"
+        },
+        {
+          "id": "uah-10",
+          "date": "10.01.2026",
+          "value": "0.0950"
+        }
+      ]
+    },
+    {
+      "id": "jpy",
+      "country_name": "Japonia",
+      "value_name": "jen",
+      "qty": 100,
+      "code_iso": "JPY",
+      "symbol": "¥",
+      "flag_img": "flags_img/jp.png",
+      "currency_values": [
+        {
+          "id": "jpy-01",
+          "date": "01.01.2026",
+          "value": "2.5700"
+        },
+        {
+          "id": "jpy-02",
+          "date": "02.01.2026",
+          "value": "2.5300"
+        },
+        {
+          "id": "jpy-03",
+          "date": "03.01.2026",
+          "value": "2.5000"
+        },
+        {
+          "id": "jpy-04",
+          "date": "04.01.2026",
+          "value": "2.5200"
+        },
+        {
+          "id": "jpy-05",
+          "date": "05.01.2026",
+          "value": "2.5600"
+        },
+        {
+          "id": "jpy-06",
+          "date": "06.01.2026",
+          "value": "2.6000"
+        },
+        {
+          "id": "jpy-07",
+          "date": "07.01.2026",
+          "value": "2.5700"
+        },
+        {
+          "id": "jpy-08",
+          "date": "08.01.2026",
+          "value": "2.5400"
+        },
+        {
+          "id": "jpy-09",
+          "date": "09.01.2026",
+          "value": "2.5800"
+        },
+        {
+          "id": "jpy-10",
+          "date": "10.01.2026",
+          "value": "2.5500"
+        }
+      ]
+    },
+    {
+      "id": "czk",
+      "country_name": "Czechy",
+      "value_name": "korona",
+      "qty": 1,
+      "code_iso": "CZK",
+      "symbol": "Kč",
+      "flag_img": "flags_img/cz.png",
+      "currency_values": [
+        {
+          "id": "czk-01",
+          "date": "01.01.2026",
+          "value": "0.1660"
+        },
+        {
+          "id": "czk-02",
+          "date": "02.01.2026",
+          "value": "0.1680"
+        },
+        {
+          "id": "czk-03",
+          "date": "03.01.2026",
+          "value": "0.1710"
+        },
+        {
+          "id": "czk-04",
+          "date": "04.01.2026",
+          "value": "0.1690"
+        },
+        {
+          "id": "czk-05",
+          "date": "05.01.2026",
+          "value": "0.1730"
+        },
+        {
+          "id": "czk-06",
+          "date": "06.01.2026",
+          "value": "0.1750"
+        },
+        {
+          "id": "czk-07",
+          "date": "07.01.2026",
+          "value": "0.1720"
+        },
+        {
+          "id": "czk-08",
+          "date": "08.01.2026",
+          "value": "0.1740"
+        },
+        {
+          "id": "czk-09",
+          "date": "09.01.2026",
+          "value": "0.1710"
+        },
+        {
+          "id": "czk-10",
+          "date": "10.01.2026",
+          "value": "0.1700"
+        }
+      ]
+    },
+    {
+      "id": "dkk",
+      "country_name": "Dania",
+      "value_name": "korona",
+      "qty": 1,
+      "code_iso": "DKK",
+      "symbol": "kr",
+      "flag_img": "flags_img/dk.png",
+      "currency_values": [
+        {
+          "id": "dkk-01",
+          "date": "01.01.2026",
+          "value": "0.5640"
+        },
+        {
+          "id": "dkk-02",
+          "date": "02.01.2026",
+          "value": "0.5690"
+        },
+        {
+          "id": "dkk-03",
+          "date": "03.01.2026",
+          "value": "0.5770"
+        },
+        {
+          "id": "dkk-04",
+          "date": "04.01.2026",
+          "value": "0.5820"
+        },
+        {
+          "id": "dkk-05",
+          "date": "05.01.2026",
+          "value": "0.5720"
+        },
+        {
+          "id": "dkk-06",
+          "date": "06.01.2026",
+          "value": "0.5790"
+        },
+        {
+          "id": "dkk-07",
+          "date": "07.01.2026",
+          "value": "0.5860"
+        },
+        {
+          "id": "dkk-08",
+          "date": "08.01.2026",
+          "value": "0.5810"
+        },
+        {
+          "id": "dkk-09",
+          "date": "09.01.2026",
+          "value": "0.5900"
+        },
+        {
+          "id": "dkk-10",
+          "date": "10.01.2026",
+          "value": "0.5740"
+        }
+      ]
+    },
+    {
+      "id": "isk",
+      "country_name": "Islandia",
+      "value_name": "korona",
+      "qty": 100,
+      "code_iso": "ISK",
+      "symbol": "kr",
+      "flag_img": "flags_img/is.png",
+      "currency_values": [
+        {
+          "id": "isk-01",
+          "date": "01.01.2026",
+          "value": "2.9000"
+        },
+        {
+          "id": "isk-02",
+          "date": "02.01.2026",
+          "value": "2.8800"
+        },
+        {
+          "id": "isk-03",
+          "date": "03.01.2026",
+          "value": "2.8400"
+        },
+        {
+          "id": "isk-04",
+          "date": "04.01.2026",
+          "value": "2.8100"
+        },
+        {
+          "id": "isk-05",
+          "date": "05.01.2026",
+          "value": "2.8300"
+        },
+        {
+          "id": "isk-06",
+          "date": "06.01.2026",
+          "value": "2.8000"
+        },
+        {
+          "id": "isk-07",
+          "date": "07.01.2026",
+          "value": "2.7700"
+        },
+        {
+          "id": "isk-08",
+          "date": "08.01.2026",
+          "value": "2.8200"
+        },
+        {
+          "id": "isk-09",
+          "date": "09.01.2026",
+          "value": "2.7900"
+        },
+        {
+          "id": "isk-10",
+          "date": "10.01.2026",
+          "value": "2.8500"
+        }
+      ]
+    },
+    {
+      "id": "nok",
+      "country_name": "Norwegia",
+      "value_name": "korona",
+      "qty": 1,
+      "code_iso": "NOK",
+      "symbol": "kr",
+      "flag_img": "flags_img/no.png",
+      "currency_values": [
+        {
+          "id": "nok-01",
+          "date": "01.01.2026",
+          "value": "0.3680"
+        },
+        {
+          "id": "nok-02",
+          "date": "02.01.2026",
+          "value": "0.3740"
+        },
+        {
+          "id": "nok-03",
+          "date": "03.01.2026",
+          "value": "0.3790"
+        },
+        {
+          "id": "nok-04",
+          "date": "04.01.2026",
+          "value": "0.3720"
+        },
+        {
+          "id": "nok-05",
+          "date": "05.01.2026",
+          "value": "0.3650"
+        },
+        {
+          "id": "nok-06",
+          "date": "06.01.2026",
+          "value": "0.3690"
+        },
+        {
+          "id": "nok-07",
+          "date": "07.01.2026",
+          "value": "0.3760"
+        },
+        {
+          "id": "nok-08",
+          "date": "08.01.2026",
+          "value": "0.3810"
+        },
+        {
+          "id": "nok-09",
+          "date": "09.01.2026",
+          "value": "0.3750"
+        },
+        {
+          "id": "nok-10",
+          "date": "10.01.2026",
+          "value": "0.3700"
+        }
+      ]
+    },
+    {
+      "id": "sek",
+      "country_name": "Szwecja",
+      "value_name": "korona",
+      "qty": 1,
+      "code_iso": "SEK",
+      "symbol": "kr",
+      "flag_img": "flags_img/se.png",
+      "currency_values": [
+        {
+          "id": "sek-01",
+          "date": "01.01.2026",
+          "value": "0.3830"
+        },
+        {
+          "id": "sek-02",
+          "date": "02.01.2026",
+          "value": "0.3770"
+        },
+        {
+          "id": "sek-03",
+          "date": "03.01.2026",
+          "value": "0.3720"
+        },
+        {
+          "id": "sek-04",
+          "date": "04.01.2026",
+          "value": "0.3750"
+        },
+        {
+          "id": "sek-05",
+          "date": "05.01.2026",
+          "value": "0.3820"
+        },
+        {
+          "id": "sek-06",
+          "date": "06.01.2026",
+          "value": "0.3870"
+        },
+        {
+          "id": "sek-07",
+          "date": "07.01.2026",
+          "value": "0.3830"
+        },
+        {
+          "id": "sek-08",
+          "date": "08.01.2026",
+          "value": "0.3780"
+        },
+        {
+          "id": "sek-09",
+          "date": "09.01.2026",
+          "value": "0.3850"
+        },
+        {
+          "id": "sek-10",
+          "date": "10.01.2026",
+          "value": "0.3800"
+        }
+      ]
+    },
+    {
+      "id": "hrk",
+      "country_name": "Chorwacja",
+      "value_name": "kuna",
+      "qty": 1,
+      "code_iso": "HRK",
+      "symbol": "kn",
+      "flag_img": "flags_img/hr.png",
+      "currency_values": [
+        {
+          "id": "hrk-01",
+          "date": "01.01.2026",
+          "value": "0.5560"
+        },
+        {
+          "id": "hrk-02",
+          "date": "02.01.2026",
+          "value": "0.5630"
+        },
+        {
+          "id": "hrk-03",
+          "date": "03.01.2026",
+          "value": "0.5720"
+        },
+        {
+          "id": "hrk-04",
+          "date": "04.01.2026",
+          "value": "0.5680"
+        },
+        {
+          "id": "hrk-05",
+          "date": "05.01.2026",
+          "value": "0.5790"
+        },
+        {
+          "id": "hrk-06",
+          "date": "06.01.2026",
+          "value": "0.5870"
+        },
+        {
+          "id": "hrk-07",
+          "date": "07.01.2026",
+          "value": "0.5760"
+        },
+        {
+          "id": "hrk-08",
+          "date": "08.01.2026",
+          "value": "0.5830"
+        },
+        {
+          "id": "hrk-09",
+          "date": "09.01.2026",
+          "value": "0.5750"
+        },
+        {
+          "id": "hrk-10",
+          "date": "10.01.2026",
+          "value": "0.5700"
+        }
+      ]
+    },
+    {
+      "id": "ron",
+      "country_name": "Rumunia",
+      "value_name": "lej",
+      "qty": 1,
+      "code_iso": "RON",
+      "symbol": "lei",
+      "flag_img": "flags_img/ro.png",
+      "currency_values": [
+        {
+          "id": "ron-01",
+          "date": "01.01.2026",
+          "value": "0.8450"
+        },
+        {
+          "id": "ron-02",
+          "date": "02.01.2026",
+          "value": "0.8520"
+        },
+        {
+          "id": "ron-03",
+          "date": "03.01.2026",
+          "value": "0.8650"
+        },
+        {
+          "id": "ron-04",
+          "date": "04.01.2026",
+          "value": "0.8720"
+        },
+        {
+          "id": "ron-05",
+          "date": "05.01.2026",
+          "value": "0.8570"
+        },
+        {
+          "id": "ron-06",
+          "date": "06.01.2026",
+          "value": "0.8680"
+        },
+        {
+          "id": "ron-07",
+          "date": "07.01.2026",
+          "value": "0.8780"
+        },
+        {
+          "id": "ron-08",
+          "date": "08.01.2026",
+          "value": "0.8700"
+        },
+        {
+          "id": "ron-09",
+          "date": "09.01.2026",
+          "value": "0.8840"
+        },
+        {
+          "id": "ron-10",
+          "date": "10.01.2026",
+          "value": "0.8600"
+        }
+      ]
+    },
+    {
+      "id": "bgn",
+      "country_name": "Bułgaria",
+      "value_name": "lew",
+      "qty": 1,
+      "code_iso": "BGN",
+      "symbol": "лв",
+      "flag_img": "flags_img/bg.png",
+      "currency_values": [
+        {
+          "id": "bgn-01",
+          "date": "01.01.2026",
+          "value": "2.2300"
+        },
+        {
+          "id": "bgn-02",
+          "date": "02.01.2026",
+          "value": "2.2100"
+        },
+        {
+          "id": "bgn-03",
+          "date": "03.01.2026",
+          "value": "2.1800"
+        },
+        {
+          "id": "bgn-04",
+          "date": "04.01.2026",
+          "value": "2.1600"
+        },
+        {
+          "id": "bgn-05",
+          "date": "05.01.2026",
+          "value": "2.1700"
+        },
+        {
+          "id": "bgn-06",
+          "date": "06.01.2026",
+          "value": "2.1500"
+        },
+        {
+          "id": "bgn-07",
+          "date": "07.01.2026",
+          "value": "2.1300"
+        },
+        {
+          "id": "bgn-08",
+          "date": "08.01.2026",
+          "value": "2.1700"
+        },
+        {
+          "id": "bgn-09",
+          "date": "09.01.2026",
+          "value": "2.1400"
+        },
+        {
+          "id": "bgn-10",
+          "date": "10.01.2026",
+          "value": "2.1900"
+        }
+      ]
+    },
+    {
+      "id": "try",
+      "country_name": "Turcja",
+      "value_name": "lira",
+      "qty": 1,
+      "code_iso": "TRY",
+      "symbol": "₺",
+      "flag_img": "flags_img/tr.png",
+      "currency_values": [
+        {
+          "id": "try-01",
+          "date": "01.01.2026",
+          "value": "0.0944"
+        },
+        {
+          "id": "try-02",
+          "date": "02.01.2026",
+          "value": "0.0960"
+        },
+        {
+          "id": "try-03",
+          "date": "03.01.2026",
+          "value": "0.0973"
+        },
+        {
+          "id": "try-04",
+          "date": "04.01.2026",
+          "value": "0.0956"
+        },
+        {
+          "id": "try-05",
+          "date": "05.01.2026",
+          "value": "0.0938"
+        },
+        {
+          "id": "try-06",
+          "date": "06.01.2026",
+          "value": "0.0948"
+        },
+        {
+          "id": "try-07",
+          "date": "07.01.2026",
+          "value": "0.0966"
+        },
+        {
+          "id": "try-08",
+          "date": "08.01.2026",
+          "value": "0.0979"
+        },
+        {
+          "id": "try-09",
+          "date": "09.01.2026",
+          "value": "0.0962"
+        },
+        {
+          "id": "try-10",
+          "date": "10.01.2026",
+          "value": "0.0950"
+        }
+      ]
+    },
+    {
+      "id": "ils",
+      "country_name": "Izrael",
+      "value_name": "szekel",
+      "qty": 1,
+      "code_iso": "ILS",
+      "symbol": "₪",
+      "flag_img": "flags_img/il.png",
+      "currency_values": [
+        {
+          "id": "ils-01",
+          "date": "01.01.2026",
+          "value": "1.0800"
+        },
+        {
+          "id": "ils-02",
+          "date": "02.01.2026",
+          "value": "1.0600"
+        },
+        {
+          "id": "ils-03",
+          "date": "03.01.2026",
+          "value": "1.0500"
+        },
+        {
+          "id": "ils-04",
+          "date": "04.01.2026",
+          "value": "1.0600"
+        },
+        {
+          "id": "ils-05",
+          "date": "05.01.2026",
+          "value": "1.0700"
+        },
+        {
+          "id": "ils-06",
+          "date": "06.01.2026",
+          "value": "1.0900"
+        },
+        {
+          "id": "ils-07",
+          "date": "07.01.2026",
+          "value": "1.0800"
+        },
+        {
+          "id": "ils-08",
+          "date": "08.01.2026",
+          "value": "1.0600"
+        },
+        {
+          "id": "ils-09",
+          "date": "09.01.2026",
+          "value": "1.0800"
+        },
+        {
+          "id": "ils-10",
+          "date": "10.01.2026",
+          "value": "1.0700"
+        }
+      ]
+    },
+    {
+      "id": "clp",
+      "country_name": "Chile",
+      "value_name": "peso",
+      "qty": 100,
+      "code_iso": "CLP",
+      "symbol": "$",
+      "flag_img": "flags_img/cl.png",
+      "currency_values": [
+        {
+          "id": "clp-01",
+          "date": "01.01.2026",
+          "value": "0.4100"
+        },
+        {
+          "id": "clp-02",
+          "date": "02.01.2026",
+          "value": "0.4150"
+        },
+        {
+          "id": "clp-03",
+          "date": "03.01.2026",
+          "value": "0.4210"
+        },
+        {
+          "id": "clp-04",
+          "date": "04.01.2026",
+          "value": "0.4190"
+        },
+        {
+          "id": "clp-05",
+          "date": "05.01.2026",
+          "value": "0.4270"
+        },
+        {
+          "id": "clp-06",
+          "date": "06.01.2026",
+          "value": "0.4320"
+        },
+        {
+          "id": "clp-07",
+          "date": "07.01.2026",
+          "value": "0.4250"
+        },
+        {
+          "id": "clp-08",
+          "date": "08.01.2026",
+          "value": "0.4290"
+        },
+        {
+          "id": "clp-09",
+          "date": "09.01.2026",
+          "value": "0.4230"
+        },
+        {
+          "id": "clp-10",
+          "date": "10.01.2026",
+          "value": "0.4200"
+        }
+      ]
+    },
+    {
+      "id": "php",
+      "country_name": "Filipiny",
+      "value_name": "peso",
+      "qty": 1,
+      "code_iso": "PHP",
+      "symbol": "₱",
+      "flag_img": "flags_img/ph.png",
+      "currency_values": [
+        {
+          "id": "php-01",
+          "date": "01.01.2026",
+          "value": "0.0678"
+        },
+        {
+          "id": "php-02",
+          "date": "02.01.2026",
+          "value": "0.0684"
+        },
+        {
+          "id": "php-03",
+          "date": "03.01.2026",
+          "value": "0.0694"
+        },
+        {
+          "id": "php-04",
+          "date": "04.01.2026",
+          "value": "0.0700"
+        },
+        {
+          "id": "php-05",
+          "date": "05.01.2026",
+          "value": "0.0688"
+        },
+        {
+          "id": "php-06",
+          "date": "06.01.2026",
+          "value": "0.0696"
+        },
+        {
+          "id": "php-07",
+          "date": "07.01.2026",
+          "value": "0.0704"
+        },
+        {
+          "id": "php-08",
+          "date": "08.01.2026",
+          "value": "0.0698"
+        },
+        {
+          "id": "php-09",
+          "date": "09.01.2026",
+          "value": "0.0709"
+        },
+        {
+          "id": "php-10",
+          "date": "10.01.2026",
+          "value": "0.0690"
+        }
+      ]
+    },
+    {
+      "id": "mxn",
+      "country_name": "Meksyk",
+      "value_name": "peso",
+      "qty": 1,
+      "code_iso": "MXN",
+      "symbol": "Mex$",
+      "flag_img": "flags_img/mx.png",
+      "currency_values": [
+        {
+          "id": "mxn-01",
+          "date": "01.01.2026",
+          "value": "0.2140"
+        },
+        {
+          "id": "mxn-02",
+          "date": "02.01.2026",
+          "value": "0.2120"
+        },
+        {
+          "id": "mxn-03",
+          "date": "03.01.2026",
+          "value": "0.2090"
+        },
+        {
+          "id": "mxn-04",
+          "date": "04.01.2026",
+          "value": "0.2070"
+        },
+        {
+          "id": "mxn-05",
+          "date": "05.01.2026",
+          "value": "0.2090"
+        },
+        {
+          "id": "mxn-06",
+          "date": "06.01.2026",
+          "value": "0.2060"
+        },
+        {
+          "id": "mxn-07",
+          "date": "07.01.2026",
+          "value": "0.2040"
+        },
+        {
+          "id": "mxn-08",
+          "date": "08.01.2026",
+          "value": "0.2080"
+        },
+        {
+          "id": "mxn-09",
+          "date": "09.01.2026",
+          "value": "0.2050"
+        },
+        {
+          "id": "mxn-10",
+          "date": "10.01.2026",
+          "value": "0.2100"
+        }
+      ]
+    },
+    {
+      "id": "zar",
+      "country_name": "RPA",
+      "value_name": "rand",
+      "qty": 1,
+      "code_iso": "ZAR",
+      "symbol": "R",
+      "flag_img": "flags_img/za.png",
+      "currency_values": [
+        {
+          "id": "zar-01",
+          "date": "01.01.2026",
+          "value": "0.2190"
+        },
+        {
+          "id": "zar-02",
+          "date": "02.01.2026",
+          "value": "0.2220"
+        },
+        {
+          "id": "zar-03",
+          "date": "03.01.2026",
+          "value": "0.2250"
+        },
+        {
+          "id": "zar-04",
+          "date": "04.01.2026",
+          "value": "0.2210"
+        },
+        {
+          "id": "zar-05",
+          "date": "05.01.2026",
+          "value": "0.2170"
+        },
+        {
+          "id": "zar-06",
+          "date": "06.01.2026",
+          "value": "0.2200"
+        },
+        {
+          "id": "zar-07",
+          "date": "07.01.2026",
+          "value": "0.2240"
+        },
+        {
+          "id": "zar-08",
+          "date": "08.01.2026",
+          "value": "0.2270"
+        },
+        {
+          "id": "zar-09",
+          "date": "09.01.2026",
+          "value": "0.2230"
+        },
+        {
+          "id": "zar-10",
+          "date": "10.01.2026",
+          "value": "0.2200"
+        }
+      ]
+    },
+    {
+      "id": "brl",
+      "country_name": "Brazylia",
+      "value_name": "real",
+      "qty": 1,
+      "code_iso": "BRL",
+      "symbol": "R$",
+      "flag_img": "flags_img/br.png",
+      "currency_values": [
+        {
+          "id": "brl-01",
+          "date": "01.01.2026",
+          "value": "0.7250"
+        },
+        {
+          "id": "brl-02",
+          "date": "02.01.2026",
+          "value": "0.7140"
+        },
+        {
+          "id": "brl-03",
+          "date": "03.01.2026",
+          "value": "0.7050"
+        },
+        {
+          "id": "brl-04",
+          "date": "04.01.2026",
+          "value": "0.7110"
+        },
+        {
+          "id": "brl-05",
+          "date": "05.01.2026",
+          "value": "0.7230"
+        },
+        {
+          "id": "brl-06",
+          "date": "06.01.2026",
+          "value": "0.7340"
+        },
+        {
+          "id": "brl-07",
+          "date": "07.01.2026",
+          "value": "0.7260"
+        },
+        {
+          "id": "brl-08",
+          "date": "08.01.2026",
+          "value": "0.7160"
+        },
+        {
+          "id": "brl-09",
+          "date": "09.01.2026",
+          "value": "0.7290"
+        },
+        {
+          "id": "brl-10",
+          "date": "10.01.2026",
+          "value": "0.7200"
+        }
+      ]
+    },
+    {
+      "id": "myr",
+      "country_name": "Malezja",
+      "value_name": "ringgit",
+      "qty": 1,
+      "code_iso": "MYR",
+      "symbol": "RM",
+      "flag_img": "flags_img/my.png",
+      "currency_values": [
+        {
+          "id": "myr-01",
+          "date": "01.01.2026",
+          "value": "0.8200"
+        },
+        {
+          "id": "myr-02",
+          "date": "02.01.2026",
+          "value": "0.8300"
+        },
+        {
+          "id": "myr-03",
+          "date": "03.01.2026",
+          "value": "0.8430"
+        },
+        {
+          "id": "myr-04",
+          "date": "04.01.2026",
+          "value": "0.8370"
+        },
+        {
+          "id": "myr-05",
+          "date": "05.01.2026",
+          "value": "0.8530"
+        },
+        {
+          "id": "myr-06",
+          "date": "06.01.2026",
+          "value": "0.8640"
+        },
+        {
+          "id": "myr-07",
+          "date": "07.01.2026",
+          "value": "0.8490"
+        },
+        {
+          "id": "myr-08",
+          "date": "08.01.2026",
+          "value": "0.8580"
+        },
+        {
+          "id": "myr-09",
+          "date": "09.01.2026",
+          "value": "0.8470"
+        },
+        {
+          "id": "myr-10",
+          "date": "10.01.2026",
+          "value": "0.8400"
+        }
+      ]
+    },
+    {
+      "id": "idr",
+      "country_name": "Indonezja",
+      "value_name": "rupia",
+      "qty": 10000,
+      "code_iso": "IDR",
+      "symbol": "Rp",
+      "flag_img": "flags_img/id.png",
+      "currency_values": [
+        {
+          "id": "idr-01",
+          "date": "01.01.2026",
+          "value": "2.3900"
+        },
+        {
+          "id": "idr-02",
+          "date": "02.01.2026",
+          "value": "2.4100"
+        },
+        {
+          "id": "idr-03",
+          "date": "03.01.2026",
+          "value": "2.4400"
+        },
+        {
+          "id": "idr-04",
+          "date": "04.01.2026",
+          "value": "2.4600"
+        },
+        {
+          "id": "idr-05",
+          "date": "05.01.2026",
+          "value": "2.4200"
+        },
+        {
+          "id": "idr-06",
+          "date": "06.01.2026",
+          "value": "2.4500"
+        },
+        {
+          "id": "idr-07",
+          "date": "07.01.2026",
+          "value": "2.4800"
+        },
+        {
+          "id": "idr-08",
+          "date": "08.01.2026",
+          "value": "2.4600"
+        },
+        {
+          "id": "idr-09",
+          "date": "09.01.2026",
+          "value": "2.5000"
+        },
+        {
+          "id": "idr-10",
+          "date": "10.01.2026",
+          "value": "2.4300"
+        }
+      ]
+    },
+    {
+      "id": "inr",
+      "country_name": "Indie",
+      "value_name": "rupia",
+      "qty": 100,
+      "code_iso": "INR",
+      "symbol": "₹",
+      "flag_img": "flags_img/in.png",
+      "currency_values": [
+        {
+          "id": "inr-01",
+          "date": "01.01.2026",
+          "value": "4.8200"
+        },
+        {
+          "id": "inr-02",
+          "date": "02.01.2026",
+          "value": "4.7700"
+        },
+        {
+          "id": "inr-03",
+          "date": "03.01.2026",
+          "value": "4.7100"
+        },
+        {
+          "id": "inr-04",
+          "date": "04.01.2026",
+          "value": "4.6600"
+        },
+        {
+          "id": "inr-05",
+          "date": "05.01.2026",
+          "value": "4.7000"
+        },
+        {
+          "id": "inr-06",
+          "date": "06.01.2026",
+          "value": "4.6400"
+        },
+        {
+          "id": "inr-07",
+          "date": "07.01.2026",
+          "value": "4.6000"
+        },
+        {
+          "id": "inr-08",
+          "date": "08.01.2026",
+          "value": "4.6800"
+        },
+        {
+          "id": "inr-09",
+          "date": "09.01.2026",
+          "value": "4.6300"
+        },
+        {
+          "id": "inr-10",
+          "date": "10.01.2026",
+          "value": "4.7300"
+        }
+      ]
+    },
+    {
+      "id": "krw",
+      "country_name": "Korea Południowa",
+      "value_name": "won",
+      "qty": 100,
+      "code_iso": "KRW",
+      "symbol": "₩",
+      "flag_img": "flags_img/kr.png",
+      "currency_values": [
+        {
+          "id": "krw-01",
+          "date": "01.01.2026",
+          "value": "0.2880"
+        },
+        {
+          "id": "krw-02",
+          "date": "02.01.2026",
+          "value": "0.2930"
+        },
+        {
+          "id": "krw-03",
+          "date": "03.01.2026",
+          "value": "0.2970"
+        },
+        {
+          "id": "krw-04",
+          "date": "04.01.2026",
+          "value": "0.2920"
+        },
+        {
+          "id": "krw-05",
+          "date": "05.01.2026",
+          "value": "0.2860"
+        },
+        {
+          "id": "krw-06",
+          "date": "06.01.2026",
+          "value": "0.2890"
+        },
+        {
+          "id": "krw-07",
+          "date": "07.01.2026",
+          "value": "0.2950"
+        },
+        {
+          "id": "krw-08",
+          "date": "08.01.2026",
+          "value": "0.2990"
+        },
+        {
+          "id": "krw-09",
+          "date": "09.01.2026",
+          "value": "0.2940"
+        },
+        {
+          "id": "krw-10",
+          "date": "10.01.2026",
+          "value": "0.2900"
+        }
+      ]
+    },
+    {
+      "id": "cny",
+      "country_name": "Chiny",
+      "value_name": "yuan",
+      "qty": 1,
+      "code_iso": "CNY",
+      "symbol": "¥",
+      "flag_img": "flags_img/cn.png",
+      "currency_values": [
+        {
+          "id": "cny-01",
+          "date": "01.01.2026",
+          "value": "0.5490"
+        },
+        {
+          "id": "cny-02",
+          "date": "02.01.2026",
+          "value": "0.5410"
+        },
+        {
+          "id": "cny-03",
+          "date": "03.01.2026",
+          "value": "0.5340"
+        },
+        {
+          "id": "cny-04",
+          "date": "04.01.2026",
+          "value": "0.5380"
+        },
+        {
+          "id": "cny-05",
+          "date": "05.01.2026",
+          "value": "0.5470"
+        },
+        {
+          "id": "cny-06",
+          "date": "06.01.2026",
+          "value": "0.5550"
+        },
+        {
+          "id": "cny-07",
+          "date": "07.01.2026",
+          "value": "0.5490"
+        },
+        {
+          "id": "cny-08",
+          "date": "08.01.2026",
+          "value": "0.5420"
+        },
+        {
+          "id": "cny-09",
+          "date": "09.01.2026",
+          "value": "0.5520"
+        },
+        {
+          "id": "cny-10",
+          "date": "10.01.2026",
+          "value": "0.5450"
+        }
+      ]
+    },
+    {
+      "id": "xdr",
+      "country_name": "SDR (MFW)",
+      "value_name": "SDR",
+      "qty": 1,
+      "code_iso": "XDR",
+      "symbol": "SDR",
+      "flag_img": "flags_img/pl.png",
+      "currency_values": [
+        {
+          "id": "xdr-01",
+          "date": "01.01.2026",
+          "value": "5.1200"
+        },
+        {
+          "id": "xdr-02",
+          "date": "02.01.2026",
+          "value": "5.1900"
+        },
+        {
+          "id": "xdr-03",
+          "date": "03.01.2026",
+          "value": "5.2700"
+        },
+        {
+          "id": "xdr-04",
+          "date": "04.01.2026",
+          "value": "5.2300"
+        },
+        {
+          "id": "xdr-05",
+          "date": "05.01.2026",
+          "value": "5.3300"
+        },
+        {
+          "id": "xdr-06",
+          "date": "06.01.2026",
+          "value": "5.4000"
+        },
+        {
+          "id": "xdr-07",
+          "date": "07.01.2026",
+          "value": "5.3100"
+        },
+        {
+          "id": "xdr-08",
+          "date": "08.01.2026",
+          "value": "5.3700"
+        },
+        {
+          "id": "xdr-09",
+          "date": "09.01.2026",
+          "value": "5.2900"
+        },
+        {
+          "id": "xdr-10",
+          "date": "10.01.2026",
+          "value": "5.2500"
+        }
+      ]
+    }
+  ]
 }
