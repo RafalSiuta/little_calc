@@ -34,20 +34,28 @@ class CurrencyCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(calcTheme.cardBorderRadius),
         onTap: onTap,
         child: Container(
           height: 82,
           width: double.infinity,
           constraints: const BoxConstraints(maxWidth: 406),
-          padding: EdgeInsets.all(calcTheme.basePadding),
-          decoration: calcTheme.settingsCardDecoration.copyWith(
+          padding: EdgeInsets.symmetric(vertical: calcTheme.basePadding),
+          decoration: BoxDecoration(
             border: Border(
-              top: BorderSide(
-                color: const Color(0xff262626),
-                width: calcTheme.borderThickness,
+              bottom: BorderSide(
+                color: calcTheme.borderDark,
+                width: calcTheme.borderThickness*2,
+                // strokeAlign: BorderSide.strokeAlignOutside
               ),
             ),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: calcTheme.backgroundShadow,
+            //     offset: const Offset(0.5, 0.5),
+            //     blurRadius: 0.5,
+            //     spreadRadius: 0.5,
+            //   ),
+            // ],
           ),
           child: Row(
             children: [
@@ -115,8 +123,7 @@ class _CurrencyCardLabel extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
-          // mainAxisSize: MainAxisSize.min,
-          spacing: 2,
+          spacing: 5,
           children: [
             CurrencyFlag(currency: currency),
             Text(

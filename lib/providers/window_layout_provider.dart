@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../utils/system/system_helper.dart';
+
 class WindowLayoutProvider extends ChangeNotifier {
   static const MethodChannel _windowChannel =
       MethodChannel('little_calc/window');
@@ -13,6 +15,12 @@ class WindowLayoutProvider extends ChangeNotifier {
 
   Future<void> toggleCalculatorWidth() async {
     final nextIsExpanded = !_isExpanded;
+
+    if (SystemHelper.isMobileSystem) {
+      _setExpanded(nextIsExpanded);
+      return;
+    }
+
     final nextWidth = nextIsExpanded ? expandedWindowWidth : compactWindowWidth;
 
     try {

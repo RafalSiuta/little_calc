@@ -6,9 +6,11 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
   const CalcTabBar({
     Key? key,
     required this.tabs,
+    this.trailing,
   }) : super(key: key);
 
   final List<String> tabs;
+  final Widget? trailing;
 
   @override
   Size get preferredSize => const Size.fromHeight(34);
@@ -20,34 +22,47 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
     return SizedBox(
       height: preferredSize.height,
       width: double.infinity,
-      child: Center(
-        child: TabBar(
-          isScrollable: true,
-          tabAlignment: TabAlignment.center,
-          labelPadding: EdgeInsets.symmetric(
-            horizontal: calcTheme.itemSpacing,
-          ),
-          indicator: _TopTabIndicator(
-            color: calcTheme.accent,
-            height: calcTheme.menuIndicatorHeight,
-          ),
-          indicatorSize: TabBarIndicatorSize.tab,
-          dividerColor: Colors.transparent,
-          labelColor: calcTheme.accent,
-          unselectedLabelColor: calcTheme.unselected,
-          labelStyle: calcTheme.tabTextStyle,
-          unselectedLabelStyle: calcTheme.tabTextStyle,
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-          tabs: [
-            for (final tab in tabs)
-              Tab(
-                height: preferredSize.height,
-                child: Text(
-                  tab,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: calcTheme.basePadding),
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.center,
+                  labelPadding: EdgeInsets.symmetric(
+                    horizontal: calcTheme.paddingSmall,
+                  ),
+                  indicator: _TopTabIndicator(
+                    color: calcTheme.accent,
+                    height: calcTheme.menuIndicatorHeight,
+                  ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  dividerColor: Colors.transparent,
+                  labelColor: calcTheme.accent,
+                  unselectedLabelColor: calcTheme.unselected,
+                  labelStyle: calcTheme.tabTextStyle,
+                  unselectedLabelStyle: calcTheme.tabTextStyle,
+                  overlayColor: WidgetStateProperty.all(Colors.transparent),
+                  tabs: [
+                    for (final tab in tabs)
+                      Tab(
+                        height: preferredSize.height,
+                        child: Text(
+                          tab,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                  ],
                 ),
               ),
+            ),
+            if (trailing != null) ...[
+              SizedBox(width: calcTheme.itemSpacing),
+              trailing!,
+            ],
           ],
         ),
       ),

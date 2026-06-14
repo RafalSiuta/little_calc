@@ -420,8 +420,8 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
           BoxShadow(
             color: backgroundShadow,
             offset: const Offset(0.5, 0.5),
-            blurRadius: 2,
-            spreadRadius: 1,
+            blurRadius: 0.5,
+            spreadRadius: 0.5,
           ),
         ],
       );
@@ -469,7 +469,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     final displayMidTextStyle = GoogleFonts.exo2(
       color: accent,
       fontSize: AppFontSizes.displayMid(),
-      fontWeight: FontWeight.w100,
+      fontWeight: FontWeight.w200,
       height: 1,
       letterSpacing: 0,
     );
@@ -542,7 +542,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       cardBorderRadius: AppDimens.cornerMedium,
       windowBorderRadius: 16,
       menuIndicatorHeight: 2,
-      backgroundShadow: const Color(0x59000000),
+      backgroundShadow: const Color(0x33000000),
       settingsTitleTextStyle: GoogleFonts.exo2(
         color: text,
         fontSize: 24,

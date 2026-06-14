@@ -11,7 +11,7 @@ class AppDefaultColors {
   static const Color functionsText = Color(0xffe5e5e5);
   static const Color accent = Color(0xff21ba77);
   static const Color accent2 = Color(0xffb4e186);
-  static const Color unselected = Color(0xff333333);
+  static const Color unselected = Color(0xff616161);
   static const Color unselectedHover = Color(0xff5e5b5b);
   static const Color error = Color(0xffd7263d);
 }
@@ -26,7 +26,7 @@ class AppThemeOneColors {
   static const Color functionsText = Color(0xffffa64c);
   static const Color accent = Color(0xff21ba77);
   static const Color accent2 = Color(0xffb4e186);
-  static const Color unselected = Color(0xff333333);
+  static const Color unselected = Color(0xff616161);
   static const Color unselectedHover = Color(0xff5e5b5b);
   static const Color error = Color(0xffd7263d);
 }
@@ -41,7 +41,7 @@ class AppThemeTwoColors {
   static const Color functionsText = Color(0xff3395ce);
   static const Color accent = Color(0xffcc8600);
   static const Color accent2 = Color(0xff648645);
-  static const Color unselected = Color(0xff333333);
+  static const Color unselected = Color(0xff616161);
   static const Color unselectedHover = Color(0xff5e5b5b);
   static const Color error = Color(0xff97302d);
 }
