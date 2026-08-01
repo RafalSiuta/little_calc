@@ -7,10 +7,12 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.tabs,
     this.trailing,
+    this.controller,
   }) : super(key: key);
 
   final List<String> tabs;
   final Widget? trailing;
+  final TabController? controller;
 
   @override
   Size get preferredSize => const Size.fromHeight(34);
@@ -29,6 +31,7 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
             Expanded(
               child: Center(
                 child: TabBar(
+                  controller: controller,
                   isScrollable: true,
                   tabAlignment: TabAlignment.center,
                   labelPadding: EdgeInsets.symmetric(

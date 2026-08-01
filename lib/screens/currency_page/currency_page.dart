@@ -107,11 +107,11 @@ class _MobileCurrenciesOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
     final provider = context.watch<CurrenciesProvider>();
-    final base = provider.baseCurrency ?? provider.currencies.first;
-    final target = provider.targetCurrency ??
-        (provider.currencies.length > 1 ? provider.currencies[1] : base);
-    final logic = provider.currencyLogic;
-    final activeDisplay = provider.isActiveDisplay;
+    final base = provider.selectedCurrency ?? provider.currencies.first;
+    final currencies = [
+      base,
+      ...provider.currencies.where((currency) => currency.codeIso != base.codeIso),
+    ];
 
     return ListView(
       padding: EdgeInsets.all(calcTheme.basePadding),
@@ -149,12 +149,14 @@ class _MobileCurrenciesOverview extends StatelessWidget {
         //   showActions: false,
         // ),
         SizedBox(height: calcTheme.itemSpacing),
-        for (var index = 0; index < provider.currencies.length; index++) ...[
+        for (var index = 0; index < currencies.length; index++) ...[
           CurrencyCard(
-            currency: provider.currencies[index],
-            onTap: () => provider.setBaseCurrency(provider.currencies[index]),
+            currency: currencies[index],
+            value: provider.valueForCurrency(currencies[index]),
+            isActive: currencies[index].codeIso == base.codeIso,
+            onTap: () => provider.selectCurrency(currencies[index]),
           ),
-          if (index < provider.currencies.length - 1)
+          if (index < currencies.length - 1)
             SizedBox(height: calcTheme.itemSpacing),
         ],
       ],
@@ -169,6 +171,11 @@ class _CurrenciesList extends StatelessWidget {
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
     final provider = context.watch<CurrenciesProvider>();
+    final base = provider.selectedCurrency ?? provider.currencies.first;
+    final currencies = [
+      base,
+      ...provider.currencies.where((currency) => currency.codeIso != base.codeIso),
+    ];
 
     return Column(
       children: [
@@ -178,17 +185,19 @@ class _CurrenciesList extends StatelessWidget {
         SizedBox(height: calcTheme.itemSpacing),
         Expanded(
           child: ListView.separated(
-            itemCount: provider.currencies.length,
+            itemCount: currencies.length,
             padding: EdgeInsets.all(calcTheme.basePadding),
             separatorBuilder: (context, index) => SizedBox(
               height: calcTheme.itemSpacing,
             ),
             itemBuilder: (context, index) {
-              final currency = provider.currencies[index];
+              final currency = currencies[index];
 
               return CurrencyCard(
                 currency: currency,
-                onTap: () => provider.setBaseCurrency(currency),
+                value: provider.valueForCurrency(currency),
+                isActive: currency.codeIso == base.codeIso,
+                onTap: () => provider.selectCurrency(currency),
               );
             },
           ),
@@ -343,6 +352,10 @@ class _CurrencyDisplay extends StatelessWidget {
           label: baseLabel,
           isActive: activeDisplay == CurrencyActiveDisplay.base,
           onSelected: onBaseSelected,
+          onActivated: () => context
+              .read<CurrenciesProvider>()
+              .currencyLogic
+              .setActiveDisplay(CurrencyActiveDisplay.base),
         ),
         SizedBox(height: calcTheme.itemSpacing),
         CurrencyChoiceDisplay(
@@ -353,6 +366,10 @@ class _CurrencyDisplay extends StatelessWidget {
           label: targetLabel,
           isActive: activeDisplay == CurrencyActiveDisplay.target,
           onSelected: onTargetSelected,
+          onActivated: () => context
+              .read<CurrenciesProvider>()
+              .currencyLogic
+              .setActiveDisplay(CurrencyActiveDisplay.target),
         ),
         SizedBox(height: calcTheme.itemSpacing),
         CurrencyEquationDisplay(

@@ -21,13 +21,22 @@ class CurrencyLogic extends ChangeNotifier {
   Currency? _baseCurrency;
   Currency? _targetCurrency;
   CurrencyActiveDisplay _activeDisplay = CurrencyActiveDisplay.base;
-  String _baseInput = '0';
-  String _targetInput = '0';
+  String _baseInput = '1';
+  String _targetInput = '1';
+  bool _replaceActiveInput = false;
+  String _completedEquation = '';
+  bool _hasOpenEquation = false;
+  String _lastResultValue = '1';
+  String? _finalResultValue;
 
   CalculatorLogic get calculator => _calculator;
   CurrencyActiveDisplay get activeDisplay => _activeDisplay;
+  Currency? get activeCurrency => _activeDisplay == CurrencyActiveDisplay.target ? _targetCurrency : _baseCurrency;
+  String get activeInputDisplay => _activeInput;
 
-  String get equationDisplay => _calculator.equationDisplay;
+  String get equationDisplay {
+    return _calculator.equationDisplay;
+  }
 
   String get baseValueDisplay {
     if (_activeDisplay == CurrencyActiveDisplay.target) {
@@ -46,15 +55,14 @@ class CurrencyLogic extends ChangeNotifier {
   }
 
   String get resultDisplay {
+    if (_finalResultValue != null) return _finalResultValue!;
     final calculatorDisplay = _calculator.display;
     if (calculatorDisplay == 'Infinity' || calculatorDisplay == '-Infinity') {
       return 'Error';
     }
 
-    if (_activeDisplay == CurrencyActiveDisplay.equation ||
-        _calculator.equationDisplay.isNotEmpty ||
-        calculatorDisplay != '0') {
-      return calculatorDisplay;
+    if (_activeDisplay == CurrencyActiveDisplay.equation || _hasOpenEquation) {
+      return calculatorDisplay == '0' ? _lastResultValue : calculatorDisplay;
     }
 
     return _activeDisplay == CurrencyActiveDisplay.target
@@ -115,24 +123,29 @@ class CurrencyLogic extends ChangeNotifier {
     if (_activeDisplay == display) {
       return;
     }
-
+    if (display == CurrencyActiveDisplay.equation) return;
+    if (_activeDisplay == CurrencyActiveDisplay.base && display == CurrencyActiveDisplay.target) _targetInput = targetValueDisplay;
+    if (_activeDisplay == CurrencyActiveDisplay.target && display == CurrencyActiveDisplay.base) _baseInput = baseValueDisplay;
     _activeDisplay = display;
+    _replaceActiveInput = true;
     notifyListeners();
   }
 
   void toggleActiveDisplay({required bool next}) {
-    const displays = CurrencyActiveDisplay.values;
-    final currentIndex = displays.indexOf(_activeDisplay);
-    final nextIndex = next
-        ? (currentIndex + 1) % displays.length
-        : (currentIndex - 1 + displays.length) % displays.length;
-
-    setActiveDisplay(displays[nextIndex]);
+    if (_activeDisplay == CurrencyActiveDisplay.equation) {
+      setActiveDisplay(next ? CurrencyActiveDisplay.base : CurrencyActiveDisplay.target);
+      return;
+    }
+    setActiveDisplay(_activeDisplay == CurrencyActiveDisplay.base ? CurrencyActiveDisplay.target : CurrencyActiveDisplay.base);
   }
 
   void handleKeyPress(String value) {
+    if (value == 'C') {
+      clear();
+      return;
+    }
     if (_activeDisplay == CurrencyActiveDisplay.equation) {
-      _calculator.multifunction(value);
+      if (value == '=') _finishEquation(); else _calculator.multifunction(value);
       return;
     }
 
@@ -153,9 +166,6 @@ class CurrencyLogic extends ChangeNotifier {
       return;
     }
 
-    if (value == 'C') {
-      clear();
-    }
   }
 
   void delete() {
@@ -165,14 +175,20 @@ class CurrencyLogic extends ChangeNotifier {
     }
 
     final current = _activeInput;
-    _activeInput =
-        current.length <= 1 ? '0' : current.substring(0, current.length - 1);
+    _activeInput = _replaceActiveInput || current.length <= 1 ? '1' : current.substring(0, current.length - 1);
+    _replaceActiveInput = false;
     notifyListeners();
   }
 
   void clear() {
-    _baseInput = '0';
-    _targetInput = '0';
+    _baseInput = '1';
+    _targetInput = '1';
+    _replaceActiveInput = true;
+    _completedEquation = '';
+    _hasOpenEquation = false;
+    _lastResultValue = '1';
+    _finalResultValue = null;
+    _activeDisplay = CurrencyActiveDisplay.base;
     _calculator.clear();
     notifyListeners();
   }
@@ -231,9 +247,11 @@ class CurrencyLogic extends ChangeNotifier {
   }
 
   void _appendDigit(String value) {
+    _finalResultValue = null;
     final current = _activeInput;
-    if (current == '0') {
+    if (_replaceActiveInput || current == '0') {
       _activeInput = value;
+      _replaceActiveInput = false;
       return;
     }
 
@@ -241,7 +259,9 @@ class CurrencyLogic extends ChangeNotifier {
   }
 
   void _appendDecimalSeparator() {
+    _finalResultValue = null;
     final current = _activeInput;
+    if (_replaceActiveInput) { _activeInput = '0.'; _replaceActiveInput = false; return; }
     if (current.contains('.')) {
       return;
     }
@@ -254,20 +274,42 @@ class CurrencyLogic extends ChangeNotifier {
         ? _convertedTargetToBase
         : _convertedBaseToTarget;
 
-    _appendNumberToCalculator(value);
-
     if (operator == '=') {
-      _calculator.onEqual();
+      if (_hasOpenEquation) _calculator.onOperator('+');
+      _appendNumberToCalculator(value);
+      _finishEquation();
+      return;
     } else {
-      _calculator.onOperator(operator);
-      if (_calculator.display == '0') {
-        _calculator.setText(value);
+      if (_hasOpenEquation) {
+        _calculator.onOperator(operator);
+        _appendNumberToCalculator(value);
+      } else {
+        _lastResultValue = _formatDisplayNumber(value);
+        _appendNumberToCalculator(value);
+        _calculator.onOperator(operator);
+        _hasOpenEquation = true;
       }
+      _completedEquation = '';
     }
 
-    _activeInput = '0';
+    _finalResultValue = null;
+    _activeDisplay = CurrencyActiveDisplay.equation;
     notifyListeners();
   }
+
+  void _finishEquation() {
+    _calculator.onEqual();
+    _finalResultValue = _calculator.display;
+    _baseInput = '1';
+    _targetInput = '1';
+    _replaceActiveInput = true;
+    _completedEquation = '';
+    _hasOpenEquation = false;
+    _activeDisplay = CurrencyActiveDisplay.base;
+    _calculator.clear();
+    notifyListeners();
+  }
+
 
   void _appendNumberToCalculator(double value) {
     final formatted = _formatCalculatorNumber(value);
@@ -323,6 +365,7 @@ class CurrencyLogic extends ChangeNotifier {
   }
 
   void _handleCalculatorChange() {
+    if (_calculator.display != '0') _lastResultValue = _calculator.display;
     notifyListeners();
   }
 }

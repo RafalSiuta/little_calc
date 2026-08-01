@@ -48,7 +48,7 @@ class EquationDisplay extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Align(
-                  alignment: Alignment.topRight,
+                  alignment: Alignment.bottomRight,
                   child: SizedBox(
                     width: double.infinity,
                     child: Text(

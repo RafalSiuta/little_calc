@@ -76,21 +76,25 @@ class CurrenciesProvider extends ChangeNotifier {
 
   void setBaseCurrency(Currency currency) {
     if (_baseCurrency?.codeIso == currency.codeIso) {
+      currencyLogic.setActiveDisplay(CurrencyActiveDisplay.base);
       return;
     }
 
     _baseCurrency = currency;
     _syncCurrencyLogic();
+    currencyLogic.setActiveDisplay(CurrencyActiveDisplay.base);
     notifyListeners();
   }
 
   void setTargetCurrency(Currency currency) {
     if (_targetCurrency?.codeIso == currency.codeIso) {
+      currencyLogic.setActiveDisplay(CurrencyActiveDisplay.target);
       return;
     }
 
     _targetCurrency = currency;
     _syncCurrencyLogic();
+    currencyLogic.setActiveDisplay(CurrencyActiveDisplay.target);
     notifyListeners();
   }
 
@@ -109,6 +113,23 @@ class CurrenciesProvider extends ChangeNotifier {
 
   void toggleActiveDisplay({required bool next}) {
     currencyLogic.toggleActiveDisplay(next: next);
+  }
+
+  String valueForCurrency(Currency currency) {
+    final source = currencyLogic.activeCurrency;
+    if (source == null) {
+      return '0';
+    }
+    final input = double.tryParse(currencyLogic.activeInputDisplay) ?? 0;
+    final value = input * currencyLogic.conversionRate(source, currency);
+    return formatCurrencyValue(value.toString());
+  }
+
+  Currency? get selectedCurrency => currencyLogic.activeDisplay == CurrencyActiveDisplay.target ? _targetCurrency : _baseCurrency;
+
+  void selectCurrency(Currency currency) {
+    if (currencyLogic.activeDisplay == CurrencyActiveDisplay.target) setTargetCurrency(currency);
+    else setBaseCurrency(currency);
   }
 
   Currency? findByCodeIso(String codeIso) {

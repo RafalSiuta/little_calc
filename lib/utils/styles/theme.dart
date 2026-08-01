@@ -15,6 +15,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     required this.operatorsText,
     required this.functionsText,
     required this.accent,
+    required this.accentFill,
     required this.accent2,
     required this.unselected,
     required this.unselectedHover,
@@ -65,6 +66,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
   final Color operatorsText;
   final Color functionsText;
   final Color accent;
+  final Color accentFill;
   final Color accent2;
   final Color unselected;
   final Color unselectedHover;
@@ -154,6 +156,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     Color? operatorsText,
     Color? functionsText,
     Color? accent,
+    Color? accentFill,
     Color? accent2,
     Color? unselected,
     Color? unselectedHover,
@@ -204,6 +207,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       operatorsText: operatorsText ?? this.operatorsText,
       functionsText: functionsText ?? this.functionsText,
       accent: accent ?? this.accent,
+      accentFill: accentFill ?? this.accentFill,
       accent2: accent2 ?? this.accent2,
       unselected: unselected ?? this.unselected,
       unselectedHover: unselectedHover ?? this.unselectedHover,
@@ -279,6 +283,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       operatorsText: Color.lerp(operatorsText, other.operatorsText, t)!,
       functionsText: Color.lerp(functionsText, other.functionsText, t)!,
       accent: Color.lerp(accent, other.accent, t)!,
+      accentFill: Color.lerp(accentFill, other.accentFill, t)!,
       accent2: Color.lerp(accent2, other.accent2, t)!,
       unselected: Color.lerp(unselected, other.unselected, t)!,
       unselectedHover: Color.lerp(unselectedHover, other.unselectedHover, t)!,
@@ -454,6 +459,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     required Color operatorsText,
     required Color functionsText,
     required Color accent,
+    required Color accentFill,
     required Color accent2,
     required Color unselected,
     required Color unselectedHover,
@@ -498,6 +504,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       operatorsText: operatorsText,
       functionsText: functionsText,
       accent: accent,
+      accentFill: accentFill,
       accent2: accent2,
       unselected: unselected,
       unselectedHover: unselectedHover,
@@ -608,6 +615,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     operatorsText: AppDefaultColors.operatorsText,
     functionsText: AppDefaultColors.functionsText,
     accent: AppDefaultColors.accent,
+    accentFill: AppDefaultColors.accentFill,
     accent2: AppDefaultColors.accent2,
     unselected: AppDefaultColors.unselected,
     unselectedHover: AppDefaultColors.unselectedHover,
@@ -623,6 +631,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     operatorsText: AppThemeOneColors.operatorsText,
     functionsText: AppThemeOneColors.functionsText,
     accent: AppThemeOneColors.accent,
+    accentFill: AppThemeOneColors.accentFill,
     accent2: AppThemeOneColors.accent2,
     unselected: AppThemeOneColors.unselected,
     unselectedHover: AppThemeOneColors.unselectedHover,
@@ -638,6 +647,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     operatorsText: AppThemeTwoColors.operatorsText,
     functionsText: AppThemeTwoColors.functionsText,
     accent: AppThemeTwoColors.accent,
+    accentFill: AppThemeTwoColors.accentFill,
     accent2: AppThemeTwoColors.accent2,
     unselected: AppThemeTwoColors.unselected,
     unselectedHover: AppThemeTwoColors.unselectedHover,

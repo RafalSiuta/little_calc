@@ -36,6 +36,7 @@ class CalculatorDisplay extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 6,
                 children: [
                   Expanded(
                     child: data.equationDisplay.isEmpty
@@ -48,7 +49,6 @@ class CalculatorDisplay extends StatelessWidget {
                             ),
                           ),
                   ),
-                  // const SizedBox(height: 16),
                   Expanded(
                     child: SizedBox(
                       width: double.infinity,
@@ -72,7 +72,7 @@ class CalculatorDisplay extends StatelessWidget {
                           blendMode: BlendMode.srcIn,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            alignment: Alignment.centerRight,
+                            alignment: Alignment.topRight,
                             child: Text(
                               displayValue,
                               maxLines: 1,
@@ -101,24 +101,6 @@ class CalculatorDisplay extends StatelessWidget {
     );
   }
 
-  // String _equationText() {
-  //   if (data.operator.isEmpty) {
-  //     return '';
-  //   }
-  //   final leftSide = data.oldText.isNotEmpty ? data.oldText : data.display;
-  //   return '$leftSide ${_operatorGlyph(data.operator)}';
-  // }
-
-  // String _operatorGlyph(String value) {
-  //   switch (value) {
-  //     case '/':
-  //       return '\u00f7';
-  //     case '*':
-  //       return '\u00d7';
-  //     default:
-  //       return value;
-  //   }
-  // }
 
   Future<void> _copyToClipboard(BuildContext context, String value) async {
     if (value.isEmpty) {
