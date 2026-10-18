@@ -6,7 +6,7 @@ import '../utils/system/system_helper.dart';
 
 class ThemeSettingsProvider extends ChangeNotifier {
   static const MethodChannel _windowChannel =
-      MethodChannel('little_calc/window');
+      MethodChannel('bizcalc/window');
 
   final Prefs _prefs = Prefs();
 

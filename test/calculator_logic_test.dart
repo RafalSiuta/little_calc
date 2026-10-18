@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:little_calc/utils/calc_logic/calculator_logic.dart';
-import 'package:little_calc/utils/calc_symbols/calc_symbols.dart';
+import 'package:bizcalc/utils/calc_logic/calculator_logic.dart';
+import 'package:bizcalc/utils/calc_symbols/calc_symbols.dart';
 
 void main() {
   group('CalculatorLogic scientific functions', () {

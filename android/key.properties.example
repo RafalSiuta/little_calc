@@ -1,0 +1,7 @@
+# Copy this file to android/key.properties. Never commit the copy.
+# The storeFile path can be absolute. Keep passwords out of version control.
+# Passwords may instead be stored in ignored notes/signing_credentials.properties.
+storeFile=/absolute/path/to/fitcalcrafalsiuta.jks
+keyAlias=fitcalculator
+storePassword=
+keyPassword=

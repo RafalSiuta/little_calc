@@ -12,7 +12,7 @@ class WindowTitleBar extends StatelessWidget {
 
   static const double height = 44;
   static const MethodChannel _windowChannel =
-      MethodChannel('little_calc/window');
+      MethodChannel('bizcalc/window');
 
   Future<void> _invokeWindowAction(String action) async {
     try {
@@ -41,7 +41,7 @@ class WindowTitleBar extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'little_calc',
+                    'bizcalc',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: calcTheme.windowTitleTextStyle,

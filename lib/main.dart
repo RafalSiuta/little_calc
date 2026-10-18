@@ -4,7 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:little_calc/utils/styles/theme.dart';
+import 'package:bizcalc/utils/styles/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/calc_logic/calculator_logic.dart';
