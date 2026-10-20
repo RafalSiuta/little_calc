@@ -80,9 +80,6 @@ flutter:
     - family: Exo
       fonts:
         - asset: assets/fonts/Exo-Thin.ttf
-    - family: Calc
-      fonts:
-        - asset: assets/fonts/CalcFont-Regular.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
