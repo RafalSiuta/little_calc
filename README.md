@@ -19,8 +19,8 @@ without restoring these files would remove the desktop window behavior.
 
 The Java release APK uses the same application ID and is signed by the key in
 `D:/DEV/FLUTTER/FLUTTER_PROJECTS/NEW 2025/sign_apps/fit_calc/fitcalcrafalsiuta.jks`.
-The last available APK has version code 9; the Java source also contains code 10.
-This Flutter project uses version `1.2.0+11`.
+The previous production APK has version code 12 (version name 1.1).
+This Flutter project uses version `1.2.0+13`.
 
 The Android release build reads the ignored `android/key.properties` file for
 `storeFile` and `keyAlias`. Add `storePassword` and `keyPassword` to that file,

@@ -140,6 +140,10 @@ class CurrencyLogic extends ChangeNotifier {
   }
 
   void handleKeyPress(String value) {
+    if (value == 'DEL') {
+      delete();
+      return;
+    }
     if (value == 'C') {
       clear();
       return;

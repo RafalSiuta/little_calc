@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeSettingsProvider>(
         builder: (context, themeSettings, child) {
           return MaterialApp(
-            title: 'little calc',
+            title: 'bixcalc',
             debugShowCheckedModeBanner: false,
             color: Colors.transparent,
             theme: CalcTheme.themeData(themeSettings.currentTheme),

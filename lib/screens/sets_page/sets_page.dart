@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
 import 'about_page.dart';
-import 'advanced_page.dart';
-import 'sets_currency_page.dart';
 import 'themes_page.dart';
 
 class SetsPage extends StatelessWidget {
@@ -11,8 +9,8 @@ class SetsPage extends StatelessWidget {
 
   static const List<String> _tabs = [
     'themes',
-    'advanced',
-    'currency',
+    // 'advanced',
+    // 'currency',
     'about',
   ];
 
@@ -28,8 +26,8 @@ class SetsPage extends StatelessWidget {
             child: TabBarView(
               children: [
                 ThemesPage(),
-                AdvancedPage(),
-                SetsCurrencyPage(),
+                // AdvancedPage(),
+                // SetsCurrencyPage(),
                 AboutPage(),
               ],
             ),

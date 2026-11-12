@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../utils/calc_logic/calculator_logic.dart';
+import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 import '../buttons/option_icon_button.dart';
@@ -185,20 +186,20 @@ class _InfoDisplay extends StatelessWidget {
           ),
 
           OptionIconButton(
-            icon: isExpanded ? Icons.fullscreen_exit : Icons.fullscreen,
+            icon: isExpanded ? BixCalcIcons.calculator_simple : BixCalcIcons.calc_extend,
             tooltip: isExpanded ? 'Zwez kalkulator' : 'Rozszerz kalkulator',
             isActive: false,
             usePressedAccent: true,
             onPressed: onToggleCalculatorWidth,
           ),
           // const SizedBox(width: 16),
-          OptionIconButton(
-            icon: Icons.backspace_outlined,
-            tooltip: 'Usun',
-            isActive: false,
-            usePressedAccent: true,
-            onPressed: onBackspace,
-          ),
+          // OptionIconButton(
+          //   icon: Icons.backspace_outlined,
+          //   tooltip: 'Usun',
+          //   isActive: false,
+          //   usePressedAccent: true,
+          //   onPressed: onBackspace,
+          // ),
         ],
       ),
     );

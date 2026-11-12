@@ -12,7 +12,7 @@ if (-not (Test-Path -LiteralPath $javaExe)) {
 $pubspec = [IO.File]::ReadAllText((Join-Path $projectRoot 'pubspec.yaml'))
 $version = [regex]::Match($pubspec, '(?m)^version:\s*(\d+\.\d+\.\d+)\+(\d+)\s*$')
 if (-not $version.Success) {
-    throw 'Expected a Flutter version in pubspec.yaml, for example 1.2.0+11.'
+    throw 'Expected a Flutter version in pubspec.yaml, for example 1.2.0+13.'
 }
 
 $localPropertiesPath = Join-Path $projectRoot 'android\local.properties'

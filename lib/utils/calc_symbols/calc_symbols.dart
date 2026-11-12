@@ -44,33 +44,34 @@ class CalcSymbols {
       CalcKey('M-', type: _fn),
     ],
     [
-      CalcKey('C', type: _fn),
-      CalcKey('()', type: _op),
-      CalcKey('+/-', type: _op),
-      CalcKey(divisionSign, type: _op),
+      CalcKey('C'),
+      CalcKey('()'),
+      CalcKey('DEL'),
+      CalcKey('+', type: _op),
     ],
     [
       CalcKey('7'),
       CalcKey('8'),
       CalcKey('9'),
-      CalcKey(multiplicationSign, type: _op),
+      CalcKey('-', type: _op),
     ],
     [
       CalcKey('4'),
       CalcKey('5'),
       CalcKey('6'),
-      CalcKey('-', type: _op),
+      CalcKey(multiplicationSign, type: _op),
     ],
     [
       CalcKey('1'),
       CalcKey('2'),
       CalcKey('3'),
-      CalcKey('+', type: _op),
+      CalcKey(divisionSign, type: _op),
     ],
     [
-      CalcKey('.', type: _op),
+      CalcKey('+/-'),
       CalcKey('0'),
-      CalcKey('=', type: _op, flex: 2),
+      CalcKey('.'),
+      CalcKey('='),
     ],
   ];
 

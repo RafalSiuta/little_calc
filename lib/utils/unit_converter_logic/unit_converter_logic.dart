@@ -105,6 +105,10 @@ class UnitConverterLogic extends ChangeNotifier {
   }
 
   void handleKeyPress(String value) {
+    if (value == 'DEL') {
+      delete();
+      return;
+    }
     if (value == 'C') { clear(); return; }
     if (_activeDisplay == UnitActiveDisplay.equation) {
       if (value == '=') _finishEquation(); else _calculator.multifunction(value);

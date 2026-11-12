@@ -1067,6 +1067,7 @@ class CalculatorLogic extends ChangeNotifier {
         clear();
         break;
       case '&':
+      case 'DEL':
         delete();
         break;
     }

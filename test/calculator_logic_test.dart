@@ -3,6 +3,28 @@ import 'package:bizcalc/utils/calc_logic/calculator_logic.dart';
 import 'package:bizcalc/utils/calc_symbols/calc_symbols.dart';
 
 void main() {
+  test('basic keyboard matches the Figma key order and DEL removes input', () {
+    expect(
+      CalcSymbols.compactRows
+          .map((row) => row.map((key) => key.label).toList())
+          .toList(),
+      [
+        ['MC', 'MR', 'M+', 'M-'],
+        ['C', '()', 'DEL', '+'],
+        ['7', '8', '9', '-'],
+        ['4', '5', '6', CalcSymbols.multiplicationSign],
+        ['1', '2', '3', CalcSymbols.divisionSign],
+        ['+/-', '0', '.', '='],
+      ],
+    );
+
+    final logic = CalculatorLogic();
+    logic.multifunction('1');
+    logic.multifunction('2');
+    logic.multifunction('DEL');
+    expect(logic.equationDisplay, '1');
+  });
+
   group('CalculatorLogic scientific functions', () {
     test('does not append repeated zeros after toggling zero negative', () {
       final logic = CalculatorLogic();

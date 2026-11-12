@@ -3,15 +3,13 @@ import 'package:provider/provider.dart';
 import '../models/nav_model/nav_model.dart';
 import '../models/screen_model/screen_model.dart';
 import '../providers/theme_settings_provider.dart';
+import '../utils/custom_icons/bixcalc_icons.dart';
 import '../utils/extensions/color_formatter.dart';
 import '../utils/system/system_helper.dart';
-import '../utils/styles/dimensions/dimensions.dart';
 import '../utils/styles/theme.dart';
 import '../widgets/options/calculator_options_bar.dart';
 import '../widgets/window/window_title_bar.dart';
 import 'calc_page/calc_page.dart';
-import 'currency_page/currency_page.dart';
-import 'history_page/history_page.dart';
 import 'sets_page/sets_page.dart';
 import 'unit_convert_page/unit_convert_page.dart';
 
@@ -31,35 +29,35 @@ class _MainScreenState extends State<MainScreen> {
       page: CalcPage(),
       nav: NavModel(
         title: 'kalkulator',
-        icon: Icons.calculate_outlined,
+        icon: BixCalcIcons.calculator_simple,
       ),
     ),
     ScreenModel(
       page: UnitConvertPage(),
       nav: NavModel(
         title: 'jednostki',
-        icon: Icons.straighten,
+        icon: BixCalcIcons.ruler_triangle,
       ),
     ),
-    ScreenModel(
-      page: CurrencyPage(),
-      nav: NavModel(
-        title: 'waluty',
-        icon: Icons.attach_money,
-      ),
-    ),
-    ScreenModel(
-      page: HistoryPage(),
-      nav: NavModel(
-        title: 'historia',
-        icon: Icons.history,
-      ),
-    ),
+    // ScreenModel(
+    //   page: CurrencyPage(),
+    //   nav: NavModel(
+    //     title: 'waluty',
+    //     icon: Icons.attach_money,
+    //   ),
+    // ),
+    // ScreenModel(
+    //   page: HistoryPage(),
+    //   nav: NavModel(
+    //     title: 'historia',
+    //     icon: Icons.history,
+    //   ),
+    // ),
     ScreenModel(
       page: SetsPage(),
       nav: NavModel(
         title: 'ustawienia',
-        icon: Icons.settings_outlined,
+        icon: BixCalcIcons.settings,
       ),
     ),
   ];
@@ -109,8 +107,6 @@ class _MainScreenState extends State<MainScreen> {
                   selectedItem: _currentPage,
                   onItemSelected: _onPageChange,
                 ),
-                if (SystemHelper.isMobileSystem)
-                  SizedBox(height: AppDimens.currentItemSpacing()),
                 Expanded(
                   child: PageView.builder(
                     physics: const NeverScrollableScrollPhysics(),

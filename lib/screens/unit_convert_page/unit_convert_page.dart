@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/window_layout_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
+import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/extensions/number_formatter.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
@@ -98,8 +99,8 @@ class _UnitConvertContentState extends State<_UnitConvertContent>
           ],
           trailing: OptionIconButton(
             icon: SystemHelper.isMobileSystem && layout.isExpanded
-                ? Icons.calculate_outlined
-                : Icons.list_alt_outlined,
+                ? BixCalcIcons.calculator_simple
+                : BixCalcIcons.rectangle_list,
             tooltip: layout.isExpanded
                 ? 'Zwiń listę jednostek'
                 : 'Pokaż listę jednostek',
@@ -265,15 +266,15 @@ class _UnitConverter extends StatelessWidget {
                     Row(
                       spacing: AppDimens.currentItemSpacing(),
                       children: [
+                        // OptionIconButton(
+                        //   icon: Icons.autorenew,
+                        //   tooltip: 'Zamień jednostki',
+                        //   isActive: false,
+                        //   usePressedAccent: true,
+                        //   onPressed: logic.swapUnits,
+                        // ),
                         OptionIconButton(
-                          icon: Icons.autorenew,
-                          tooltip: 'Zamień jednostki',
-                          isActive: false,
-                          usePressedAccent: true,
-                          onPressed: logic.swapUnits,
-                        ),
-                        OptionIconButton(
-                          icon: Icons.arrow_upward,
+                          icon: BixCalcIcons.arrow_up,
                           tooltip: 'Poprzednia wartość',
                           isActive: false,
                           usePressedAccent: true,
@@ -281,20 +282,20 @@ class _UnitConverter extends StatelessWidget {
                               logic.toggleActiveDisplay(next: false),
                         ),
                         OptionIconButton(
-                          icon: Icons.arrow_downward,
+                          icon: BixCalcIcons.arrow_down,
                           tooltip: 'Następna wartość',
                           isActive: false,
                           usePressedAccent: true,
                           onPressed: () =>
                               logic.toggleActiveDisplay(next: true),
                         ),
-                        OptionIconButton(
-                          icon: Icons.backspace_outlined,
-                          tooltip: 'Usuń',
-                          isActive: false,
-                          usePressedAccent: true,
-                          onPressed: logic.delete,
-                        ),
+                        // OptionIconButton(
+                        //   icon: Icons.backspace_outlined,
+                        //   tooltip: 'Usuń',
+                        //   isActive: false,
+                        //   usePressedAccent: true,
+                        //   onPressed: logic.delete,
+                        // ),
                       ],
                     ),
                   ],

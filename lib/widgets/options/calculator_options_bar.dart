@@ -27,7 +27,7 @@ class CalculatorOptionsBar extends StatelessWidget {
 
     return Container(
       height: AppDimens.calculatorOptionsBarHeight(),
-      // margin: const EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border(
