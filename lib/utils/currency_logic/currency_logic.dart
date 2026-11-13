@@ -33,6 +33,22 @@ class CurrencyLogic extends ChangeNotifier {
   CurrencyActiveDisplay get activeDisplay => _activeDisplay;
   Currency? get activeCurrency => _activeDisplay == CurrencyActiveDisplay.target ? _targetCurrency : _baseCurrency;
   String get activeInputDisplay => _activeInput;
+  double? get memoryValue {
+    final value = double.tryParse(resultDisplay);
+    return value != null && value.isFinite ? value : null;
+  }
+
+  void recallMemoryValue(double value) {
+    if (!value.isFinite) return;
+    if (_activeDisplay == CurrencyActiveDisplay.equation) {
+      _calculator.recallMemoryValue(value);
+      return;
+    }
+    _activeInput = _formatDisplayNumber(value);
+    _replaceActiveInput = true;
+    _finalResultValue = null;
+    notifyListeners();
+  }
 
   String get equationDisplay {
     return _calculator.equationDisplay;

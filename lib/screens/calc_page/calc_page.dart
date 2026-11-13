@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/calc_logic/calculator_logic.dart';
+import '../../providers/calculator_memory_provider.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
@@ -42,7 +43,16 @@ class _CalcPageState extends State<CalcPage> {
               _CalculatorKeyboards(
                 isExpanded: windowLayout.isExpanded,
                 angleModeButtonLabel: data.angleModeButtonLabel,
-                onPressed: data.multifunction,
+                onPressed: (key) {
+                  final memory = context.read<CalculatorMemoryProvider>();
+                  if (!memory.handleKey(
+                    key,
+                    currentValue: data.memoryValue,
+                    onRecall: data.recallMemoryValue,
+                  )) {
+                    data.multifunction(key);
+                  }
+                },
               ),
             ],
           ),

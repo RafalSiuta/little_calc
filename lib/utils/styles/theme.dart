@@ -110,6 +110,8 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
 
   static CalcTheme fromThemeId(int themeId) {
     switch (themeId) {
+      case 4:
+        return _themeThree;
       case 3:
         return _themeTwo;
       case 2:
@@ -122,15 +124,18 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
 
   static ThemeData themeData(int themeId) {
     final calcTheme = CalcTheme.fromThemeId(themeId);
+    final isLight = calcTheme.background.computeLuminance() > 0.5;
 
     return ThemeData(
-      brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
-        surface: Colors.transparent,
-        primary: calcTheme.accent,
-        secondary: calcTheme.accent2,
-        error: calcTheme.error,
-      ),
+      brightness: isLight ? Brightness.light : Brightness.dark,
+      colorScheme:
+          (isLight ? const ColorScheme.light() : const ColorScheme.dark())
+              .copyWith(
+                surface: Colors.transparent,
+                primary: calcTheme.accent,
+                secondary: calcTheme.accent2,
+                error: calcTheme.error,
+              ),
       canvasColor: Colors.transparent,
       cardColor: Colors.transparent,
       primarySwatch: Colors.blue,
@@ -140,9 +145,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
         displayMedium: calcTheme.displayMidTextStyle,
         displaySmall: calcTheme.displaySmallTextStyle,
       ),
-      extensions: <ThemeExtension<dynamic>>[
-        calcTheme,
-      ],
+      extensions: <ThemeExtension<dynamic>>[calcTheme],
     );
   }
 
@@ -255,7 +258,8 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
           settingsCardTextStyle ?? this.settingsCardTextStyle,
       settingsCardValueTextStyle:
           settingsCardValueTextStyle ?? this.settingsCardValueTextStyle,
-      settingsCardAccentValueTextStyle: settingsCardAccentValueTextStyle ??
+      settingsCardAccentValueTextStyle:
+          settingsCardAccentValueTextStyle ??
           this.settingsCardAccentValueTextStyle,
       tabTextStyle: tabTextStyle ?? this.tabTextStyle,
       themeCardTextStyle: themeCardTextStyle ?? this.themeCardTextStyle,
@@ -333,16 +337,22 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
         other.placeholderTextStyle,
         t,
       )!,
-      optionIconButtonSize:
-          Size.lerp(optionIconButtonSize, other.optionIconButtonSize, t)!,
+      optionIconButtonSize: Size.lerp(
+        optionIconButtonSize,
+        other.optionIconButtonSize,
+        t,
+      )!,
       optionIconButtonPadding: EdgeInsetsGeometry.lerp(
         optionIconButtonPadding,
         other.optionIconButtonPadding,
         t,
       )!,
       optionIconSize: _lerpDouble(optionIconSize, other.optionIconSize, t),
-      windowActionButtonSize:
-          Size.lerp(windowActionButtonSize, other.windowActionButtonSize, t)!,
+      windowActionButtonSize: Size.lerp(
+        windowActionButtonSize,
+        other.windowActionButtonSize,
+        t,
+      )!,
       windowActionBorderRadius: BorderRadius.lerp(
         windowActionBorderRadius,
         other.windowActionBorderRadius,
@@ -367,12 +377,21 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       paddingSmall: _lerpDouble(paddingSmall, other.paddingSmall, t),
       itemSpacing: _lerpDouble(itemSpacing, other.itemSpacing, t),
       borderThickness: _lerpDouble(borderThickness, other.borderThickness, t),
-      cardBorderRadius:
-          _lerpDouble(cardBorderRadius, other.cardBorderRadius, t),
-      windowBorderRadius:
-          _lerpDouble(windowBorderRadius, other.windowBorderRadius, t),
-      menuIndicatorHeight:
-          _lerpDouble(menuIndicatorHeight, other.menuIndicatorHeight, t),
+      cardBorderRadius: _lerpDouble(
+        cardBorderRadius,
+        other.cardBorderRadius,
+        t,
+      ),
+      windowBorderRadius: _lerpDouble(
+        windowBorderRadius,
+        other.windowBorderRadius,
+        t,
+      ),
+      menuIndicatorHeight: _lerpDouble(
+        menuIndicatorHeight,
+        other.menuIndicatorHeight,
+        t,
+      ),
       backgroundShadow: Color.lerp(
         backgroundShadow,
         other.backgroundShadow,
@@ -409,27 +428,33 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
         other.themeCardButtonTextStyle,
         t,
       )!,
-      sliderTrackHeight:
-          _lerpDouble(sliderTrackHeight, other.sliderTrackHeight, t),
+      sliderTrackHeight: _lerpDouble(
+        sliderTrackHeight,
+        other.sliderTrackHeight,
+        t,
+      ),
       sliderThumbSize: _lerpDouble(sliderThumbSize, other.sliderThumbSize, t),
-      switchTrackHeight:
-          _lerpDouble(switchTrackHeight, other.switchTrackHeight, t),
+      switchTrackHeight: _lerpDouble(
+        switchTrackHeight,
+        other.switchTrackHeight,
+        t,
+      ),
       switchThumbSize: _lerpDouble(switchThumbSize, other.switchThumbSize, t),
     );
   }
 
   BoxDecoration get settingsCardDecoration => BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(cardBorderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: backgroundShadow,
-            offset: const Offset(0.5, 0.5),
-            blurRadius: 0.5,
-            spreadRadius: 0.5,
-          ),
-        ],
-      );
+    color: background,
+    borderRadius: BorderRadius.circular(cardBorderRadius),
+    boxShadow: [
+      BoxShadow(
+        color: backgroundShadow,
+        offset: const Offset(0.5, 0.5),
+        blurRadius: 0.5,
+        spreadRadius: 0.5,
+      ),
+    ],
+  );
 
   Color optionIconColor({
     required bool isActive,
@@ -464,6 +489,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     required Color unselected,
     required Color unselectedHover,
     required Color error,
+    Color backgroundShadow = const Color(0x33000000),
   }) {
     final displayLargeTextStyle = GoogleFonts.exo2(
       color: accent,
@@ -512,12 +538,15 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       displayLargeTextStyle: displayLargeTextStyle,
       displayMidTextStyle: displayMidTextStyle,
       displaySmallTextStyle: displaySmallTextStyle,
-      numButtonNumberTextStyle:
-          numButtonBaseTextStyle.copyWith(color: numbersText),
-      numButtonOperatorTextStyle:
-          numButtonBaseTextStyle.copyWith(color: operatorsText),
-      numButtonFunctionTextStyle:
-          numButtonBaseTextStyle.copyWith(color: functionsText),
+      numButtonNumberTextStyle: numButtonBaseTextStyle.copyWith(
+        color: numbersText,
+      ),
+      numButtonOperatorTextStyle: numButtonBaseTextStyle.copyWith(
+        color: operatorsText,
+      ),
+      numButtonFunctionTextStyle: numButtonBaseTextStyle.copyWith(
+        color: functionsText,
+      ),
       numButtonPressedTextStyle: numButtonBaseTextStyle.copyWith(color: accent),
       windowTitleTextStyle: TextStyle(
         color: text,
@@ -549,7 +578,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       cardBorderRadius: AppDimens.cornerMedium,
       windowBorderRadius: 16,
       menuIndicatorHeight: 2,
-      backgroundShadow: const Color(0x33000000),
+      backgroundShadow: backgroundShadow,
       settingsTitleTextStyle: GoogleFonts.exo2(
         color: text,
         fontSize: 24,
@@ -652,6 +681,23 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     unselected: AppThemeTwoColors.unselected,
     unselectedHover: AppThemeTwoColors.unselectedHover,
     error: AppThemeTwoColors.error,
+  );
+
+  static final CalcTheme _themeThree = CalcTheme._build(
+    systemWindow: AppThemeThreeColors.systemWindow,
+    background: AppThemeThreeColors.background,
+    borderDark: AppThemeThreeColors.borderDark,
+    text: AppThemeThreeColors.text,
+    numbersText: AppThemeThreeColors.numbersText,
+    operatorsText: AppThemeThreeColors.operatorsText,
+    functionsText: AppThemeThreeColors.functionsText,
+    accent: AppThemeThreeColors.accent,
+    accentFill: AppThemeThreeColors.accentFill,
+    accent2: AppThemeThreeColors.accent2,
+    unselected: AppThemeThreeColors.unselected,
+    unselectedHover: AppThemeThreeColors.unselectedHover,
+    error: AppThemeThreeColors.error,
+    backgroundShadow: const Color(0x59000000),
   );
 }
 

@@ -98,7 +98,7 @@ class _ThemesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: isExpandedDesktop ? 82 * 6 + 10 * 5 : 82 * 2 + 10,
+      width: isExpandedDesktop ? 82 * 6 + 10 * 5 : 82 * 3 + 10,
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

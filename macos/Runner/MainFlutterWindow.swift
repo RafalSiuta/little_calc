@@ -92,7 +92,7 @@ class MainFlutterWindow: NSWindow {
 
   private func configureWindowChannel(with flutterViewController: FlutterViewController) {
     let channel = FlutterMethodChannel(
-      name: "bizcalc/window",
+      name: "bixcalc/window",
       binaryMessenger: flutterViewController.engine.binaryMessenger
     )
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bizcalc/models/currency_model/currency.dart';
-import 'package:bizcalc/utils/currency_logic/currency_logic.dart';
+import 'package:bixcalc/models/currency_model/currency.dart';
+import 'package:bixcalc/utils/currency_logic/currency_logic.dart';
 
 void main() {
   group('CurrencyLogic', () {

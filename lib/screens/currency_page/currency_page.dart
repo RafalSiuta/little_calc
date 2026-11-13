@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/currency_model/currency.dart';
 import '../../providers/currencies_provider.dart';
+import '../../providers/calculator_memory_provider.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/currency_logic/currency_logic.dart';
@@ -243,8 +244,16 @@ class _CurrencyListHeader extends StatelessWidget {
 class _CurrencyConverter extends StatelessWidget {
   const _CurrencyConverter({Key? key}) : super(key: key);
 
-  void _handleKeyPress(CurrencyLogic logic, String value) {
+  void _handleKeyPress(BuildContext context, CurrencyLogic logic, String value) {
     final logicValue = CalcSymbols.logicValue(value);
+    final memory = context.read<CalculatorMemoryProvider>();
+    if (memory.handleKey(
+      logicValue,
+      currentValue: logic.memoryValue,
+      onRecall: logic.recallMemoryValue,
+    )) {
+      return;
+    }
     if (logicValue.isEmpty) {
       return;
     }
@@ -293,7 +302,7 @@ class _CurrencyConverter extends StatelessWidget {
         ),
         CalculatorKeyboard(
           rows: CalcSymbols.compactRows,
-          onPressed: (value) => _handleKeyPress(logic, value),
+          onPressed: (value) => _handleKeyPress(context, logic, value),
         ),
       ],
     );

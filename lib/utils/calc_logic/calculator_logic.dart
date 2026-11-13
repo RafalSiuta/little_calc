@@ -60,6 +60,38 @@ class CalculatorLogic extends ChangeNotifier {
   String get angleModeButtonLabel => _useRadians ? 'Deg' : 'Rad';
   String get angleModeDisplay => _useRadians ? 'Rad' : 'Deg';
 
+  double? get memoryValue {
+    try {
+      final value = _previewValue();
+      return value.isFinite ? value : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void recallMemoryValue(double value) {
+    if (!value.isFinite) return;
+    clearSmallDisplay();
+    final text = _formatTokenNumber(value);
+
+    if (_tokens.isEmpty || flag == Flag.RESULT) {
+      _resetExpressionToNumber(value);
+    } else if (_lastTokenIsNumber()) {
+      _replaceLastNumberToken(text);
+    } else {
+      if (_lastTokenIsConstant() || _lastTokenIsCloseBracket()) {
+        _appendOperatorToken('*');
+      }
+      _tokens.add(text);
+      _currentNumber = text;
+    }
+
+    _clearAngleFunctionState();
+    _refreshStateAfterTokenChange();
+    if (_tokens.length == 1) display = text;
+    notifyListeners();
+  }
+
   // Applies display-formatting settings provided by app-level calculator
   // preferences and refreshes the visible result when those settings change.
   void updateSettings(CalculatorSettingsProvider settings) {

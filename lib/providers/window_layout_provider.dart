@@ -5,7 +5,7 @@ import '../utils/system/system_helper.dart';
 
 class WindowLayoutProvider extends ChangeNotifier {
   static const MethodChannel _windowChannel =
-      MethodChannel('bizcalc/window');
+      MethodChannel('bixcalc/window');
   static const int compactWindowWidth = 390;
   static const int expandedWindowWidth = 815;
 

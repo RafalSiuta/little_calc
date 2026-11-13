@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:bizcalc/main.dart';
+import 'package:bixcalc/main.dart';
 
 void main() {
   testWidgets('loads calculator and switches pages from options bar',

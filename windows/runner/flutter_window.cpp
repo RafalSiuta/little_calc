@@ -176,7 +176,7 @@ bool FlutterWindow::OnCreate() {
 
   window_channel_ =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          flutter_controller_->engine()->messenger(), "bizcalc/window",
+          flutter_controller_->engine()->messenger(), "bixcalc/window",
           &flutter::StandardMethodCodec::GetInstance());
   window_channel_->SetMethodCallHandler(
       [this](const flutter::MethodCall<flutter::EncodableValue>& call,

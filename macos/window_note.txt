@@ -1,5 +1,5 @@
 The macOS runner already implements the native transparent window and blur in
 Runner/MainFlutterWindow.swift. It uses a borderless NSWindow with rounded clear
 layers and an NSVisualEffectView behind the Flutter surface. The method channel
-bizcalc/window handles drag, minimize, close, width changes, and native blur.
+bixcalc/window handles drag, minimize, close, width changes, and native blur.
 Preserve this file when updating the Flutter platform runner.

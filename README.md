@@ -1,4 +1,4 @@
-# bizcalc
+# bixcalc
 
 Flutter calculator app. The Android application ID is
 `org.firstapp.rafalsiuta.fitcalc`.
@@ -12,7 +12,7 @@ size. macOS implements its transparent, rounded `NSVisualEffectView` window in
 `macos/Runner/MainFlutterWindow.swift`. The custom minimize, width-toggle and
 close icons are Flutter widgets in `lib/widgets/window/window_title_bar.dart`
 and `lib/widgets/icons/window_icons.dart`. Both runners communicate with Flutter
-through the `bizcalc/window` method channel. Regenerating a platform directory
+through the `bixcalc/window` method channel. Regenerating a platform directory
 without restoring these files would remove the desktop window behavior.
 
 ## Play Store release
@@ -20,7 +20,7 @@ without restoring these files would remove the desktop window behavior.
 The Java release APK uses the same application ID and is signed by the key in
 `D:/DEV/FLUTTER/FLUTTER_PROJECTS/NEW 2025/sign_apps/fit_calc/fitcalcrafalsiuta.jks`.
 The previous production APK has version code 12 (version name 1.1).
-This Flutter project uses version `1.2.0+13`.
+This Flutter project uses version `1.2.0+14`.
 
 The Android release build reads the ignored `android/key.properties` file for
 `storeFile` and `keyAlias`. Add `storePassword` and `keyPassword` to that file,

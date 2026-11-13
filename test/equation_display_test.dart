@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bizcalc/utils/styles/theme.dart';
-import 'package:bizcalc/widgets/displays/equation_display.dart';
+import 'package:bixcalc/utils/styles/theme.dart';
+import 'package:bixcalc/widgets/displays/equation_display.dart';
 
 void main() {
   testWidgets('wraps, scales, and scrolls a long equation', (tester) async {

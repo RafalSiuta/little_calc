@@ -5,15 +5,14 @@ import '../utils/prefs/prefs.dart';
 import '../utils/system/system_helper.dart';
 
 class ThemeSettingsProvider extends ChangeNotifier {
-  static const MethodChannel _windowChannel =
-      MethodChannel('bizcalc/window');
+  static const MethodChannel _windowChannel = MethodChannel('bixcalc/window');
 
   final Prefs _prefs = Prefs();
 
   double backgroundBlur = SystemHelper.isMobileSystem ? 0 : 0.8;
   double backgroundOpacity = SystemHelper.isMobileSystem ? 1 : 0.7;
 
-  List<int> themesList = [1, 2, 3];
+  List<int> themesList = [1, 2, 3, 4];
   int currentTheme = 1; // themesList[1];
 
   ThemeSettingsProvider() {

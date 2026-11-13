@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bizcalc/utils/calc_logic/calculator_logic.dart';
-import 'package:bizcalc/utils/calc_symbols/calc_symbols.dart';
+import 'package:bixcalc/utils/calc_logic/calculator_logic.dart';
+import 'package:bixcalc/utils/calc_symbols/calc_symbols.dart';
 
 void main() {
   test('basic keyboard matches the Figma key order and DEL removes input', () {

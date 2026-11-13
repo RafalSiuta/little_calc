@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/window_layout_provider.dart';
+import '../../providers/calculator_memory_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/extensions/number_formatter.dart';
@@ -308,6 +309,14 @@ class _UnitConverter extends StatelessWidget {
           rows: CalcSymbols.compactRows,
           onPressed: (value) {
             final logicValue = CalcSymbols.logicValue(value);
+            final memory = context.read<CalculatorMemoryProvider>();
+            if (memory.handleKey(
+              logicValue,
+              currentValue: logic.memoryValue,
+              onRecall: logic.recallMemoryValue,
+            )) {
+              return;
+            }
             if (logicValue.isNotEmpty) {
               logic.handleKeyPress(logicValue);
             }

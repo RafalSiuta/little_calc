@@ -4,11 +4,12 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bizcalc/utils/styles/theme.dart';
+import 'package:bixcalc/utils/styles/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/calc_logic/calculator_logic.dart';
 import 'providers/calculator_settings_provider.dart';
+import 'providers/calculator_memory_provider.dart';
 import 'providers/currencies_provider.dart';
 import 'providers/theme_settings_provider.dart';
 import 'providers/window_layout_provider.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => CalculatorMemoryProvider()),
         ChangeNotifierProvider(
           create: (context) => CalculatorSettingsProvider(),
         ),

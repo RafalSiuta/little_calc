@@ -45,7 +45,7 @@ class CalcSymbols {
     ],
     [
       CalcKey('C'),
-      CalcKey('()'),
+      CalcKey('()',type: _op),
       CalcKey('DEL'),
       CalcKey('+', type: _op),
     ],
@@ -68,10 +68,10 @@ class CalcSymbols {
       CalcKey(divisionSign, type: _op),
     ],
     [
-      CalcKey('+/-'),
+      CalcKey('+/-', type: _op),
       CalcKey('0'),
       CalcKey('.'),
-      CalcKey('='),
+      CalcKey('=',type: _op),
     ],
   ];
 
@@ -196,11 +196,6 @@ class CalcSymbols {
       case 'Rad':
       case 'Deg':
         return 'angleMode';
-      case 'MC':
-      case 'MR':
-      case 'M+':
-      case 'M-':
-        return '';
       case '()':
         return '()';
       default:

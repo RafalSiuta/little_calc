@@ -35,6 +35,22 @@ class UnitConverterLogic extends ChangeNotifier {
   UnitDefinition get targetUnit => _targetUnit;
   UnitDefinition get selectedUnit => _activeDisplay == UnitActiveDisplay.target ? _targetUnit : _sourceUnit;
   UnitActiveDisplay get activeDisplay => _activeDisplay;
+  double? get memoryValue {
+    final value = double.tryParse(resultValue);
+    return value != null && value.isFinite ? value : null;
+  }
+
+  void recallMemoryValue(double value) {
+    if (!value.isFinite) return;
+    if (_activeDisplay == UnitActiveDisplay.equation) {
+      _calculator.recallMemoryValue(value);
+      return;
+    }
+    _activeInput = _format(value);
+    _replaceActiveInput = true;
+    _finalResultValue = null;
+    notifyListeners();
+  }
   String get sourceValue => _activeDisplay == UnitActiveDisplay.target ? _format(_convert(_targetInput, _targetUnit, _sourceUnit)) : _sourceInput;
   String get targetValue => _activeDisplay == UnitActiveDisplay.target ? _targetInput : _format(_convert(_sourceInput, _sourceUnit, _targetUnit));
   String get resultValue {
