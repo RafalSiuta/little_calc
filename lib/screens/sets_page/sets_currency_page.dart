@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/theme.dart';
 
 class SetsCurrencyPage extends StatelessWidget {
@@ -14,7 +15,7 @@ class SetsCurrencyPage extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(calcTheme.basePadding),
         child: Text(
-          'currency',
+          context.tr('settings.currency'),
           style: calcTheme.settingsTitleTextStyle,
         ),
       ),

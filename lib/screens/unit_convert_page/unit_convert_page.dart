@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../providers/calculator_memory_provider.dart';
 import '../../utils/calc_symbols/calc_symbols.dart';
@@ -66,6 +67,7 @@ class _UnitConvertContentState extends State<_UnitConvertContent>
     super.initState();
     _tabController = TabController(
       length: UnitCategory.values.length,
+      initialIndex: context.read<UnitConverterLogic>().category.index,
       vsync: this,
     )..addListener(_onTabChanged);
   }
@@ -81,8 +83,8 @@ class _UnitConvertContentState extends State<_UnitConvertContent>
   void _onTabChanged() {
     if (!_tabController.indexIsChanging) {
       context.read<UnitConverterLogic>().setCategory(
-            UnitCategory.values[_tabController.index],
-          );
+        UnitCategory.values[_tabController.index],
+      );
     }
   }
 
@@ -96,15 +98,15 @@ class _UnitConvertContentState extends State<_UnitConvertContent>
           controller: _tabController,
           tabs: [
             for (final category in UnitCategory.values)
-              UnitDefinitions.categoryNames[category]!,
+              context.tr('units.categories.${category.name}'),
           ],
           trailing: OptionIconButton(
             icon: SystemHelper.isMobileSystem && layout.isExpanded
                 ? BixCalcIcons.calculator_simple
                 : BixCalcIcons.rectangle_list,
             tooltip: layout.isExpanded
-                ? 'Zwiń listę jednostek'
-                : 'Pokaż listę jednostek',
+                ? context.tr('actions.hide_units')
+                : context.tr('actions.show_units'),
             isActive: SystemHelper.isDesktopSystem && layout.isExpanded,
             usePressedAccent: true,
             onPressed: layout.toggleCalculatorWidth,
@@ -113,9 +115,10 @@ class _UnitConvertContentState extends State<_UnitConvertContent>
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children:  [
-              for (final category in UnitCategory.values) _UnitCategoryView(),
-            ],
+            children: List.filled(
+              UnitCategory.values.length,
+              const _UnitCategoryView(),
+            ),
           ),
         ),
       ],
@@ -165,7 +168,7 @@ class _UnitList extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: UnitHeader(
-              title: UnitDefinitions.listHeaderNames[logic.category]!,
+              title: context.tr('units.headers.${logic.category.name}'),
             ),
           ),
         ),
@@ -181,8 +184,8 @@ class _UnitList extends StatelessWidget {
                 unit: unit,
                 value: unit == logic.selectedUnit
                     ? (logic.activeDisplay == UnitActiveDisplay.target
-                        ? logic.targetValue
-                        : logic.sourceValue)
+                          ? logic.targetValue
+                          : logic.sourceValue)
                     : numberFormatter(
                         logic.convertedValueFor(unit),
                         decimalPlaces: 10,
@@ -276,7 +279,7 @@ class _UnitConverter extends StatelessWidget {
                         // ),
                         OptionIconButton(
                           icon: BixCalcIcons.arrow_up,
-                          tooltip: 'Poprzednia wartość',
+                          tooltip: context.tr('actions.previous_value'),
                           isActive: false,
                           usePressedAccent: true,
                           onPressed: () =>
@@ -284,7 +287,7 @@ class _UnitConverter extends StatelessWidget {
                         ),
                         OptionIconButton(
                           icon: BixCalcIcons.arrow_down,
-                          tooltip: 'Następna wartość',
+                          tooltip: context.tr('actions.next_value'),
                           isActive: false,
                           usePressedAccent: true,
                           onPressed: () =>

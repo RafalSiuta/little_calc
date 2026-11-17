@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/theme.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _PlaceholderPage(title: 'Historia kalkulacji');
+    return _PlaceholderPage(title: context.tr('pages.history'));
   }
 }
 
@@ -20,10 +21,7 @@ class _PlaceholderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Text(
-        title,
-        style: context.calcTheme.placeholderTextStyle,
-      ),
+      child: Text(title, style: context.calcTheme.placeholderTextStyle),
     );
   }
 }

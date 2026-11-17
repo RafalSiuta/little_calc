@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../models/currency_model/currency.dart';
 import '../../utils/styles/theme.dart';
 
@@ -44,21 +45,29 @@ class _CurrencyChoiceDisplayState extends State<CurrencyChoiceDisplay> {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: theme.itemSpacing, vertical: 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: theme.itemSpacing,
+            vertical: 10,
+          ),
           decoration: BoxDecoration(
             color: _isHovered ? theme.accentFill : Colors.transparent,
             borderRadius: widget.isActive
-                    ? null
-                    : BorderRadius.circular(theme.itemSpacing),
+                ? null
+                : BorderRadius.circular(theme.itemSpacing),
             border: widget.isActive
-                ? Border(bottom: BorderSide(color: theme.accent, width: theme.borderThickness))
+                ? Border(
+                    bottom: BorderSide(
+                      color: theme.accent,
+                      width: theme.borderThickness,
+                    ),
+                  )
                 : null,
           ),
           child: Row(
             children: [
               PopupMenuButton<Currency>(
                 color: theme.background,
-                tooltip: 'Wybierz walutę',
+                tooltip: context.tr('actions.choose_currency'),
                 onSelected: widget.onSelected,
                 itemBuilder: (context) => [
                   for (final item in widget.currencies)
@@ -68,18 +77,29 @@ class _CurrencyChoiceDisplayState extends State<CurrencyChoiceDisplay> {
                         children: [
                           CurrencyFlag(currency: item),
                           const SizedBox(width: 8),
-                          Text(item.codeIso, style: theme.settingsCardTextStyle),
+                          Text(
+                            item.codeIso,
+                            style: theme.settingsCardTextStyle,
+                          ),
                           Expanded(
-                            child: Text(item.countryName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.settingsCardValueTextStyle),
+                            child: Text(
+                              context.tr(
+                                'currency.countries.${item.codeIso}',
+                                fallback: item.countryName,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.settingsCardValueTextStyle,
+                            ),
                           ),
                         ],
                       ),
                     ),
                 ],
-                child: _CurrencyChoice(currency: widget.currency, label: widget.label),
+                child: _CurrencyChoice(
+                  currency: widget.currency,
+                  label: widget.label,
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -87,19 +107,23 @@ class _CurrencyChoiceDisplayState extends State<CurrencyChoiceDisplay> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Flexible(
-                      child: Text(widget.value,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
-                          style: theme.displayMidTextStyle.copyWith(
-                            color: widget.isActive ? theme.accent : theme.text,
-                          )),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(widget.valueSymbol,
+                      child: Text(
+                        widget.value,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
                         style: theme.displayMidTextStyle.copyWith(
                           color: widget.isActive ? theme.accent : theme.text,
-                        )),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      widget.valueSymbol,
+                      style: theme.displayMidTextStyle.copyWith(
+                        color: widget.isActive ? theme.accent : theme.text,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -112,7 +136,12 @@ class _CurrencyChoiceDisplayState extends State<CurrencyChoiceDisplay> {
 }
 
 class CurrencyFlag extends StatelessWidget {
-  const CurrencyFlag({Key? key, required this.currency, this.width = 26, this.height = 16}) : super(key: key);
+  const CurrencyFlag({
+    Key? key,
+    required this.currency,
+    this.width = 26,
+    this.height = 16,
+  }) : super(key: key);
   final Currency currency;
   final double width;
   final double height;
@@ -125,8 +154,11 @@ class CurrencyFlag extends StatelessWidget {
       margin: const EdgeInsets.only(right: 2),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(color: theme.unselected),
-      child: Image.asset('assets/data/${currency.flagImg}', fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => ColoredBox(color: theme.unselected)),
+      child: Image.asset(
+        'assets/data/${currency.flagImg}',
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => ColoredBox(color: theme.unselected),
+      ),
     );
   }
 }
@@ -142,18 +174,28 @@ class _CurrencyChoice extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(mainAxisSize: MainAxisSize.min, children: [
-          CurrencyFlag(currency: currency),
-          const SizedBox(width: 5),
-          Text(currency.codeIso,
-              style: theme.numButtonNumberTextStyle.copyWith(color: theme.text)),
-          const SizedBox(width: 5),
-          Icon(Icons.arrow_drop_down, color: theme.text, size: 24),
-        ]),
-        Text(label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: theme.numButtonNumberTextStyle.copyWith(color: theme.text, fontSize: 10.32)),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CurrencyFlag(currency: currency),
+            const SizedBox(width: 5),
+            Text(
+              currency.codeIso,
+              style: theme.numButtonNumberTextStyle.copyWith(color: theme.text),
+            ),
+            const SizedBox(width: 5),
+            Icon(Icons.arrow_drop_down, color: theme.text, size: 24),
+          ],
+        ),
+        Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.numButtonNumberTextStyle.copyWith(
+            color: theme.text,
+            fontSize: 10.32,
+          ),
+        ),
       ],
     );
   }

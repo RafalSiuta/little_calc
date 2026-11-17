@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/theme.dart';
 import '../../utils/unit_converter_logic/unit_definitions.dart';
 
@@ -47,8 +48,8 @@ class _UnitConverterDisplayState extends State<UnitConverterDisplay> {
           decoration: BoxDecoration(
             color: _isHovered ? theme.accentFill : Colors.transparent,
             borderRadius: widget.isActive
-                    ? null
-                    : BorderRadius.circular(theme.itemSpacing),
+                ? null
+                : BorderRadius.circular(theme.itemSpacing),
             border: widget.isActive
                 ? Border(
                     bottom: BorderSide(
@@ -60,33 +61,48 @@ class _UnitConverterDisplayState extends State<UnitConverterDisplay> {
           ),
           child: Row(
             children: [
-              PopupMenuButton<UnitDefinition>(
-                color: theme.background,
-                tooltip: 'Wybierz jednostkę',
-                onSelected: widget.onUnitSelected,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(widget.unit.name,
-                        style: theme.numButtonNumberTextStyle
-                            .copyWith(color: theme.text)),
-                    const SizedBox(width: 5),
-                    const Icon(Icons.arrow_drop_down, size: 24),
+              Flexible(
+                flex: 2,
+                child: PopupMenuButton<UnitDefinition>(
+                  color: theme.background,
+                  tooltip: context.tr('actions.choose_unit'),
+                  onSelected: widget.onUnitSelected,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          context.tr('units.names.${widget.unit.id}'),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.numButtonNumberTextStyle.copyWith(
+                            color: theme.text,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      const Icon(Icons.arrow_drop_down, size: 24),
+                    ],
+                  ),
+                  itemBuilder: (context) => [
+                    for (final item in widget.units)
+                      PopupMenuItem<UnitDefinition>(
+                        value: item,
+                        child: Row(
+                          children: [
+                            Text(item.symbol, style: theme.settingsCardTextStyle),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                context.tr('units.names.${item.id}'),
+                                style: theme.settingsCardValueTextStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
-                itemBuilder: (context) => [
-                  for (final item in widget.units)
-                    PopupMenuItem<UnitDefinition>(
-                      value: item,
-                      child: Row(
-                        children: [
-                          Text(item.symbol, style: theme.settingsCardTextStyle),
-                          const SizedBox(width: 8),
-                          Text(item.name, style: theme.settingsCardValueTextStyle),
-                        ],
-                      ),
-                    ),
-                ],
               ),
               const SizedBox(width: 10),
               Expanded(

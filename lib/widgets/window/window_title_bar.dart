@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/styles/theme.dart';
 import '../buttons/window_action_button.dart';
@@ -11,8 +12,7 @@ class WindowTitleBar extends StatelessWidget {
   const WindowTitleBar({Key? key}) : super(key: key);
 
   static const double height = 44;
-  static const MethodChannel _windowChannel =
-      MethodChannel('bixcalc/window');
+  static const MethodChannel _windowChannel = MethodChannel('bixcalc/window');
 
   Future<void> _invokeWindowAction(String action) async {
     try {
@@ -36,8 +36,9 @@ class WindowTitleBar extends StatelessWidget {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onPanStart: (_) => _invokeWindowAction('drag'),
-                onDoubleTap:
-                    context.read<WindowLayoutProvider>().toggleCalculatorWidth,
+                onDoubleTap: context
+                    .read<WindowLayoutProvider>()
+                    .toggleCalculatorWidth,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -51,7 +52,7 @@ class WindowTitleBar extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             WindowActionButton(
-              semanticLabel: 'Minimize',
+              semanticLabel: context.tr('actions.minimize'),
               onPressed: () => _invokeWindowAction('minimize'),
               child: const WindowMinimizeIcon(),
             ),
@@ -59,7 +60,7 @@ class WindowTitleBar extends StatelessWidget {
             Consumer<WindowLayoutProvider>(
               builder: (context, windowLayout, child) {
                 return WindowActionButton(
-                  semanticLabel: 'Maximize',
+                  semanticLabel: context.tr('actions.maximize'),
                   onPressed: windowLayout.toggleCalculatorWidth,
                   child: child!,
                 );
@@ -68,7 +69,7 @@ class WindowTitleBar extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             WindowActionButton(
-              semanticLabel: 'Close',
+              semanticLabel: context.tr('actions.close'),
               onPressed: () => _invokeWindowAction('close'),
               child: const WindowCloseIcon(),
             ),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 
 class DateHeader extends StatelessWidget {
-  const DateHeader({
-    Key? key,
-    this.date,
-  }) : super(key: key);
+  const DateHeader({Key? key, this.date}) : super(key: key);
 
   final DateTime? date;
 
@@ -15,6 +13,7 @@ class DateHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
     final value = date ?? DateTime.now();
+    final locale = Localizations.localeOf(context).toLanguageTag();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +21,7 @@ class DateHeader extends StatelessWidget {
       spacing: AppDimens.smallItemSpacing,
       children: [
         Text(
-          '${value.day} ${_monthName(value.month)} ${value.year}',
+          DateFormat.yMMMd(locale).format(value),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: calcTheme.displayMidTextStyle.copyWith(
@@ -31,7 +30,7 @@ class DateHeader extends StatelessWidget {
           ),
         ),
         Text(
-          _weekdayName(value.weekday),
+          DateFormat.EEEE(locale).format(value),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: calcTheme.displaySmallTextStyle.copyWith(
@@ -41,37 +40,4 @@ class DateHeader extends StatelessWidget {
       ],
     );
   }
-}
-
-String _monthName(int month) {
-  const months = [
-    'jan',
-    'feb',
-    'mar',
-    'apr',
-    'may',
-    'jun',
-    'jul',
-    'aug',
-    'sep',
-    'oct',
-    'nov',
-    'dec',
-  ];
-
-  return months[month - 1];
-}
-
-String _weekdayName(int weekday) {
-  const days = [
-    'poniedzialek',
-    'wtorek',
-    'sroda',
-    'czwartek',
-    'piatek',
-    'sobota',
-    'niedziela',
-  ];
-
-  return days[weekday - 1];
 }

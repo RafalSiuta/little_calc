@@ -4,6 +4,9 @@ import '../../models/currency_model/currency.dart';
 import '../calc_logic/calculator_logic.dart';
 import '../extensions/number_formatter.dart';
 
+typedef CurrencyLabelBuilder =
+    String Function(Currency currency, bool isSource);
+
 enum CurrencyActiveDisplay {
   base,
   target,
@@ -94,21 +97,20 @@ class CurrencyLogic extends ChangeNotifier {
     return _targetCurrency;
   }
 
-  String baseLabel(Currency base, Currency target) {
-    if (_activeDisplay == CurrencyActiveDisplay.target) {
-      return 'to: ${base.valueName}';
-    }
+  String baseLabel(
+    Currency base,
+    Currency target, {
+    CurrencyLabelBuilder builder = _defaultLabel,
+  }) => builder(base, _activeDisplay != CurrencyActiveDisplay.target);
 
-    return 'from: ${base.valueName}';
-  }
+  String targetLabel(
+    Currency base,
+    Currency target, {
+    CurrencyLabelBuilder builder = _defaultLabel,
+  }) => builder(target, _activeDisplay == CurrencyActiveDisplay.target);
 
-  String targetLabel(Currency base, Currency target) {
-    if (_activeDisplay == CurrencyActiveDisplay.target) {
-      return 'from: ${target.valueName}';
-    }
-
-    return 'to: ${target.valueName}';
-  }
+  static String _defaultLabel(Currency currency, bool isSource) =>
+      '${isSource ? 'from' : 'to'}: ${currency.valueName}';
 
   String rateDisplay(
     Currency base,

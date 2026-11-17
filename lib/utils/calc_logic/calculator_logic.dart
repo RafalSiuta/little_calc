@@ -8,13 +8,51 @@ import 'calc_flags.dart';
 
 const double _goldenRatio = 1.618033988749895;
 
+enum CalculatorError {
+  missingSin('error - enter number before sin'),
+  missingCos('error - enter number before cos'),
+  missingTan('error - enter number before tan'),
+  missingAsin('error - enter number before asin'),
+  missingAcos('error - enter number before acos'),
+  missingAtan('error - enter number before atan'),
+  missingSinh('error - enter number before sinh'),
+  missingCosh('error - enter number before cosh'),
+  missingTanh('error - enter number before tanh'),
+  missingAsinh('error - enter number before asinh'),
+  missingAcosh('error - enter number before acosh'),
+  missingAtanh('error - enter number before atanh'),
+  asinRange('error - asin requires value from -1 to 1'),
+  acosRange('error - acos requires value from -1 to 1'),
+  acoshRange('error - acosh requires value greater than or equal to 1'),
+  atanhRange('error - atanh requires value between -1 and 1'),
+  missingSquare('error - enter number before square'),
+  missingCube('error - enter number before cube'),
+  missingPower('error - enter base before power'),
+  missingAbsolute('error - enter number before absolute value'),
+  missingFactorial('error - enter number before factorial'),
+  factorialInteger('error - factorial requires whole number'),
+  missingLn('error - enter number before ln'),
+  lnPositive('error - ln requires positive number'),
+  missingLog('error - enter number before log'),
+  logPositive('error - log requires positive number'),
+  missingReciprocal('error - enter number before reciprocal'),
+  reciprocalZero('error - reciprocal cannot divide by zero'),
+  invalidResult('error - invalid function result');
+
+  const CalculatorError(this.message);
+
+  final String message;
+}
+
 class CalculatorLogic extends ChangeNotifier {
   String newText = "";
   String oldText = "";
   var display = '0';
   var valueDisplay = '';
   var equationDisplay = '';
-  var errorMessage = '';
+  CalculatorError? _error;
+  CalculatorError? get error => _error;
+  String get errorMessage => _error?.message ?? '';
   String operator = "";
 
   double oldValue = 0;
@@ -167,7 +205,7 @@ class CalculatorLogic extends ChangeNotifier {
   // shows the currently active mode. If the current expression was produced by
   // a trigonometric function, its result is recalculated for the new mode.
   void onAngleModeToggle() {
-    errorMessage = '';
+    _error = null;
     _useRadians = !_useRadians;
     valueDisplay = angleModeDisplay;
     _recalculateLastAngleFunctionForMode();
@@ -179,7 +217,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onSin() {
     _applyUnaryNumberFunction(
       equationName: 'sin',
-      missingError: 'error - enter number before sin',
+      missingError: CalculatorError.missingSin,
       transform: (value) => sin(_angleInputForTrig(value)),
       showAngleMode: true,
       angleFunctionKey: 'sin',
@@ -191,7 +229,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onCos() {
     _applyUnaryNumberFunction(
       equationName: 'cos',
-      missingError: 'error - enter number before cos',
+      missingError: CalculatorError.missingCos,
       transform: (value) => cos(_angleInputForTrig(value)),
       showAngleMode: true,
       angleFunctionKey: 'cos',
@@ -203,7 +241,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onTan() {
     _applyUnaryNumberFunction(
       equationName: 'tan',
-      missingError: 'error - enter number before tan',
+      missingError: CalculatorError.missingTan,
       transform: (value) => tan(_angleInputForTrig(value)),
       showAngleMode: true,
       angleFunctionKey: 'tan',
@@ -216,8 +254,8 @@ class CalculatorLogic extends ChangeNotifier {
   void onAsin() {
     _applyUnaryNumberFunction(
       equationName: 'sin\u207b\u00b9',
-      missingError: 'error - enter number before asin',
-      validationError: 'error - asin requires value from -1 to 1',
+      missingError: CalculatorError.missingAsin,
+      validationError: CalculatorError.asinRange,
       isValid: (value) => value >= -1 && value <= 1,
       transform: (value) => _angleOutputFromInverse(asin(value)),
       showAngleMode: true,
@@ -231,8 +269,8 @@ class CalculatorLogic extends ChangeNotifier {
   void onAcos() {
     _applyUnaryNumberFunction(
       equationName: 'cos\u207b\u00b9',
-      missingError: 'error - enter number before acos',
-      validationError: 'error - acos requires value from -1 to 1',
+      missingError: CalculatorError.missingAcos,
+      validationError: CalculatorError.acosRange,
       isValid: (value) => value >= -1 && value <= 1,
       transform: (value) => _angleOutputFromInverse(acos(value)),
       showAngleMode: true,
@@ -245,7 +283,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onAtan() {
     _applyUnaryNumberFunction(
       equationName: 'tan\u207b\u00b9',
-      missingError: 'error - enter number before atan',
+      missingError: CalculatorError.missingAtan,
       transform: (value) => _angleOutputFromInverse(atan(value)),
       showAngleMode: true,
       angleFunctionKey: 'atan',
@@ -256,7 +294,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onSinh() {
     _applyUnaryNumberFunction(
       equationName: 'sinh',
-      missingError: 'error - enter number before sinh',
+      missingError: CalculatorError.missingSinh,
       transform: _sinh,
     );
   }
@@ -265,7 +303,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onCosh() {
     _applyUnaryNumberFunction(
       equationName: 'cosh',
-      missingError: 'error - enter number before cosh',
+      missingError: CalculatorError.missingCosh,
       transform: _cosh,
     );
   }
@@ -274,7 +312,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onTanh() {
     _applyUnaryNumberFunction(
       equationName: 'tanh',
-      missingError: 'error - enter number before tanh',
+      missingError: CalculatorError.missingTanh,
       transform: _tanh,
     );
   }
@@ -284,7 +322,7 @@ class CalculatorLogic extends ChangeNotifier {
   void onAsinh() {
     _applyUnaryNumberFunction(
       equationName: 'sinh\u207b\u00b9',
-      missingError: 'error - enter number before asinh',
+      missingError: CalculatorError.missingAsinh,
       transform: _asinh,
     );
   }
@@ -294,9 +332,9 @@ class CalculatorLogic extends ChangeNotifier {
   void onAcosh() {
     _applyUnaryNumberFunction(
       equationName: 'cosh\u207b\u00b9',
-      missingError: 'error - enter number before acosh',
+      missingError: CalculatorError.missingAcosh,
       validationError:
-          'error - acosh requires value greater than or equal to 1',
+          CalculatorError.acoshRange,
       isValid: (value) => value >= 1,
       transform: _acosh,
     );
@@ -307,8 +345,8 @@ class CalculatorLogic extends ChangeNotifier {
   void onAtanh() {
     _applyUnaryNumberFunction(
       equationName: 'tanh\u207b\u00b9',
-      missingError: 'error - enter number before atanh',
-      validationError: 'error - atanh requires value between -1 and 1',
+      missingError: CalculatorError.missingAtanh,
+      validationError: CalculatorError.atanhRange,
       isValid: (value) => value > -1 && value < 1,
       transform: _atanh,
     );
@@ -329,7 +367,7 @@ class CalculatorLogic extends ChangeNotifier {
   // Clears transient labels without clearing the expression itself.
   void clearSmallDisplay() {
     valueDisplay = '';
-    errorMessage = '';
+    _error = null;
     notifyListeners();
   }
 
@@ -340,7 +378,7 @@ class CalculatorLogic extends ChangeNotifier {
     display = '0';
     valueDisplay = '';
     equationDisplay = '';
-    errorMessage = '';
+    _error = null;
     operator = "";
     oldValue = 0;
     newValue = 0;
@@ -526,7 +564,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before square';
+      _error = CalculatorError.missingSquare;
       notifyListeners();
       return;
     }
@@ -557,7 +595,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before cube';
+      _error = CalculatorError.missingCube;
       notifyListeners();
       return;
     }
@@ -594,7 +632,7 @@ class CalculatorLogic extends ChangeNotifier {
         !_lastTokenIsConstant() &&
         !_lastTokenIsCloseBracket()) {
       display = '0';
-      errorMessage = 'error - enter base before power';
+      _error = CalculatorError.missingPower;
       notifyListeners();
       return;
     }
@@ -614,7 +652,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before absolute value';
+      _error = CalculatorError.missingAbsolute;
       notifyListeners();
       return;
     }
@@ -644,7 +682,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before factorial';
+      _error = CalculatorError.missingFactorial;
       notifyListeners();
       return;
     }
@@ -652,7 +690,7 @@ class CalculatorLogic extends ChangeNotifier {
     final value = double.parse(_tokens.last);
     if (value < 0 || value % 1 != 0) {
       display = '0';
-      errorMessage = 'error - factorial requires whole number';
+      _error = CalculatorError.factorialInteger;
       notifyListeners();
       return;
     }
@@ -685,7 +723,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before ln';
+      _error = CalculatorError.missingLn;
       notifyListeners();
       return;
     }
@@ -693,7 +731,7 @@ class CalculatorLogic extends ChangeNotifier {
     final value = double.parse(_tokens.last);
     if (value <= 0) {
       display = '0';
-      errorMessage = 'error - ln requires positive number';
+      _error = CalculatorError.lnPositive;
       notifyListeners();
       return;
     }
@@ -726,7 +764,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before log';
+      _error = CalculatorError.missingLog;
       notifyListeners();
       return;
     }
@@ -734,7 +772,7 @@ class CalculatorLogic extends ChangeNotifier {
     final value = double.parse(_tokens.last);
     if (value <= 0) {
       display = '0';
-      errorMessage = 'error - log requires positive number';
+      _error = CalculatorError.logPositive;
       notifyListeners();
       return;
     }
@@ -766,7 +804,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = 'error - enter number before reciprocal';
+      _error = CalculatorError.missingReciprocal;
       notifyListeners();
       return;
     }
@@ -774,7 +812,7 @@ class CalculatorLogic extends ChangeNotifier {
     final value = double.parse(_tokens.last);
     if (value == 0) {
       display = '0';
-      errorMessage = 'error - reciprocal cannot divide by zero';
+      _error = CalculatorError.reciprocalZero;
       notifyListeners();
       return;
     }
@@ -1107,9 +1145,9 @@ class CalculatorLogic extends ChangeNotifier {
 
   void _applyUnaryNumberFunction({
     required String equationName,
-    required String missingError,
+    required CalculatorError missingError,
     required double Function(double value) transform,
-    String? validationError,
+    CalculatorError? validationError,
     bool Function(double value)? isValid,
     bool showAngleMode = false,
     String? angleFunctionKey,
@@ -1122,7 +1160,7 @@ class CalculatorLogic extends ChangeNotifier {
 
     if (!_lastTokenIsNumber()) {
       display = '0';
-      errorMessage = missingError;
+      _error = missingError;
       notifyListeners();
       return;
     }
@@ -1130,7 +1168,7 @@ class CalculatorLogic extends ChangeNotifier {
     final value = double.parse(_tokens.last);
     if (isValid != null && !isValid(value)) {
       display = '0';
-      errorMessage = validationError ?? missingError;
+      _error = validationError ?? missingError;
       notifyListeners();
       return;
     }
@@ -1139,7 +1177,7 @@ class CalculatorLogic extends ChangeNotifier {
     final result = transform(value);
     if (result.isNaN || result.isInfinite) {
       display = '0';
-      errorMessage = 'error - invalid function result';
+      _error = CalculatorError.invalidResult;
       notifyListeners();
       return;
     }
@@ -1482,7 +1520,7 @@ class CalculatorLogic extends ChangeNotifier {
     final result = _computeAngleFunction(key, sourceValue);
     if (result.isNaN || result.isInfinite) {
       display = '0';
-      errorMessage = 'error - invalid function result';
+      _error = CalculatorError.invalidResult;
       return;
     }
 

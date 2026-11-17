@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/theme.dart';
 import '../../utils/unit_converter_logic/unit_definitions.dart';
 
@@ -51,56 +52,71 @@ class _UnitCardState extends State<UnitCard> {
                 color: widget.isActive
                     ? theme.accent
                     : showHover
-                        ? Colors.transparent
-                        : theme.borderDark,
+                    ? Colors.transparent
+                    : theme.borderDark,
                 width: theme.borderThickness,
               ),
             ),
             borderRadius: widget.isActive
-                    ? null
-                    : BorderRadius.circular(theme.itemSpacing),
+                ? null
+                : BorderRadius.circular(theme.itemSpacing),
           ),
           child: Row(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        widget.unit.symbol,
-                        style: theme.numButtonNumberTextStyle
-                            .copyWith(color: theme.text),
-                      ),
-                      if (widget.isActive) ...[
-                        const SizedBox(width: 5),
-                        Icon(Icons.arrow_drop_down, size: 24, color: theme.text),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          widget.unit.symbol,
+                          style: theme.numButtonNumberTextStyle.copyWith(
+                            color: theme.text,
+                          ),
+                        ),
+                        if (widget.isActive) ...[
+                          const SizedBox(width: 5),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            size: 24,
+                            color: theme.text,
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    widget.unit.name,
-                    style: theme.numButtonNumberTextStyle
-                        .copyWith(color: theme.text, fontSize: 10.32),
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      context.tr('units.names.${widget.unit.id}'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.numButtonNumberTextStyle.copyWith(
+                        color: theme.text,
+                        fontSize: 10.32,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
-              Text(widget.value,
-                  style: theme.numButtonNumberTextStyle.copyWith(
-                    color: widget.isActive || showHover
-                        ? theme.accent
-                        : theme.numbersText,
-                  )),
+              const SizedBox(width: 8),
+              Text(
+                widget.value,
+                style: theme.numButtonNumberTextStyle.copyWith(
+                  color: widget.isActive || showHover
+                      ? theme.accent
+                      : theme.numbersText,
+                ),
+              ),
               const SizedBox(width: 5),
-              Text(widget.unit.symbol,
-                  style: theme.numButtonNumberTextStyle.copyWith(
-                    color: widget.isActive || showHover
-                        ? theme.accent
-                        : theme.numbersText,
-                  )),
+              Text(
+                widget.unit.symbol,
+                style: theme.numButtonNumberTextStyle.copyWith(
+                  color: widget.isActive || showHover
+                      ? theme.accent
+                      : theme.numbersText,
+                ),
+              ),
             ],
           ),
         ),

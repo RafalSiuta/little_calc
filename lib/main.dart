@@ -4,16 +4,20 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bixcalc/utils/styles/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/calc_logic/calculator_logic.dart';
 import 'providers/calculator_settings_provider.dart';
 import 'providers/calculator_memory_provider.dart';
 import 'providers/currencies_provider.dart';
+import 'providers/locale_provider.dart';
 import 'providers/theme_settings_provider.dart';
 import 'providers/window_layout_provider.dart';
 import 'screens/main_screen.dart';
+import 'utils/internationalization/app_localizations.dart';
 import 'utils/routes/custom_route.dart';
 
 Future<int> getAndroidVersion() async {
@@ -58,22 +62,34 @@ Future<void> main() async {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  runApp(const MyApp());
+  final localizations = await AppLocalizations.loadDelegate();
+  final preferences = await SharedPreferences.getInstance();
+  runApp(MyApp(preferences: preferences, localizations: localizations));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    super.key,
+    required this.preferences,
+    required this.localizations,
+  });
+
+  final SharedPreferences preferences;
+  final LocalizationsDelegate<AppLocalizations> localizations;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => LocaleProvider(preferences)),
         ChangeNotifierProvider(create: (_) => CalculatorMemoryProvider()),
         ChangeNotifierProvider(
           create: (context) => CalculatorSettingsProvider(),
         ),
-        ChangeNotifierProxyProvider<CalculatorSettingsProvider,
-            CalculatorLogic>(
+        ChangeNotifierProxyProvider<
+          CalculatorSettingsProvider,
+          CalculatorLogic
+        >(
           create: (context) => CalculatorLogic(),
           update: (context, settings, logic) {
             final calculatorLogic = logic ?? CalculatorLogic();
@@ -81,21 +97,23 @@ class MyApp extends StatelessWidget {
             return calculatorLogic;
           },
         ),
-        ChangeNotifierProvider(
-          create: (context) => WindowLayoutProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ThemeSettingsProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => CurrenciesProvider(),
-        ),
+        ChangeNotifierProvider(create: (context) => WindowLayoutProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeSettingsProvider()),
+        ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
       ],
-      child: Consumer<ThemeSettingsProvider>(
-        builder: (context, themeSettings, child) {
+      child: Consumer2<ThemeSettingsProvider, LocaleProvider>(
+        builder: (context, themeSettings, localeProvider, child) {
           return MaterialApp(
             title: 'bixcalc',
             debugShowCheckedModeBanner: false,
+            locale: localeProvider.locale,
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: [
+              localizations,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             color: Colors.transparent,
             theme: CalcTheme.themeData(themeSettings.currentTheme),
             initialRoute: '/',

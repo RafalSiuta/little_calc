@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../providers/theme_settings_provider.dart';
 import '../../providers/window_layout_provider.dart';
 import '../../utils/system/system_helper.dart';
@@ -29,15 +30,17 @@ class ThemesPage extends StatelessWidget {
           children: [
             if (showTransparency) ...[
               Text(
-                'transparency',
+                context.tr('settings.transparency'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: calcTheme.settingsTitleTextStyle,
               ),
               SizedBox(height: calcTheme.itemSpacing),
               SettingsCard(
-                title: 'blur',
-                value: themeSettings.backgroundBlur > 0 ? 'on' : 'off',
+                title: context.tr('settings.blur'),
+                value: themeSettings.backgroundBlur > 0
+                    ? context.tr('settings.on')
+                    : context.tr('settings.off'),
                 valueColor: themeSettings.backgroundBlur > 0
                     ? calcTheme.accent
                     : calcTheme.unselected,
@@ -50,7 +53,7 @@ class ThemesPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               SettingsCard(
-                title: 'opacity',
+                title: context.tr('settings.opacity'),
                 value: themeSettings.backgroundOpacity.toStringAsFixed(1),
                 valueIsAccent: true,
                 isExpanded: isExpandedDesktop,
@@ -62,7 +65,7 @@ class ThemesPage extends StatelessWidget {
               SizedBox(height: calcTheme.itemSpacing),
             ],
             Text(
-              'themes',
+              context.tr('settings.themes'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: calcTheme.settingsTitleTextStyle,
@@ -124,11 +127,8 @@ class _ThemesGrid extends StatelessWidget {
 }
 
 class _CalcSlider extends StatelessWidget {
-  const _CalcSlider({
-    Key? key,
-    required this.value,
-    required this.onChanged,
-  }) : super(key: key);
+  const _CalcSlider({Key? key, required this.value, required this.onChanged})
+    : super(key: key);
 
   final double value;
   final ValueChanged<double> onChanged;
@@ -165,11 +165,8 @@ class _CalcSlider extends StatelessWidget {
 }
 
 class _CalcSwitch extends StatelessWidget {
-  const _CalcSwitch({
-    Key? key,
-    required this.value,
-    required this.onChanged,
-  }) : super(key: key);
+  const _CalcSwitch({Key? key, required this.value, required this.onChanged})
+    : super(key: key);
 
   final bool value;
   final ValueChanged<bool> onChanged;
@@ -190,8 +187,9 @@ class _CalcSwitch extends StatelessWidget {
               height: calcTheme.switchTrackHeight,
               decoration: BoxDecoration(
                 color: value ? calcTheme.accent : calcTheme.background,
-                borderRadius:
-                    BorderRadius.circular(calcTheme.windowBorderRadius),
+                borderRadius: BorderRadius.circular(
+                  calcTheme.windowBorderRadius,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: calcTheme.backgroundShadow,

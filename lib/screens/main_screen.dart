@@ -13,6 +13,8 @@ import 'calc_page/calc_page.dart';
 import 'sets_page/sets_page.dart';
 import 'unit_convert_page/unit_convert_page.dart';
 
+import '../utils/internationalization/i18n_extension.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -28,14 +30,14 @@ class _MainScreenState extends State<MainScreen> {
     ScreenModel(
       page: CalcPage(),
       nav: NavModel(
-        title: 'kalkulator',
+        title: 'navigation.calculator',
         icon: BixCalcIcons.calculator_simple,
       ),
     ),
     ScreenModel(
       page: UnitConvertPage(),
       nav: NavModel(
-        title: 'jednostki',
+        title: 'navigation.units',
         icon: BixCalcIcons.ruler_triangle,
       ),
     ),
@@ -55,10 +57,7 @@ class _MainScreenState extends State<MainScreen> {
     // ),
     ScreenModel(
       page: SetsPage(),
-      nav: NavModel(
-        title: 'ustawienia',
-        icon: BixCalcIcons.settings,
-      ),
+      nav: NavModel(title: 'navigation.settings', icon: BixCalcIcons.settings),
     ),
   ];
 
@@ -103,7 +102,13 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 if (!SystemHelper.isMobileSystem) const WindowTitleBar(),
                 CalculatorOptionsBar(
-                  items: _pages.map((page) => page.nav).toList(),
+                  items: [
+                    for (final page in _pages)
+                      NavModel(
+                        title: context.tr(page.nav.title),
+                        icon: page.nav.icon,
+                      ),
+                  ],
                   selectedItem: _currentPage,
                   onItemSelected: _onPageChange,
                 ),

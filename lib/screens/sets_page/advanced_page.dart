@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/theme.dart';
 
 class AdvancedPage extends StatelessWidget {
@@ -7,15 +8,13 @@ class AdvancedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _SettingsSubPagePlaceholder(title: 'advanced');
+    return _SettingsSubPagePlaceholder(title: context.tr('settings.advanced'));
   }
 }
 
 class _SettingsSubPagePlaceholder extends StatelessWidget {
-  const _SettingsSubPagePlaceholder({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
+  const _SettingsSubPagePlaceholder({Key? key, required this.title})
+    : super(key: key);
 
   final String title;
 
@@ -27,10 +26,7 @@ class _SettingsSubPagePlaceholder extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Padding(
         padding: EdgeInsets.all(calcTheme.basePadding),
-        child: Text(
-          title,
-          style: calcTheme.settingsTitleTextStyle,
-        ),
+        child: Text(title, style: calcTheme.settingsTitleTextStyle),
       ),
     );
   }

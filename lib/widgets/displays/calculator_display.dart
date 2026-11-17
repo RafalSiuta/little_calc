@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
@@ -25,7 +26,11 @@ class CalculatorDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
-    final displayValue = data.display == 'Infinity' ? 'Error' : data.display;
+    final showDivisionError =
+        data.display == 'Infinity' || data.display == '-Infinity';
+    final displayValue = showDivisionError
+        ? context.tr('errors.generic')
+        : data.display;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -44,10 +49,8 @@ class CalculatorDisplay extends StatelessWidget {
                         ? const SizedBox.shrink()
                         : EquationDisplay(
                             equation: data.equationDisplay,
-                            onLongPress: () => _copyToClipboard(
-                              context,
-                              data.equationDisplay,
-                            ),
+                            onLongPress: () =>
+                                _copyToClipboard(context, data.equationDisplay),
                           ),
                   ),
                   Expanded(
@@ -55,19 +58,14 @@ class CalculatorDisplay extends StatelessWidget {
                       width: double.infinity,
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
-                        onLongPress: () => _copyToClipboard(
-                          context,
-                          displayValue,
-                        ),
+                        onLongPress: () =>
+                            _copyToClipboard(context, displayValue),
                         child: ShaderMask(
                           shaderCallback: (bounds) {
                             return LinearGradient(
                               begin: Alignment.bottomCenter,
                               end: Alignment.topCenter,
-                              colors: [
-                                calcTheme.accent,
-                                calcTheme.accent2,
-                              ],
+                              colors: [calcTheme.accent, calcTheme.accent2],
                             ).createShader(bounds);
                           },
                           blendMode: BlendMode.srcIn,
@@ -91,8 +89,8 @@ class CalculatorDisplay extends StatelessWidget {
           ),
           _InfoDisplay(
             infoMessage: data.valueDisplay,
-            errorMessage: data.errorMessage,
-            showError: data.display == 'Infinity',
+            error: data.error,
+            showDivisionError: showDivisionError,
             isExpanded: isExpanded,
             onBackspace: onBackspace,
             onToggleCalculatorWidth: onToggleCalculatorWidth,
@@ -101,7 +99,6 @@ class CalculatorDisplay extends StatelessWidget {
       ),
     );
   }
-
 
   Future<void> _copyToClipboard(BuildContext context, String value) async {
     if (value.isEmpty) {
@@ -118,9 +115,9 @@ class CalculatorDisplay extends StatelessWidget {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(
-          content: Text('Skopiowano'),
-          duration: Duration(milliseconds: 900),
+        SnackBar(
+          content: Text(context.tr('actions.copied')),
+          duration: const Duration(milliseconds: 900),
         ),
       );
   }
@@ -130,31 +127,31 @@ class _InfoDisplay extends StatelessWidget {
   const _InfoDisplay({
     Key? key,
     required this.infoMessage,
-    required this.errorMessage,
-    required this.showError,
+    required this.error,
+    required this.showDivisionError,
     required this.isExpanded,
     required this.onBackspace,
     required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
   final String infoMessage;
-  final String errorMessage;
-  final bool showError;
+  final CalculatorError? error;
+  final bool showDivisionError;
   final bool isExpanded;
   final VoidCallback onBackspace;
   final VoidCallback onToggleCalculatorWidth;
 
   @override
   Widget build(BuildContext context) {
-    final hasError = errorMessage.isNotEmpty || showError;
+    final hasError = error != null || showDivisionError;
     final hasInfo = !hasError && infoMessage.isNotEmpty;
     final calcTheme = context.calcTheme;
     final itemSpacing = AppDimens.currentItemSpacing();
-    final message = errorMessage.isNotEmpty
-        ? errorMessage
-        : showError
-            ? 'error - divide by 0'
-            : infoMessage;
+    final message = switch (error) {
+      final error? => context.tr('errors.${error.name}'),
+      null when showDivisionError => context.tr('errors.divide_by_zero'),
+      null => infoMessage,
+    };
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -186,8 +183,12 @@ class _InfoDisplay extends StatelessWidget {
           ),
 
           OptionIconButton(
-            icon: isExpanded ? BixCalcIcons.calculator_simple : BixCalcIcons.calc_extend,
-            tooltip: isExpanded ? 'Zwez kalkulator' : 'Rozszerz kalkulator',
+            icon: isExpanded
+                ? BixCalcIcons.calculator_simple
+                : BixCalcIcons.calc_extend,
+            tooltip: isExpanded
+                ? context.tr('actions.collapse_calculator')
+                : context.tr('actions.expand_calculator'),
             isActive: false,
             usePressedAccent: true,
             onPressed: onToggleCalculatorWidth,

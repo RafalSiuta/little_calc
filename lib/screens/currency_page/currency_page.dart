@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/internationalization/i18n_extension.dart';
 import '../../models/currency_model/currency.dart';
 import '../../providers/currencies_provider.dart';
 import '../../providers/calculator_memory_provider.dart';
@@ -21,41 +22,39 @@ import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
 class CurrencyPage extends StatelessWidget {
   const CurrencyPage({Key? key}) : super(key: key);
 
-  static const List<String> _tabs = [
-    'currencies',
-    'raw materials',
-    'crypto',
-  ];
-
   @override
   Widget build(BuildContext context) {
     final windowLayout = context.watch<WindowLayoutProvider>();
 
     return DefaultTabController(
-      length: _tabs.length,
+      length: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CalcTabBar(
-            tabs: _tabs,
+            tabs: [
+              context.tr('pages.currencies'),
+              context.tr('pages.commodities'),
+              context.tr('pages.crypto'),
+            ],
             trailing: OptionIconButton(
               icon: SystemHelper.isMobileSystem && windowLayout.isExpanded
                   ? Icons.calculate_outlined
                   : Icons.show_chart,
               tooltip: windowLayout.isExpanded
-                  ? 'Zwin liste walut'
-                  : 'Pokaz liste walut',
+                  ? context.tr('actions.hide_currencies')
+                  : context.tr('actions.show_currencies'),
               isActive: SystemHelper.isDesktopSystem && windowLayout.isExpanded,
               usePressedAccent: true,
               onPressed: windowLayout.toggleCalculatorWidth,
             ),
           ),
-          const Expanded(
+          Expanded(
             child: TabBarView(
               children: [
-                _CurrenciesTab(),
-                _PlaceholderPage(title: 'raw materials'),
-                _PlaceholderPage(title: 'crypto'),
+                const _CurrenciesTab(),
+                _PlaceholderPage(title: context.tr('pages.commodities')),
+                _PlaceholderPage(title: context.tr('pages.crypto')),
               ],
             ),
           ),
@@ -78,7 +77,7 @@ class _CurrenciesTab extends StatelessWidget {
     }
 
     if (provider.currencies.isEmpty) {
-      return const _PlaceholderPage(title: 'currencies');
+      return _PlaceholderPage(title: context.tr('pages.currencies'));
     }
 
     if (SystemHelper.isMobileSystem) {
@@ -111,7 +110,9 @@ class _MobileCurrenciesOverview extends StatelessWidget {
     final base = provider.selectedCurrency ?? provider.currencies.first;
     final currencies = [
       base,
-      ...provider.currencies.where((currency) => currency.codeIso != base.codeIso),
+      ...provider.currencies.where(
+        (currency) => currency.codeIso != base.codeIso,
+      ),
     ];
 
     return ListView(
@@ -175,22 +176,21 @@ class _CurrenciesList extends StatelessWidget {
     final base = provider.selectedCurrency ?? provider.currencies.first;
     final currencies = [
       base,
-      ...provider.currencies.where((currency) => currency.codeIso != base.codeIso),
+      ...provider.currencies.where(
+        (currency) => currency.codeIso != base.codeIso,
+      ),
     ];
 
     return Column(
       children: [
-        _CurrencyListHeader(
-          onAddPressed: () {},
-        ),
+        _CurrencyListHeader(onAddPressed: () {}),
         SizedBox(height: calcTheme.itemSpacing),
         Expanded(
           child: ListView.separated(
             itemCount: currencies.length,
             padding: EdgeInsets.all(calcTheme.basePadding),
-            separatorBuilder: (context, index) => SizedBox(
-              height: calcTheme.itemSpacing,
-            ),
+            separatorBuilder: (context, index) =>
+                SizedBox(height: calcTheme.itemSpacing),
             itemBuilder: (context, index) {
               final currency = currencies[index];
 
@@ -209,10 +209,8 @@ class _CurrenciesList extends StatelessWidget {
 }
 
 class _CurrencyListHeader extends StatelessWidget {
-  const _CurrencyListHeader({
-    Key? key,
-    required this.onAddPressed,
-  }) : super(key: key);
+  const _CurrencyListHeader({Key? key, required this.onAddPressed})
+    : super(key: key);
 
   final VoidCallback onAddPressed;
 
@@ -225,12 +223,10 @@ class _CurrencyListHeader extends StatelessWidget {
           : EdgeInsets.symmetric(horizontal: calcTheme.basePadding),
       child: Row(
         children: [
-          const Expanded(
-            child: DateHeader(),
-          ),
+          const Expanded(child: DateHeader()),
           OptionIconButton(
             icon: Icons.add,
-            tooltip: 'Dodaj walute',
+            tooltip: context.tr('actions.add_currency'),
             isActive: false,
             usePressedAccent: true,
             onPressed: onAddPressed,
@@ -244,7 +240,11 @@ class _CurrencyListHeader extends StatelessWidget {
 class _CurrencyConverter extends StatelessWidget {
   const _CurrencyConverter({Key? key}) : super(key: key);
 
-  void _handleKeyPress(BuildContext context, CurrencyLogic logic, String value) {
+  void _handleKeyPress(
+    BuildContext context,
+    CurrencyLogic logic,
+    String value,
+  ) {
     final logicValue = CalcSymbols.logicValue(value);
     final memory = context.read<CalculatorMemoryProvider>();
     if (memory.handleKey(
@@ -266,10 +266,23 @@ class _CurrencyConverter extends StatelessWidget {
     final calcTheme = context.calcTheme;
     final provider = context.watch<CurrenciesProvider>();
     final base = provider.baseCurrency ?? provider.currencies.first;
-    final target = provider.targetCurrency ??
+    final target =
+        provider.targetCurrency ??
         (provider.currencies.length > 1 ? provider.currencies[1] : base);
     final logic = provider.currencyLogic;
     final resultCurrency = logic.resultCurrency ?? target;
+    final resultDisplay = logic.resultDisplay;
+
+    String currencyLabel(Currency currency, bool isSource) {
+      final name = context.tr(
+        'currency.names.${currency.codeIso}',
+        fallback: currency.valueName,
+      );
+      return context.tr(
+        isSource ? 'currency.from' : 'currency.to',
+        args: {'currency': name},
+      );
+    }
 
     return Column(
       children: [
@@ -281,12 +294,19 @@ class _CurrencyConverter extends StatelessWidget {
               target: target,
               currencies: provider.currencies,
               baseValue: provider.formatCurrencyValue(logic.baseValueDisplay),
-              targetValue:
-                  provider.formatCurrencyValue(logic.targetValueDisplay),
-              baseLabel: logic.baseLabel(base, target),
-              targetLabel: logic.targetLabel(base, target),
+              targetValue: provider.formatCurrencyValue(
+                logic.targetValueDisplay,
+              ),
+              baseLabel: logic.baseLabel(base, target, builder: currencyLabel),
+              targetLabel: logic.targetLabel(
+                base,
+                target,
+                builder: currencyLabel,
+              ),
               equationDisplay: logic.equationDisplay,
-              resultDisplay: provider.formatCurrencyValue(logic.resultDisplay),
+              resultDisplay: resultDisplay == 'Error'
+                  ? context.tr('errors.generic')
+                  : provider.formatCurrencyValue(resultDisplay),
               resultCurrency: resultCurrency,
               rateDisplay: logic.rateDisplay(
                 base,
@@ -393,10 +413,7 @@ class _CurrencyDisplay extends StatelessWidget {
                   return LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [
-                      calcTheme.accent,
-                      calcTheme.accent2,
-                    ],
+                    colors: [calcTheme.accent, calcTheme.accent2],
                   ).createShader(bounds);
                 },
                 blendMode: BlendMode.srcIn,
@@ -413,10 +430,7 @@ class _CurrencyDisplay extends StatelessWidget {
                     return LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
-                      colors: [
-                        calcTheme.accent,
-                        calcTheme.accent2,
-                      ],
+                      colors: [calcTheme.accent, calcTheme.accent2],
                     ).createShader(bounds);
                   },
                   blendMode: BlendMode.srcIn,
@@ -470,11 +484,7 @@ class _CurrencyInfoDisplay extends StatelessWidget {
           child: Row(
             spacing: itemSpacing,
             children: [
-              Icon(
-                Icons.info_outline,
-                color: calcTheme.accent,
-                size: 14,
-              ),
+              Icon(Icons.info_outline, color: calcTheme.accent, size: 14),
               // SizedBox(width: itemSpacing),
               Expanded(
                 child: Text(
@@ -495,7 +505,7 @@ class _CurrencyInfoDisplay extends StatelessWidget {
             children: [
               OptionIconButton(
                 icon: Icons.autorenew,
-                tooltip: 'Zamien waluty',
+                tooltip: context.tr('actions.swap_currencies'),
                 isActive: false,
                 usePressedAccent: true,
                 onPressed: onSwapCurrencies,
@@ -504,7 +514,7 @@ class _CurrencyInfoDisplay extends StatelessWidget {
                 builder: (context, provider, child) {
                   return OptionIconButton(
                     icon: Icons.arrow_upward,
-                    tooltip: 'Poprzednia wartosc',
+                    tooltip: context.tr('actions.previous_value'),
                     isActive: false,
                     usePressedAccent: true,
                     onPressed: () => provider.toggleActiveDisplay(next: false),
@@ -515,7 +525,7 @@ class _CurrencyInfoDisplay extends StatelessWidget {
                 builder: (context, provider, child) {
                   return OptionIconButton(
                     icon: Icons.arrow_downward,
-                    tooltip: 'Nastepna wartosc',
+                    tooltip: context.tr('actions.next_value'),
                     isActive: false,
                     usePressedAccent: true,
                     onPressed: () => provider.toggleActiveDisplay(next: true),
@@ -524,7 +534,7 @@ class _CurrencyInfoDisplay extends StatelessWidget {
               ),
               OptionIconButton(
                 icon: Icons.backspace_outlined,
-                tooltip: 'Usun',
+                tooltip: context.tr('actions.delete'),
                 isActive: false,
                 usePressedAccent: true,
                 onPressed: onBackspace,
@@ -545,10 +555,7 @@ class _PlaceholderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Text(
-        title,
-        style: context.calcTheme.placeholderTextStyle,
-      ),
+      child: Text(title, style: context.calcTheme.placeholderTextStyle),
     );
   }
 }
