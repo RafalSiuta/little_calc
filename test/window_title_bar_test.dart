@@ -68,7 +68,7 @@ void main() {
       expect(tester.getSize(badge), const Size(98, 24));
       expect(tester.getSize(bar), Size(390, isMacOS ? 44 : 48));
       final left = tester.getTopLeft(bar).dx;
-      expect(tester.getTopLeft(badge).dx - left, isMacOS ? 276 : 24);
+      expect(tester.getTopLeft(badge).dx - left, isMacOS ? 276 : 16);
       expect(tester.getTopLeft(minimize).dx - left, isMacOS ? 16 : 270);
       expect(tester.getTopLeft(expand).dx - left, isMacOS ? 56 : 310);
       expect(tester.getTopLeft(close).dx - left, isMacOS ? 96 : 350);

@@ -16,7 +16,6 @@ import '../../widgets/buttons/option_icon_button.dart';
 import '../../widgets/cards/unit_card.dart';
 import '../../widgets/displays/unit_converter_display.dart';
 import '../../widgets/displays/unit_equation_display.dart';
-import '../../widgets/displays/unit_header.dart';
 import '../../widgets/keyboards/calculator_keyboard.dart';
 import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
 
@@ -161,42 +160,26 @@ class _UnitList extends StatelessWidget {
       ...logic.availableUnits.where((unit) => unit != logic.selectedUnit),
     ];
 
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: theme.basePadding),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: UnitHeader(
-              title: context.tr('units.headers.${logic.category.name}'),
-            ),
-          ),
-        ),
-        SizedBox(height: theme.itemSpacing),
-        Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.all(theme.basePadding),
-            itemCount: units.length,
-            separatorBuilder: (_, __) => SizedBox(height: theme.itemSpacing),
-            itemBuilder: (_, index) {
-              final unit = units[index];
-              return UnitCard(
-                unit: unit,
-                value: unit == logic.selectedUnit
-                    ? (logic.activeDisplay == UnitActiveDisplay.target
-                          ? logic.targetValue
-                          : logic.sourceValue)
-                    : numberFormatter(
-                        logic.convertedValueFor(unit),
-                        decimalPlaces: 10,
-                      ),
-                isActive: unit == logic.selectedUnit,
-                onTap: () => logic.selectUnit(unit),
-              );
-            },
-          ),
-        ),
-      ],
+    return ListView.separated(
+      padding: EdgeInsets.all(theme.basePadding),
+      itemCount: units.length,
+      separatorBuilder: (_, __) => SizedBox(height: theme.itemSpacing),
+      itemBuilder: (_, index) {
+        final unit = units[index];
+        return UnitCard(
+          unit: unit,
+          value: unit == logic.selectedUnit
+              ? (logic.activeDisplay == UnitActiveDisplay.target
+                    ? logic.targetValue
+                    : logic.sourceValue)
+              : numberFormatter(
+                  logic.convertedValueFor(unit),
+                  decimalPlaces: 10,
+                ),
+          isActive: unit == logic.selectedUnit,
+          onTap: () => logic.selectUnit(unit),
+        );
+      },
     );
   }
 }
@@ -214,97 +197,110 @@ class _UnitConverter extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(theme.basePadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                UnitConverterDisplay(
-                  unit: logic.sourceUnit,
-                  units: logic.availableUnits,
-                  value: logic.sourceValue,
-                  isActive: logic.activeDisplay == UnitActiveDisplay.source,
-                  onSelected: () =>
-                      logic.setActiveDisplay(UnitActiveDisplay.source),
-                  onUnitSelected: logic.setSourceUnit,
-                ),
-                SizedBox(height: theme.itemSpacing),
-                UnitConverterDisplay(
-                  unit: logic.targetUnit,
-                  units: logic.availableUnits,
-                  value: logic.targetValue,
-                  isActive: logic.activeDisplay == UnitActiveDisplay.target,
-                  onSelected: () =>
-                      logic.setActiveDisplay(UnitActiveDisplay.target),
-                  onUnitSelected: logic.setTargetUnit,
-                ),
-                SizedBox(height: theme.itemSpacing),
-                UnitEquationDisplay(
-                  equationDisplay: logic.equationDisplay,
-                  isActive: logic.activeDisplay == UnitActiveDisplay.equation,
-                ),
-                const Spacer(),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        '${logic.resultValue} ${logic.resultUnit.symbol}',
-                        style: theme.displayLargeTextStyle,
-                      ),
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                primary: false,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        UnitConverterDisplay(
+                          unit: logic.sourceUnit,
+                          units: logic.availableUnits,
+                          value: logic.sourceValue,
+                          isActive:
+                              logic.activeDisplay == UnitActiveDisplay.source,
+                          onSelected: () =>
+                              logic.setActiveDisplay(UnitActiveDisplay.source),
+                          onUnitSelected: logic.setSourceUnit,
+                        ),
+                        SizedBox(height: theme.itemSpacing),
+                        UnitConverterDisplay(
+                          unit: logic.targetUnit,
+                          units: logic.availableUnits,
+                          value: logic.targetValue,
+                          isActive:
+                              logic.activeDisplay == UnitActiveDisplay.target,
+                          onSelected: () =>
+                              logic.setActiveDisplay(UnitActiveDisplay.target),
+                          onUnitSelected: logic.setTargetUnit,
+                        ),
+                        SizedBox(height: theme.itemSpacing),
+                        UnitEquationDisplay(
+                          equationDisplay: logic.equationDisplay,
+                          isActive:
+                              logic.activeDisplay == UnitActiveDisplay.equation,
+                        ),
+                        const Spacer(),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '${logic.resultValue} ${logic.resultUnit.symbol}',
+                                style: theme.displayLargeTextStyle,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                logic.rateDisplay(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.displaySmallTextStyle.copyWith(
+                                  color: theme.accent,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              spacing: AppDimens.currentItemSpacing(),
+                              children: [
+                                // OptionIconButton(
+                                //   icon: Icons.autorenew,
+                                //   tooltip: 'Zamień jednostki',
+                                //   isActive: false,
+                                //   usePressedAccent: true,
+                                //   onPressed: logic.swapUnits,
+                                // ),
+                                OptionIconButton(
+                                  icon: BixCalcIcons.arrow_up,
+                                  tooltip: context.tr('actions.previous_value'),
+                                  isActive: false,
+                                  usePressedAccent: true,
+                                  onPressed: () =>
+                                      logic.toggleActiveDisplay(next: false),
+                                ),
+                                OptionIconButton(
+                                  icon: BixCalcIcons.arrow_down,
+                                  tooltip: context.tr('actions.next_value'),
+                                  isActive: false,
+                                  usePressedAccent: true,
+                                  onPressed: () =>
+                                      logic.toggleActiveDisplay(next: true),
+                                ),
+                                // OptionIconButton(
+                                //   icon: Icons.backspace_outlined,
+                                //   tooltip: 'Usuń',
+                                //   isActive: false,
+                                //   usePressedAccent: true,
+                                //   onPressed: logic.delete,
+                                // ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        logic.rateDisplay(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.displaySmallTextStyle.copyWith(
-                          color: theme.accent,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      spacing: AppDimens.currentItemSpacing(),
-                      children: [
-                        // OptionIconButton(
-                        //   icon: Icons.autorenew,
-                        //   tooltip: 'Zamień jednostki',
-                        //   isActive: false,
-                        //   usePressedAccent: true,
-                        //   onPressed: logic.swapUnits,
-                        // ),
-                        OptionIconButton(
-                          icon: BixCalcIcons.arrow_up,
-                          tooltip: context.tr('actions.previous_value'),
-                          isActive: false,
-                          usePressedAccent: true,
-                          onPressed: () =>
-                              logic.toggleActiveDisplay(next: false),
-                        ),
-                        OptionIconButton(
-                          icon: BixCalcIcons.arrow_down,
-                          tooltip: context.tr('actions.next_value'),
-                          isActive: false,
-                          usePressedAccent: true,
-                          onPressed: () =>
-                              logic.toggleActiveDisplay(next: true),
-                        ),
-                        // OptionIconButton(
-                        //   icon: Icons.backspace_outlined,
-                        //   tooltip: 'Usuń',
-                        //   isActive: false,
-                        //   usePressedAccent: true,
-                        //   onPressed: logic.delete,
-                        // ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
         ),

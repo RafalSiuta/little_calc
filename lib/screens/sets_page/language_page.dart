@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../utils/internationalization/app_localizations.dart';
 import '../../utils/internationalization/i18n_extension.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 import '../../widgets/buttons/radio_btn.dart';
 
@@ -20,13 +21,14 @@ class LanguagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<LocaleProvider>();
     final theme = context.calcTheme;
+    final selectedLanguage = provider.locale?.languageCode ?? '';
     final options = {
       '': context.tr('settings.system_language'),
       ..._languageNames,
     };
 
     return RadioGroup<String>(
-      groupValue: provider.locale?.languageCode ?? '',
+      groupValue: selectedLanguage,
       onChanged: (code) {
         provider.setLocale(
           AppLocalizations.supportedLocales
@@ -35,38 +37,36 @@ class LanguagePage extends StatelessWidget {
         );
       },
       child: SingleChildScrollView(
-        padding: EdgeInsets.all(theme.basePadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              context.tr('settings.language'),
-              style: theme.settingsTitleTextStyle.copyWith(height: 1.5),
-            ),
-            SizedBox(height: theme.itemSpacing + 10),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 390),
-              child: Column(
-                spacing: 10,
-                children: [
-                  for (final option in options.entries)
-                    DecoratedBox(
-                      decoration: theme.settingsCardDecoration.copyWith(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: RadioBtn<String>(
-                        value: option.key,
-                        padding: EdgeInsets.all(theme.basePadding),
-                        label: Text(
-                          option.value,
-                          style: theme.settingsCardTextStyle,
+        padding: EdgeInsets.symmetric(
+          horizontal: theme.basePadding,
+          vertical: theme.basePadding + AppDimens.mobileItemSpacing,
+        ),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 390),
+            child: Column(
+              spacing: AppDimens.mobileItemSpacing,
+              children: [
+                for (final option in options.entries)
+                  DecoratedBox(
+                    decoration: theme.settingsCardDecoration,
+                    child: RadioBtn<String>(
+                      value: option.key,
+                      padding: EdgeInsets.all(theme.basePadding),
+                      label: Text(
+                        option.value,
+                        style: theme.settingsCardTextStyle.copyWith(
+                          color: option.key == selectedLanguage
+                              ? theme.text
+                              : theme.unselected,
                         ),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -41,18 +41,25 @@ class ThemeCard extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: theme.paddingSmall,
                     ),
                     child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        '3.1415',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.themeCardTextStyle,
+                      alignment: Alignment.topRight,
+                      child: SizedBox(
+                        height: 64,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              '3.1415',
+                              style: theme.themeCardTextStyle,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -117,10 +124,7 @@ class _ThemeCardKey extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        border: Border.all(color: borderColor, width: borderWidth),
       ),
       child: Text(
         label,
@@ -132,12 +136,7 @@ class _ThemeCardKey extends StatelessWidget {
   }
 }
 
-enum _ThemeKeyType {
-  function,
-  operator,
-  number,
-  text,
-}
+enum _ThemeKeyType { function, operator, number, text }
 
 class _ThemeKey {
   const _ThemeKey(this.label, this.type);

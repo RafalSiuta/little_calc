@@ -21,46 +21,56 @@ class CalculatorOptionsBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
     final itemSpacing = AppDimens.currentItemSpacing();
-    final leftItems =
-        items.length > 1 ? items.take(items.length - 1).toList() : items;
+    final iconSize = Size.square(AppDimens.currentBaseIconSize);
+    final leftItems = items.length > 1
+        ? items.take(items.length - 1).toList()
+        : items;
     final rightItem = items.length > 1 ? items.last : null;
 
-    return Container(
-      height: AppDimens.calculatorOptionsBarHeight(),
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.all(16),
+    return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: calcTheme.unselected,
-            width: 0.5,
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: calcTheme.unselected)),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(
-              spacing: itemSpacing,
-              children: [
-                for (var index = 0; index < leftItems.length; index++)
-                  OptionIconButton(
-                    icon: leftItems[index].icon,
-                    tooltip: leftItems[index].title,
-                    isActive: index == selectedItem,
-                    onPressed: () => onItemSelected(index),
-                  ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.basePadding,
+          vertical: AppDimens.paddingSmall,
+        ),
+        child: Row(
+          spacing: itemSpacing,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppDimens.paddingSmall,
+                ),
+                child: Row(
+                  spacing: itemSpacing,
+                  children: [
+                    for (var index = 0; index < leftItems.length; index++)
+                      OptionIconButton(
+                        icon: leftItems[index].icon,
+                        tooltip: leftItems[index].title,
+                        size: index == 0
+                            ? const Size.square(AppDimens.baseIconSize)
+                            : iconSize,
+                        isActive: index == selectedItem,
+                        onPressed: () => onItemSelected(index),
+                      ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          if (rightItem != null)
-            OptionIconButton(
-              icon: rightItem.icon,
-              tooltip: rightItem.title,
-              isActive: selectedItem == items.length - 1,
-              onPressed: () => onItemSelected(items.length - 1),
-            ),
-        ],
+            if (rightItem != null)
+              OptionIconButton(
+                icon: rightItem.icon,
+                tooltip: rightItem.title,
+                size: iconSize,
+                isActive: selectedItem == items.length - 1,
+                onPressed: () => onItemSelected(items.length - 1),
+              ),
+          ],
+        ),
       ),
     );
   }

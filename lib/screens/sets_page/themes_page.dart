@@ -1,9 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/internationalization/i18n_extension.dart';
 import '../../providers/theme_settings_provider.dart';
 import '../../providers/window_layout_provider.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/system/system_helper.dart';
 import '../../utils/styles/theme.dart';
 import '../../widgets/cards/settings_card.dart';
@@ -27,6 +30,7 @@ class ThemesPage extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: calcTheme.itemSpacing,
           children: [
             if (showTransparency) ...[
               Text(
@@ -35,47 +39,61 @@ class ThemesPage extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: calcTheme.settingsTitleTextStyle,
               ),
-              SizedBox(height: calcTheme.itemSpacing),
-              SettingsCard(
-                title: context.tr('settings.blur'),
-                value: themeSettings.backgroundBlur > 0
-                    ? context.tr('settings.on')
-                    : context.tr('settings.off'),
-                valueColor: themeSettings.backgroundBlur > 0
-                    ? calcTheme.accent
-                    : calcTheme.unselected,
-                axis: SettingsCardAxis.horizontal,
-                isExpanded: isExpandedDesktop,
-                child: _CalcSwitch(
-                  value: themeSettings.backgroundBlur > 0,
-                  onChanged: themeSettings.setBackgroundBlur,
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 300),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppDimens.mobileItemSpacing,
+                  ),
+                  child: Column(
+                    spacing: AppDimens.mobileItemSpacing,
+                    children: [
+                      SettingsCard(
+                        title: context.tr('settings.blur'),
+                        value: themeSettings.backgroundBlur > 0
+                            ? context.tr('settings.on')
+                            : context.tr('settings.off'),
+                        valueColor: themeSettings.backgroundBlur > 0
+                            ? calcTheme.accent
+                            : calcTheme.unselected,
+                        axis: SettingsCardAxis.horizontal,
+                        child: _CalcSwitch(
+                          value: themeSettings.backgroundBlur > 0,
+                          onChanged: themeSettings.setBackgroundBlur,
+                        ),
+                      ),
+                      SettingsCard(
+                        title: context.tr('settings.opacity'),
+                        value: themeSettings.backgroundOpacity.toStringAsFixed(
+                          1,
+                        ),
+                        valueIsAccent: true,
+                        child: _CalcSlider(
+                          value: themeSettings.backgroundOpacity,
+                          onChanged: themeSettings.setBackgroundOpacity,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 10),
-              SettingsCard(
-                title: context.tr('settings.opacity'),
-                value: themeSettings.backgroundOpacity.toStringAsFixed(1),
-                valueIsAccent: true,
-                isExpanded: isExpandedDesktop,
-                child: _CalcSlider(
-                  value: themeSettings.backgroundOpacity,
-                  onChanged: themeSettings.setBackgroundOpacity,
-                ),
+              Text(
+                context.tr('settings.themes'),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: calcTheme.settingsTitleTextStyle,
               ),
-              SizedBox(height: calcTheme.itemSpacing),
             ],
-            Text(
-              context.tr('settings.themes'),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: calcTheme.settingsTitleTextStyle,
-            ),
-            SizedBox(height: calcTheme.itemSpacing),
-            _ThemesGrid(
-              themes: themeSettings.themesList,
-              selectedTheme: themeSettings.currentTheme,
-              isExpandedDesktop: isExpandedDesktop,
-              onThemeSelected: themeSettings.setCurrentTheme,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppDimens.mobileItemSpacing,
+              ),
+              child: _ThemeCards(
+                themes: themeSettings.themesList,
+                selectedTheme: themeSettings.currentTheme,
+                isExpandedDesktop: isExpandedDesktop,
+                onThemeSelected: themeSettings.setCurrentTheme,
+              ),
             ),
           ],
         ),
@@ -84,14 +102,13 @@ class ThemesPage extends StatelessWidget {
   }
 }
 
-class _ThemesGrid extends StatelessWidget {
-  const _ThemesGrid({
-    Key? key,
+class _ThemeCards extends StatelessWidget {
+  const _ThemeCards({
     required this.themes,
     required this.selectedTheme,
     required this.isExpandedDesktop,
     required this.onThemeSelected,
-  }) : super(key: key);
+  });
 
   final List<int> themes;
   final int selectedTheme;
@@ -100,30 +117,49 @@ class _ThemesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: isExpandedDesktop ? 82 * 6 + 10 * 5 : 82 * 3 + 10,
-      child: GridView.builder(
+    const gap = AppDimens.mobileItemSpacing;
+    if (SystemHelper.isMobileSystem) {
+      return GridView.builder(
+        padding: EdgeInsets.zero,
+        primary: false,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: isExpandedDesktop ? 6 : 2,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: gap,
+          crossAxisSpacing: gap,
           childAspectRatio: ThemeCard.figmaAspectRatio,
         ),
         itemCount: themes.length,
-        itemBuilder: (context, index) {
-          final themeId = themes[index];
+        itemBuilder: (context, index) => _card(themes[index]),
+      );
+    }
 
-          return ThemeCard(
-            themeId: themeId,
-            isSelected: themeId == selectedTheme,
-            onTap: () => onThemeSelected(themeId),
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final preferredColumns = isExpandedDesktop ? 6 : 3;
+        final availableWidth = constraints.maxWidth + gap;
+        final width = math.max(0.0, availableWidth / preferredColumns - gap);
+        final cardWidth = isExpandedDesktop ? math.min(width, 130.0) : width;
+
+        return Wrap(
+          direction: Axis.horizontal,
+          spacing: gap,
+          runSpacing: gap,
+          children: [
+            for (final themeId in themes)
+              SizedBox(width: cardWidth, child: _card(themeId)),
+          ],
+        );
+      },
     );
   }
+
+  ThemeCard _card(int themeId) => ThemeCard(
+    themeId: themeId,
+    isSelected: themeId == selectedTheme,
+    onTap: () => onThemeSelected(themeId),
+  );
 }
 
 class _CalcSlider extends StatelessWidget {

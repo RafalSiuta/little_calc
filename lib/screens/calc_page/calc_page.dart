@@ -21,41 +21,41 @@ class _CalcPageState extends State<CalcPage> {
   @override
   Widget build(BuildContext context) {
     final windowLayout = context.watch<WindowLayoutProvider>();
+    final displaySpacing =
+        windowLayout.isExpanded && !SystemHelper.isMobileSystem
+        ? 0.0
+        : AppDimens.itemSpacing;
 
     return Consumer<CalculatorLogic>(
       builder: (context, data, child) {
-        return SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [
-              Expanded(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: displaySpacing),
                 child: CalculatorDisplay(
                   data: data,
                   isExpanded: windowLayout.isExpanded,
-                  onBackspace: data.delete,
-                  onToggleCalculatorWidth: () {
-                    windowLayout.toggleCalculatorWidth();
-                  },
+                  onToggleCalculatorWidth: windowLayout.toggleCalculatorWidth,
                 ),
               ),
-              SizedBox(height: AppDimens.currentItemSpacing()),
-              _CalculatorKeyboards(
-                isExpanded: windowLayout.isExpanded,
-                angleModeButtonLabel: data.angleModeButtonLabel,
-                onPressed: (key) {
-                  final memory = context.read<CalculatorMemoryProvider>();
-                  if (!memory.handleKey(
-                    key,
-                    currentValue: data.memoryValue,
-                    onRecall: data.recallMemoryValue,
-                  )) {
-                    data.multifunction(key);
-                  }
-                },
-              ),
-            ],
-          ),
+            ),
+            _CalculatorKeyboards(
+              isExpanded: windowLayout.isExpanded,
+              angleModeButtonLabel: data.angleModeButtonLabel,
+              onPressed: (key) {
+                final memory = context.read<CalculatorMemoryProvider>();
+                if (!memory.handleKey(
+                  key,
+                  currentValue: data.memoryValue,
+                  onRecall: data.recallMemoryValue,
+                )) {
+                  data.multifunction(key);
+                }
+              },
+            ),
+          ],
         );
       },
     );
@@ -105,6 +105,7 @@ class _CalculatorKeyboardsState extends State<_CalculatorKeyboards> {
                 rows: _rowsWithAngleMode(functionRows),
                 onPressed: _handleKeyPress,
                 isExpandedLayout: true,
+                isFunctionKeyboard: true,
               ),
             ),
             Expanded(
@@ -127,6 +128,7 @@ class _CalculatorKeyboardsState extends State<_CalculatorKeyboards> {
           child: CalculatorKeyboard(
             rows: _rowsWithAngleMode(functionRows),
             onPressed: _handleKeyPress,
+            isFunctionKeyboard: true,
           ),
         ),
         Expanded(
@@ -157,13 +159,15 @@ class _CalculatorKeyboardsState extends State<_CalculatorKeyboards> {
     return rows
         .map(
           (row) => row
-              .map((value) => value.label == 'Rad' || value.label == 'Deg'
-                  ? CalcKey(
-                      widget.angleModeButtonLabel,
-                      type: value.type,
-                      flex: value.flex,
-                    )
-                  : value)
+              .map(
+                (value) => value.label == 'Rad' || value.label == 'Deg'
+                    ? CalcKey(
+                        widget.angleModeButtonLabel,
+                        type: value.type,
+                        flex: value.flex,
+                      )
+                    : value,
+              )
               .toList(),
         )
         .toList();

@@ -5,7 +5,6 @@ import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
-import '../../utils/styles/dimensions/font_sizes.dart';
 import '../../utils/styles/theme.dart';
 import '../buttons/option_icon_button.dart';
 import 'equation_display.dart';
@@ -15,13 +14,11 @@ class CalculatorDisplay extends StatelessWidget {
     Key? key,
     required this.data,
     required this.isExpanded,
-    required this.onBackspace,
     required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
   final CalculatorLogic data;
   final bool isExpanded;
-  final VoidCallback onBackspace;
   final VoidCallback onToggleCalculatorWidth;
 
   @override
@@ -34,58 +31,53 @@ class CalculatorDisplay extends StatelessWidget {
         : data.display;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.basePadding),
       child: Column(
-        spacing: 16,
+        spacing: AppDimens.displayInfoSpacing,
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                spacing: 6,
-                children: [
-                  Expanded(
-                    child: data.equationDisplay.isEmpty
-                        ? const SizedBox.shrink()
-                        : EquationDisplay(
-                            equation: data.equationDisplay,
-                            onLongPress: () =>
-                                _copyToClipboard(context, data.equationDisplay),
-                          ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: AppDimens.itemSpacing,
+              children: [
+                if (data.equationDisplay.isNotEmpty)
+                  Flexible(
+                    child: EquationDisplay(
+                      equation: data.equationDisplay,
+                      onLongPress: () =>
+                          _copyToClipboard(context, data.equationDisplay),
+                    ),
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onLongPress: () =>
-                            _copyToClipboard(context, displayValue),
-                        child: ShaderMask(
-                          shaderCallback: (bounds) {
-                            return LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [calcTheme.accent, calcTheme.accent2],
-                            ).createShader(bounds);
-                          },
-                          blendMode: BlendMode.srcIn,
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              displayValue,
-                              maxLines: 1,
-                              textAlign: TextAlign.right,
-                              style: calcTheme.displayLargeTextStyle,
-                            ),
+                Flexible(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onLongPress: () => _copyToClipboard(context, displayValue),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) {
+                        return LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [calcTheme.accent, calcTheme.accent2],
+                        ).createShader(bounds);
+                      },
+                      blendMode: BlendMode.srcIn,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          displayValue,
+                          maxLines: 1,
+                          textAlign: TextAlign.right,
+                          style: calcTheme.displayLargeTextStyle.copyWith(
+                            height: 1.5,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           _InfoDisplay(
@@ -93,7 +85,6 @@ class CalculatorDisplay extends StatelessWidget {
             error: data.error,
             showDivisionError: showDivisionError,
             isExpanded: isExpanded,
-            onBackspace: onBackspace,
             onToggleCalculatorWidth: onToggleCalculatorWidth,
           ),
         ],
@@ -131,7 +122,6 @@ class _InfoDisplay extends StatelessWidget {
     required this.error,
     required this.showDivisionError,
     required this.isExpanded,
-    required this.onBackspace,
     required this.onToggleCalculatorWidth,
   }) : super(key: key);
 
@@ -139,7 +129,6 @@ class _InfoDisplay extends StatelessWidget {
   final CalculatorError? error;
   final bool showDivisionError;
   final bool isExpanded;
-  final VoidCallback onBackspace;
   final VoidCallback onToggleCalculatorWidth;
 
   @override
@@ -155,19 +144,21 @@ class _InfoDisplay extends StatelessWidget {
     };
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.paddingSmall),
       child: Row(
         spacing: itemSpacing,
         children: [
           Expanded(
             child: Row(
-              spacing: 8,
+              spacing: itemSpacing,
               children: [
                 if (hasError || hasInfo)
                   Icon(
-                    hasError ? Icons.warning_amber : Icons.info_outline,
+                    hasError
+                        ? BixCalcIcons.warning_amber
+                        : BixCalcIcons.square_info,
                     color: hasError ? calcTheme.error : calcTheme.accent,
-                    size: 16,
+                    size: AppDimens.smallIconSize,
                   ),
                 Expanded(
                   child: Text(
@@ -176,7 +167,6 @@ class _InfoDisplay extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: calcTheme.displaySmallTextStyle.copyWith(
                       color: hasError ? calcTheme.error : calcTheme.accent,
-                      fontSize: AppFontSizes.button(),
                     ),
                   ),
                 ),
@@ -185,6 +175,12 @@ class _InfoDisplay extends StatelessWidget {
           ),
 
           OptionIconButton(
+            size: isExpanded
+                ? const Size.square(AppDimens.baseIconSize)
+                : const Size(
+                    AppDimens.expandCalculatorIconWidth,
+                    AppDimens.baseIconSize,
+                  ),
             icon: isExpanded
                 ? BixCalcIcons.calculator_simple
                 : BixCalcIcons.calc_extend,
@@ -195,14 +191,6 @@ class _InfoDisplay extends StatelessWidget {
             usePressedAccent: true,
             onPressed: onToggleCalculatorWidth,
           ),
-          // const SizedBox(width: 16),
-          // OptionIconButton(
-          //   icon: Icons.backspace_outlined,
-          //   tooltip: 'Usun',
-          //   isActive: false,
-          //   usePressedAccent: true,
-          //   onPressed: onBackspace,
-          // ),
         ],
       ),
     );

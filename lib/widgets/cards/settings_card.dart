@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 
-enum SettingsCardAxis {
-  vertical,
-  horizontal,
-}
+enum SettingsCardAxis { vertical, horizontal }
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({
@@ -16,7 +14,6 @@ class SettingsCard extends StatelessWidget {
     this.axis = SettingsCardAxis.vertical,
     this.valueIsAccent = false,
     this.valueColor,
-    this.isExpanded = false,
   }) : super(key: key);
 
   final String title;
@@ -25,7 +22,6 @@ class SettingsCard extends StatelessWidget {
   final SettingsCardAxis axis;
   final bool valueIsAccent;
   final Color? valueColor;
-  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +30,13 @@ class SettingsCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(maxWidth: isExpanded ? 390 : double.infinity),
       padding: EdgeInsets.all(calcTheme.basePadding),
       decoration: calcTheme.settingsCardDecoration,
       child: Flex(
         direction: isHorizontal ? Axis.horizontal : Axis.vertical,
-        crossAxisAlignment:
-            isHorizontal ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+        crossAxisAlignment: isHorizontal
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isHorizontal)
@@ -59,16 +55,14 @@ class SettingsCard extends StatelessWidget {
               valueIsAccent: valueIsAccent,
               valueColor: valueColor,
             ),
-          SizedBox(
-            width: isHorizontal ? 10 : 0,
-            height: isHorizontal ? 0 : 10,
-          ),
+          SizedBox(width: isHorizontal ? 10 : 0, height: isHorizontal ? 0 : 10),
           SizedBox(
             width: isHorizontal ? null : double.infinity,
-            height: 36,
+            height: AppDimens.baseIconSize,
             child: Align(
-              alignment:
-                  isHorizontal ? Alignment.centerRight : Alignment.centerLeft,
+              alignment: isHorizontal
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
               child: child,
             ),
           ),
@@ -112,10 +106,11 @@ class _SettingsCardTitle extends StatelessWidget {
           value,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: (valueIsAccent
-                  ? calcTheme.settingsCardAccentValueTextStyle
-                  : calcTheme.settingsCardValueTextStyle)
-              .copyWith(color: valueColor),
+          style:
+              (valueIsAccent
+                      ? calcTheme.settingsCardAccentValueTextStyle
+                      : calcTheme.settingsCardValueTextStyle)
+                  .copyWith(color: valueColor),
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/custom_icons/bixcalc_icons.dart';
+import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 
 class RadioBtn<T> extends StatefulWidget {
@@ -46,12 +47,18 @@ class _RadioBtnState<T> extends State<RadioBtn<T>> {
         mouseCursor: WidgetStateMouseCursor.clickable,
         builder: (context, state) {
           final selected = state.value == true;
-          final icon = Icon(
-            selected
-                ? BixCalcIcons.radio_selected
-                : BixCalcIcons.radio_unselected,
-            color: selected ? theme.accent : theme.unselected,
-            size: 24,
+          final icon = SizedBox.square(
+            dimension: AppDimens.baseIconSize,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Icon(
+                selected
+                    ? BixCalcIcons.radio_selected
+                    : BixCalcIcons.radio_unselected,
+                color: selected ? theme.accent : theme.unselected,
+                size: AppDimens.currentBaseIconSize,
+              ),
+            ),
           );
           final highlighted =
               enabled &&

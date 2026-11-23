@@ -23,7 +23,7 @@ class AppThemeOneColors {
   static const Color borderDark = Color(0xff18171c);
   static const Color text = Color(0xffe5e5e5);
   static const Color numbersText = Color(0xffe5e5e5);
-  static const Color operatorsText = Color(0xff7b93ff);
+  static const Color operatorsText = Color(0xffffa64c);
   static const Color functionsText = Color(0xffffa64c);
   static const Color accent = Color(0xff21ba77);
   static const Color accentFill = Color(0x0d21ba77);
@@ -55,7 +55,7 @@ class AppThemeThreeColors {
   static const Color borderDark = Color(0xffbfb9b0);
   static const Color text = Color(0xff141514);
   static const Color numbersText = Color(0xff141514);
-  static const Color operatorsText = Color(0xfffc6802);
+  static const Color operatorsText = Color(0xffca5402);
   static const Color functionsText = Color(0xff141514);
   static const Color accent = Color(0xfffc6802);
   static const Color accentFill = Color(0x0dfc6802);

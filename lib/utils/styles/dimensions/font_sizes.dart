@@ -1,5 +1,7 @@
 import '../../system/system_helper.dart';
 
+enum AppFontSizeMode { standard, mobile, desktop, small }
+
 class AppFontSizes {
   static const double displayLargeFontSize = 48;
   static const double displayMidFontSize = 24;
@@ -7,43 +9,17 @@ class AppFontSizes {
   static const double buttonFontSize = 16;
   static const double windowTitleFontSize = 10;
 
-  static double displayLarge() {
-    if (SystemHelper.isMobileSystem) {
-      return displayLargeFontSize;
-    }
-
-    return displayLargeFontSize;
+  static AppFontSizeMode get platformMode {
+    if (SystemHelper.isMobileSystem) return AppFontSizeMode.mobile;
+    if (SystemHelper.isDesktopSystem) return AppFontSizeMode.desktop;
+    return AppFontSizeMode.standard;
   }
 
-  static double displayMid() {
-    if (SystemHelper.isMobileSystem) {
-      return displayMidFontSize;
-    }
+  static double button({AppFontSizeMode mode = AppFontSizeMode.standard}) =>
+      mode == AppFontSizeMode.small ? 8 : buttonFontSize;
 
-    return displayMidFontSize;
-  }
-
-  static double displaySmall() {
-    if (SystemHelper.isMobileSystem) {
-      return displaySmallFontSize;
-    }
-
-    return displaySmallFontSize;
-  }
-
-  static double button() {
-    if (SystemHelper.isMobileSystem) {
-      return buttonFontSize;
-    }
-
-    return buttonFontSize;
-  }
-
-  static double windowTitle() {
-    if (SystemHelper.isMobileSystem) {
-      return windowTitleFontSize;
-    }
-
-    return windowTitleFontSize;
-  }
+  static double functionButton(AppFontSizeMode mode) => switch (mode) {
+    AppFontSizeMode.standard || AppFontSizeMode.mobile => 12,
+    AppFontSizeMode.desktop || AppFontSizeMode.small => button(mode: mode),
+  };
 }

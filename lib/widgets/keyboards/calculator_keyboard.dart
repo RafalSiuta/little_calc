@@ -9,11 +9,13 @@ class CalculatorKeyboard extends StatelessWidget {
     required this.rows,
     required this.onPressed,
     this.isExpandedLayout = false,
+    this.isFunctionKeyboard = false,
   }) : super(key: key);
 
   final List<List<CalcKey>> rows;
   final ValueChanged<String> onPressed;
   final bool isExpandedLayout;
+  final bool isFunctionKeyboard;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class CalculatorKeyboard extends StatelessWidget {
                   onPressed: () => onPressed(value.label),
                   flex: value.flex,
                   isExpandedLayout: isExpandedLayout,
+                  isFunctionKeyboard: isFunctionKeyboard,
                 ),
             ],
           ),

@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
+import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 
 class EquationDisplay extends StatelessWidget {
@@ -20,14 +23,21 @@ class EquationDisplay extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final baseStyle = calcTheme.displayMidTextStyle;
-        final textPainter = TextPainter(
-          text: TextSpan(text: equation, style: baseStyle),
-          maxLines: 1,
-          textDirection: Directionality.of(context),
-          textScaler: MediaQuery.textScalerOf(context),
-        )..layout(maxWidth: constraints.maxWidth);
+        final baseStyle = calcTheme.displayMidTextStyle.copyWith(height: 1.5);
+        final textPainter =
+            TextPainter(
+              text: TextSpan(text: equation, style: baseStyle),
+              maxLines: 1,
+              textDirection: Directionality.of(context),
+              textScaler: MediaQuery.textScalerOf(context),
+            )..layout(
+              maxWidth: math.max(
+                0.0,
+                constraints.maxWidth - AppDimens.paddingSmall,
+              ),
+            );
         final isWrapped = textPainter.didExceedMaxLines;
+        textPainter.dispose();
         final fontSize = baseStyle.fontSize;
         final textStyle = isWrapped && fontSize != null
             ? baseStyle.copyWith(fontSize: fontSize * _wrappedTextScale)
@@ -44,19 +54,13 @@ class EquationDisplay extends StatelessWidget {
             child: SingleChildScrollView(
               primary: true,
               reverse: true,
-              padding: const EdgeInsets.only(left: 8),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      equation,
-                      textAlign: TextAlign.right,
-                      style: textStyle,
-                    ),
-                  ),
+              padding: const EdgeInsets.only(left: AppDimens.paddingSmall),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  equation,
+                  textAlign: TextAlign.right,
+                  style: textStyle,
                 ),
               ),
             ),

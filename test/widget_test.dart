@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:bixcalc/main.dart';
 import 'package:bixcalc/utils/custom_icons/bixcalc_icons.dart';
 import 'package:bixcalc/utils/internationalization/app_localizations.dart';
+import 'package:bixcalc/utils/unit_converter_logic/unit_definitions.dart';
+import 'package:bixcalc/widgets/displays/unit_converter_display.dart';
 
 void main() {
   testWidgets('uses the system language and translates the unit converter', (
@@ -32,7 +34,15 @@ void main() {
     expect(find.text('hektar'), findsOneWidget);
     await tester.tap(find.text('hektar'));
     await tester.pumpAndSettle();
-    expect(find.text('1 ha'), findsOneWidget);
+    final sourceDisplay = find.byType(UnitConverterDisplay).first;
+    expect(
+      find.descendant(of: sourceDisplay, matching: find.text('1')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: sourceDisplay, matching: find.text('ha')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('applies, restores and resets the selected language', (
@@ -80,6 +90,50 @@ void main() {
     expect(find.byTooltip('kalkulator'), findsOneWidget);
     expect(find.text('System'), findsOneWidget);
     expect(app.preferences.getString('settings.locale'), isNull);
+  });
+
+  testWidgets('limits converter digits and shows the full unit symbol', (
+    tester,
+  ) async {
+    final localizations = await tester.runAsync(AppLocalizations.loadDelegate);
+    final units = UnitDefinitions.byCategory[UnitCategory.area]!;
+    final unit = units.firstWhere((unit) => unit.id == 'square_kilometer');
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: [localizations!],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Center(
+          child: SizedBox(
+            width: 110,
+            child: UnitConverterDisplay(
+              unit: unit,
+              units: units,
+              value: '-1234567890.123456789e-12',
+              isActive: true,
+              onSelected: () {},
+              onUnitSelected: (_) {},
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final display = find.byType(UnitConverterDisplay);
+    final value = find.text('-1234567890.123…e-12');
+    final symbol = find.text(unit.symbol);
+    expect(value, findsOneWidget);
+    expect(symbol, findsOneWidget);
+    expect(
+      tester.getTopLeft(value).dx,
+      greaterThanOrEqualTo(tester.getTopLeft(display).dx),
+    );
+    expect(
+      tester.getTopRight(symbol).dx,
+      closeTo(tester.getTopRight(display).dx, 0.01),
+    );
   });
 }
 

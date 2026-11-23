@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
+import '../../utils/styles/dimensions/font_sizes.dart';
 import '../../utils/styles/theme.dart';
 
 class NumBtn extends StatefulWidget {
@@ -12,6 +13,7 @@ class NumBtn extends StatefulWidget {
     this.flex = 1,
     this.type = CalcKeyType.number,
     this.isExpandedLayout = false,
+    this.isFunctionKeyboard = false,
   }) : super(key: key);
 
   final String label;
@@ -19,6 +21,7 @@ class NumBtn extends StatefulWidget {
   final int flex;
   final CalcKeyType type;
   final bool isExpandedLayout;
+  final bool isFunctionKeyboard;
 
   @override
   State<NumBtn> createState() => _NumBtnState();
@@ -30,6 +33,7 @@ class _NumBtnState extends State<NumBtn> {
   @override
   Widget build(BuildContext context) {
     final calcTheme = context.calcTheme;
+    final textStyle = _textStyle(calcTheme);
 
     return Expanded(
       flex: widget.flex,
@@ -50,7 +54,7 @@ class _NumBtnState extends State<NumBtn> {
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(
-                horizontal: AppDimens.buttonHorizontalPadding(),
+                horizontal: AppDimens.buttonPaddingHorizontal,
                 vertical: AppDimens.buttonVerticalPadding(
                   isExpanded: widget.isExpandedLayout,
                 ),
@@ -65,7 +69,13 @@ class _NumBtnState extends State<NumBtn> {
                 widget.label,
                 textAlign: TextAlign.center,
                 maxLines: 1,
-                style: _textStyle(calcTheme),
+                style: widget.isFunctionKeyboard
+                    ? textStyle.copyWith(
+                        fontSize: AppFontSizes.functionButton(
+                          AppFontSizes.platformMode,
+                        ),
+                      )
+                    : textStyle,
               ),
             ),
           ),
