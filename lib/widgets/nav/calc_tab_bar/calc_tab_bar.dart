@@ -8,14 +8,18 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
     required this.tabs,
     this.trailing,
     this.controller,
+    this.height = 34,
+    this.itemSpacing = 0,
   }) : super(key: key);
 
   final List<String> tabs;
   final Widget? trailing;
   final TabController? controller;
+  final double height;
+  final double itemSpacing;
 
   @override
-  Size get preferredSize => const Size.fromHeight(34);
+  Size get preferredSize => Size.fromHeight(height);
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +39,16 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
                   isScrollable: true,
                   tabAlignment: TabAlignment.center,
                   labelPadding: EdgeInsets.symmetric(
-                    horizontal: calcTheme.paddingSmall,
+                    horizontal: calcTheme.paddingSmall + itemSpacing / 2,
                   ),
                   indicator: _TopTabIndicator(
                     color: calcTheme.accent,
                     height: calcTheme.menuIndicatorHeight,
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorPadding: EdgeInsets.symmetric(
+                    horizontal: itemSpacing / 2,
+                  ),
                   dividerColor: Colors.transparent,
                   labelColor: calcTheme.accent,
                   unselectedLabelColor: calcTheme.unselected,
@@ -74,28 +81,19 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _TopTabIndicator extends Decoration {
-  const _TopTabIndicator({
-    required this.color,
-    required this.height,
-  });
+  const _TopTabIndicator({required this.color, required this.height});
 
   final Color color;
   final double height;
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _TopTabIndicatorPainter(
-      color: color,
-      height: height,
-    );
+    return _TopTabIndicatorPainter(color: color, height: height);
   }
 }
 
 class _TopTabIndicatorPainter extends BoxPainter {
-  const _TopTabIndicatorPainter({
-    required this.color,
-    required this.height,
-  });
+  const _TopTabIndicatorPainter({required this.color, required this.height});
 
   final Color color;
   final double height;

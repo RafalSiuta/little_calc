@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 
 import '../../providers/calculator_settings_provider.dart';
+import '../calc_symbols/calc_symbols.dart';
 import '../extensions/number_formatter.dart';
 import 'calc_flags.dart';
 
@@ -1335,7 +1336,7 @@ class CalculatorLogic extends ChangeNotifier {
       case 'e':
         return 'e';
       case 'phi':
-        return 'f';
+        return CalcSymbols.goldenRatioSign;
       default:
         return value;
     }

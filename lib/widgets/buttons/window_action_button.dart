@@ -32,7 +32,14 @@ class WindowActionButton extends StatelessWidget {
             splashColor: calcTheme.windowActionSplashColor,
             highlightColor: calcTheme.windowActionHighlightColor,
             onTap: onPressed,
-            child: Center(child: child),
+            child: Center(
+              child: IconTheme.merge(
+                data: IconThemeData(
+                  size: calcTheme.windowActionButtonSize.shortestSide,
+                ),
+                child: child,
+              ),
+            ),
           ),
         ),
       ),

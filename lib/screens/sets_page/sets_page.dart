@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/internationalization/i18n_extension.dart';
+import '../../utils/styles/theme.dart';
 import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
 import 'about_page.dart';
 import 'language_page.dart';
@@ -22,7 +23,11 @@ class SetsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CalcTabBar(tabs: [for (final tab in _tabs) context.tr(tab)]),
+          CalcTabBar(
+            tabs: [for (final tab in _tabs) context.tr(tab)],
+            height: 40,
+            itemSpacing: context.calcTheme.itemSpacing,
+          ),
           const Expanded(
             child: TabBarView(
               children: [ThemesPage(), LanguagePage(), AboutPage()],

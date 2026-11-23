@@ -10,10 +10,10 @@ void main() {
           .toList(),
       [
         ['MC', 'MR', 'M+', 'M-'],
-        ['C', '()', 'DEL', '+'],
-        ['7', '8', '9', '-'],
-        ['4', '5', '6', CalcSymbols.multiplicationSign],
-        ['1', '2', '3', CalcSymbols.divisionSign],
+        ['C', '()', 'DEL', CalcSymbols.divisionSign],
+        ['7', '8', '9', CalcSymbols.multiplicationSign],
+        ['4', '5', '6', '-'],
+        ['1', '2', '3', '+'],
         ['+/-', '0', '.', '='],
       ],
     );
@@ -255,22 +255,36 @@ void main() {
     test('inserts phi as the golden ratio constant', () {
       final logic = CalculatorLogic();
 
-      logic.multifunction('phi');
+      logic.multifunction(CalcSymbols.logicValue('Ф'));
 
       expect(logic.display, '1.6180339887');
-      expect(logic.equationDisplay, 'f');
+      expect(logic.equationDisplay, 'Ф');
     });
 
     test('matches the expanded function keyboard order from Figma', () {
       expect(CalcSymbols.expandedFunctionRows[0][1].label, 'e');
       expect(CalcSymbols.expandedFunctionRows[0][2].label, '\u03c0');
-      expect(CalcSymbols.expandedFunctionRows[0][3].label, 'f');
+      expect(CalcSymbols.expandedFunctionRows[0][3].label, 'Ф');
+      expect(CalcSymbols.expandedHyperbolicFunctionRows[0][3].label, 'Ф');
       expect(CalcSymbols.expandedFunctionRows[2][2].label,
           CalcSymbols.twoPowerSign);
       expect(CalcSymbols.expandedFunctionRows[2][3].label,
           CalcSymbols.reciprocalSign);
       expect(CalcSymbols.expandedFunctionRows[4][3].label,
           CalcSymbols.trigToggleSign);
+      expect(
+        CalcSymbols.expandedBasicRows
+            .map((row) => row.map((key) => key.label).toList())
+            .toList(),
+        [
+          ['MC', 'MR', 'M+', 'M-'],
+          ['C', '()', 'DEL', '÷'],
+          ['7', '8', '9', '×'],
+          ['4', '5', '6', '-'],
+          ['1', '2', '3', '+'],
+          ['+/-', '0', '.', '='],
+        ],
+      );
       expect(
         CalcSymbols.expandedFunctionRows.expand((row) => row).where(
               (value) => value.label == '\u03c0',

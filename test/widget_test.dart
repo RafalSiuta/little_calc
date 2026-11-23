@@ -1,8 +1,10 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:bixcalc/main.dart';
+import 'package:bixcalc/utils/custom_icons/bixcalc_icons.dart';
 import 'package:bixcalc/utils/internationalization/app_localizations.dart';
 
 void main() {
@@ -44,11 +46,13 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('język'));
     await tester.pumpAndSettle();
+    expect(find.byIcon(BixCalcIcons.radio_selected), findsOneWidget);
+    expect(find.byIcon(BixCalcIcons.radio_unselected), findsNWidgets(3));
     await tester.tap(find.text('Español'));
     await tester.pumpAndSettle();
 
     expect(find.byTooltip('calculadora'), findsOneWidget);
-    expect(find.text('Idioma del sistema'), findsOneWidget);
+    expect(find.text('Sistema'), findsOneWidget);
 
     await app.preferences.reload();
     await tester.pumpWidget(const SizedBox.shrink());
@@ -60,11 +64,22 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('idioma'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Idioma del sistema'));
+    final spanishRadio = tester.widget<RawRadio<String>>(
+      find.ancestor(
+        of: find.text('Español'),
+        matching: find.byType(RawRadio<String>),
+      ),
+    );
+    expect(find.byIcon(BixCalcIcons.radio_selected), findsOneWidget);
+    expect(spanishRadio.groupRegistry?.groupValue, 'es');
+    spanishRadio.focusNode.requestFocus();
+    await tester.pump();
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
     await tester.pumpAndSettle();
 
     expect(find.byTooltip('kalkulator'), findsOneWidget);
-    expect(find.text('Język systemu'), findsOneWidget);
+    expect(find.text('System'), findsOneWidget);
+    expect(app.preferences.getString('settings.locale'), isNull);
   });
 }
 

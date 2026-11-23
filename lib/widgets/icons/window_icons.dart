@@ -1,71 +1,48 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/styles/theme.dart';
 
 class WindowMinimizeIcon extends StatelessWidget {
-  const WindowMinimizeIcon({Key? key}) : super(key: key);
+  const WindowMinimizeIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 12,
-      height: 2,
+    final isMacOS = Theme.of(context).platform == TargetPlatform.macOS;
+    return Icon(
+      isMacOS ? BixCalcIcons.minimize_app_macos : BixCalcIcons.minimize_app,
       color: context.calcTheme.unselected,
     );
   }
 }
 
 class WindowMaximizeIcon extends StatelessWidget {
-  const WindowMaximizeIcon({Key? key}) : super(key: key);
+  const WindowMaximizeIcon({super.key, this.isExpanded = false});
+
+  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
-    final calcTheme = context.calcTheme;
-
-    return Container(
-      width: 14,
-      height: 14,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: calcTheme.unselected,
-          width: 2,
-        ),
-      ),
-    );
+    final platform = Theme.of(context).platform;
+    final icon = switch ((platform, isExpanded)) {
+      (TargetPlatform.macOS, false) => BixCalcIcons.maximize_window_macos,
+      (TargetPlatform.macOS, true) => BixCalcIcons.minimize_window_macos,
+      (_, false) => BixCalcIcons.maximize_window_win,
+      (_, true) => BixCalcIcons.minimize_window_win,
+    };
+    return Icon(icon, color: context.calcTheme.unselected);
   }
 }
 
 class WindowCloseIcon extends StatelessWidget {
-  const WindowCloseIcon({Key? key}) : super(key: key);
+  const WindowCloseIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final calcTheme = context.calcTheme;
-
-    return CustomPaint(
-      size: const Size(14, 14),
-      painter: _WindowCloseIconPainter(color: calcTheme.unselected),
+    final isMacOS = Theme.of(context).platform == TargetPlatform.macOS;
+    return Icon(
+      isMacOS ? BixCalcIcons.close_app_macos : BixCalcIcons.close_app_win,
+      color: context.calcTheme.unselected,
     );
-  }
-}
-
-class _WindowCloseIconPainter extends CustomPainter {
-  const _WindowCloseIconPainter({required this.color});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1
-      ..strokeCap = StrokeCap.square;
-    canvas.drawLine(Offset.zero, Offset(size.width, size.height), paint);
-    canvas.drawLine(Offset(size.width, 0), Offset(0, size.height), paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _WindowCloseIconPainter oldDelegate) {
-    return oldDelegate.color != color;
   }
 }

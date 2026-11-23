@@ -82,9 +82,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Exo
+    - family: Poppins
       fonts:
-        - asset: assets/fonts/Exo-Thin.ttf
+        - asset: assets/fonts/Poppins-Variable.ttf
 
     - family: BixCalc
       fonts:

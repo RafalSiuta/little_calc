@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 import 'dimensions/dimensions.dart';
 import 'dimensions/font_sizes.dart';
 
 class CalcTheme extends ThemeExtension<CalcTheme> {
+  static const _fontFamily = 'Poppins';
+
   const CalcTheme({
     required this.systemWindow,
     required this.background,
@@ -127,6 +128,7 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     final isLight = calcTheme.background.computeLuminance() > 0.5;
 
     return ThemeData(
+      fontFamily: _fontFamily,
       brightness: isLight ? Brightness.light : Brightness.dark,
       colorScheme:
           (isLight ? const ColorScheme.light() : const ColorScheme.dark())
@@ -491,34 +493,43 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
     required Color error,
     Color backgroundShadow = const Color(0x33000000),
   }) {
-    final displayLargeTextStyle = GoogleFonts.exo2(
+    final displayLargeTextStyle = TextStyle(
+      fontFamily: _fontFamily,
       color: accent,
+      fontWeight: FontWeight.w200,
       fontSize: AppFontSizes.displayLarge(),
-      fontWeight: FontWeight.w100,
-      height: 1,
+      //fontVariations: const [FontVariation.weight(150)],
+      height: 1.2,
       letterSpacing: 0,
     );
-    final displayMidTextStyle = GoogleFonts.exo2(
+    final displayMidTextStyle = TextStyle(
+      fontFamily: _fontFamily,
       color: accent,
       fontSize: AppFontSizes.displayMid(),
-      fontWeight: FontWeight.w200,
+      fontWeight: FontWeight.w300,
       height: 1,
       letterSpacing: 0,
     );
-    final displaySmallTextStyle = GoogleFonts.exo2(
+    final displaySmallTextStyle = TextStyle(
+      fontFamily: _fontFamily,
       color: accent,
       fontSize: AppFontSizes.displaySmall(),
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w300,
       height: 1,
       letterSpacing: 0,
     );
 
     final numButtonBaseTextStyle = TextStyle(
-      fontFamily: 'Exo',
+      fontFamily: _fontFamily,
       fontSize: AppFontSizes.button(),
-      fontWeight: FontWeight.w100,
+      fontVariations: const [FontVariation.weight(200)],
       height: 1,
       letterSpacing: 0,
+    );
+
+    final mediumTextStyle = displaySmallTextStyle.copyWith(
+      color: text,
+      fontSize: AppFontSizes.button(),
     );
 
     return CalcTheme(
@@ -550,19 +561,13 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       numButtonPressedTextStyle: numButtonBaseTextStyle.copyWith(color: accent),
       windowTitleTextStyle: TextStyle(
         color: text,
-        fontFamily: 'Exo',
+        fontFamily: _fontFamily,
         fontSize: AppFontSizes.windowTitle(),
         fontWeight: FontWeight.w200,
         height: 1,
         letterSpacing: 0,
       ),
-      placeholderTextStyle: TextStyle(
-        color: text,
-        fontFamily: 'Exo',
-        fontSize: AppFontSizes.displayMid(),
-        fontWeight: FontWeight.w400,
-        letterSpacing: 0,
-      ),
+      placeholderTextStyle: displayMidTextStyle.copyWith(color: text),
       optionIconButtonSize: const Size(24, 24),
       optionIconButtonPadding: EdgeInsets.zero,
       optionIconSize: 24,
@@ -579,55 +584,13 @@ class CalcTheme extends ThemeExtension<CalcTheme> {
       windowBorderRadius: 16,
       menuIndicatorHeight: 2,
       backgroundShadow: backgroundShadow,
-      settingsTitleTextStyle: GoogleFonts.exo2(
-        color: text,
-        fontSize: 24,
-        fontWeight: FontWeight.w200,
-        height: 1,
-        letterSpacing: 0,
-      ),
-      settingsCardTextStyle: GoogleFonts.exo2(
-        color: text,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        height: 1,
-        letterSpacing: 0,
-      ),
-      settingsCardValueTextStyle: GoogleFonts.exo2(
-        color: unselected,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        height: 1,
-        letterSpacing: 0,
-      ),
-      settingsCardAccentValueTextStyle: GoogleFonts.exo2(
-        color: accent,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        height: 1,
-        letterSpacing: 0,
-      ),
-      tabTextStyle: GoogleFonts.exo2(
-        color: unselected,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        height: 1,
-        letterSpacing: 0,
-      ),
-      themeCardTextStyle: GoogleFonts.exo2(
-        color: accent,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        height: 1,
-        letterSpacing: 0,
-      ),
-      themeCardButtonTextStyle: const TextStyle(
-        fontFamily: 'Exo',
-        fontSize: 8,
-        fontWeight: FontWeight.w100,
-        height: 1,
-        letterSpacing: 0,
-      ),
+      settingsTitleTextStyle: displayMidTextStyle.copyWith(color: text),
+      settingsCardTextStyle: mediumTextStyle,
+      settingsCardValueTextStyle: mediumTextStyle.copyWith(color: unselected),
+      settingsCardAccentValueTextStyle: mediumTextStyle.copyWith(color: accent),
+      tabTextStyle: mediumTextStyle.copyWith(color: unselected),
+      themeCardTextStyle: displaySmallTextStyle,
+      themeCardButtonTextStyle: numButtonBaseTextStyle.copyWith(fontSize: 8),
       sliderTrackHeight: 2,
       sliderThumbSize: 16,
       switchTrackHeight: 12,

@@ -5,6 +5,7 @@ import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
+import '../../utils/styles/dimensions/font_sizes.dart';
 import '../../utils/styles/theme.dart';
 import '../buttons/option_icon_button.dart';
 import 'equation_display.dart';
@@ -175,6 +176,7 @@ class _InfoDisplay extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: calcTheme.displaySmallTextStyle.copyWith(
                       color: hasError ? calcTheme.error : calcTheme.accent,
+                      fontSize: AppFontSizes.button(),
                     ),
                   ),
                 ),

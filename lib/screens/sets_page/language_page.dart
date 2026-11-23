@@ -5,13 +5,14 @@ import '../../providers/locale_provider.dart';
 import '../../utils/internationalization/app_localizations.dart';
 import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/theme.dart';
+import '../../widgets/buttons/radio_btn.dart';
 
 class LanguagePage extends StatelessWidget {
   const LanguagePage({super.key});
 
   static const _languageNames = {
-    'en': 'English',
     'pl': 'Polski',
+    'en': 'English',
     'es': 'Español',
   };
 
@@ -19,25 +20,54 @@ class LanguagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<LocaleProvider>();
     final theme = context.calcTheme;
+    final options = {
+      '': context.tr('settings.system_language'),
+      ..._languageNames,
+    };
 
     return RadioGroup<String>(
       groupValue: provider.locale?.languageCode ?? '',
-      onChanged: (code) => provider.setLocale(
-        code == null || code.isEmpty ? null : Locale(code),
-      ),
-      child: ListView(
+      onChanged: (code) {
+        provider.setLocale(
+          AppLocalizations.supportedLocales
+              .where((locale) => locale.languageCode == code)
+              .firstOrNull,
+        );
+      },
+      child: SingleChildScrollView(
         padding: EdgeInsets.all(theme.basePadding),
-        children: [
-          RadioListTile<String>(
-            value: '',
-            title: Text(context.tr('settings.system_language')),
-          ),
-          for (final locale in AppLocalizations.supportedLocales)
-            RadioListTile<String>(
-              value: locale.languageCode,
-              title: Text(_languageNames[locale.languageCode]!),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.tr('settings.language'),
+              style: theme.settingsTitleTextStyle.copyWith(height: 1.5),
             ),
-        ],
+            SizedBox(height: theme.itemSpacing + 10),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 390),
+              child: Column(
+                spacing: 10,
+                children: [
+                  for (final option in options.entries)
+                    DecoratedBox(
+                      decoration: theme.settingsCardDecoration.copyWith(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: RadioBtn<String>(
+                        value: option.key,
+                        padding: EdgeInsets.all(theme.basePadding),
+                        label: Text(
+                          option.value,
+                          style: theme.settingsCardTextStyle,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

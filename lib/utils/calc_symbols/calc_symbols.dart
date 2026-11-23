@@ -26,7 +26,7 @@ class CalcSymbols {
   static const String expSign = 'e\u02e3';
   static const String twoPowerSign = '2\u02e3';
   static const String reciprocalSign = '1/x';
-  static const String goldenRatioSign = 'f';
+  static const String goldenRatioSign = 'Ф';
   static const String absoluteSign = '|x|';
   static const String factorialSign = 'x!';
   static const String squareRootSign = '\u221a';
@@ -47,25 +47,25 @@ class CalcSymbols {
       CalcKey('C'),
       CalcKey('()',type: _op),
       CalcKey('DEL'),
-      CalcKey('+', type: _op),
+      CalcKey(divisionSign, type: _op),
     ],
     [
       CalcKey('7'),
       CalcKey('8'),
       CalcKey('9'),
-      CalcKey('-', type: _op),
+      CalcKey(multiplicationSign, type: _op),
     ],
     [
       CalcKey('4'),
       CalcKey('5'),
       CalcKey('6'),
-      CalcKey(multiplicationSign, type: _op),
+      CalcKey('-', type: _op),
     ],
     [
       CalcKey('1'),
       CalcKey('2'),
       CalcKey('3'),
-      CalcKey(divisionSign, type: _op),
+      CalcKey('+', type: _op),
     ],
     [
       CalcKey('+/-', type: _op),
@@ -153,7 +153,44 @@ class CalcSymbols {
     ],
   ];
 
-  static const List<List<CalcKey>> expandedBasicRows = compactRows;
+  static const List<List<CalcKey>> expandedBasicRows = [
+    [
+      CalcKey('MC', type: _fn),
+      CalcKey('MR', type: _fn),
+      CalcKey('M+', type: _fn),
+      CalcKey('M-', type: _fn),
+    ],
+    [
+      CalcKey('C'),
+      CalcKey('()', type: _op),
+      CalcKey('DEL'),
+      CalcKey(divisionSign, type: _op),
+    ],
+    [
+      CalcKey('7'),
+      CalcKey('8'),
+      CalcKey('9'),
+      CalcKey(multiplicationSign, type: _op),
+    ],
+    [
+      CalcKey('4'),
+      CalcKey('5'),
+      CalcKey('6'),
+      CalcKey('-', type: _op),
+    ],
+    [
+      CalcKey('1'),
+      CalcKey('2'),
+      CalcKey('3'),
+      CalcKey('+', type: _op),
+    ],
+    [
+      CalcKey('+/-', type: _op),
+      CalcKey('0'),
+      CalcKey('.'),
+      CalcKey('=', type: _op),
+    ],
+  ];
 
   static String logicValue(String value) {
     switch (value) {
