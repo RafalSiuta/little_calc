@@ -10,7 +10,6 @@ class NumBtn extends StatefulWidget {
     Key? key,
     required this.label,
     required this.onPressed,
-    this.flex = 1,
     this.type = CalcKeyType.number,
     this.isExpandedLayout = false,
     this.isFunctionKeyboard = false,
@@ -18,7 +17,6 @@ class NumBtn extends StatefulWidget {
 
   final String label;
   final VoidCallback onPressed;
-  final int flex;
   final CalcKeyType type;
   final bool isExpandedLayout;
   final bool isFunctionKeyboard;
@@ -35,48 +33,45 @@ class _NumBtnState extends State<NumBtn> {
     final calcTheme = context.calcTheme;
     final textStyle = _textStyle(calcTheme);
 
-    return Expanded(
-      flex: widget.flex,
-      child: SizedBox(
-        height: AppDimens.calculatorKeyHeight(
-          isExpanded: widget.isExpandedLayout,
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            splashColor: calcTheme.borderDark,
-            highlightColor: calcTheme.borderDark,
-            hoverColor: calcTheme.borderDark,
-            onHighlightChanged: (isHighlighted) {
-              setState(() => _isPressed = isHighlighted);
-            },
-            onTap: widget.onPressed,
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(
-                horizontal: AppDimens.buttonPaddingHorizontal,
-                vertical: AppDimens.buttonVerticalPadding(
-                  isExpanded: widget.isExpandedLayout,
-                ),
+    return SizedBox(
+      height: AppDimens.calculatorKeyHeight(
+        isExpanded: widget.isExpandedLayout,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          splashColor: calcTheme.borderDark,
+          highlightColor: calcTheme.borderDark,
+          hoverColor: calcTheme.borderDark,
+          onHighlightChanged: (isHighlighted) {
+            setState(() => _isPressed = isHighlighted);
+          },
+          onTap: widget.onPressed,
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(
+              horizontal: AppDimens.buttonPaddingHorizontal,
+              vertical: AppDimens.buttonVerticalPadding(
+                isExpanded: widget.isExpandedLayout,
               ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: calcTheme.borderDark,
-                  width: AppDimens.borderThickness,
-                ),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: calcTheme.borderDark,
+                width: AppDimens.borderThickness,
               ),
-              child: Text(
-                widget.label,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                style: widget.isFunctionKeyboard
-                    ? textStyle.copyWith(
-                        fontSize: AppFontSizes.functionButton(
-                          AppFontSizes.platformMode,
-                        ),
-                      )
-                    : textStyle,
-              ),
+            ),
+            child: Text(
+              widget.label,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: widget.isFunctionKeyboard
+                  ? textStyle.copyWith(
+                      fontSize: AppFontSizes.functionButton(
+                        AppFontSizes.platformMode,
+                      ),
+                    )
+                  : textStyle,
             ),
           ),
         ),

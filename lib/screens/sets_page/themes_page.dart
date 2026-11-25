@@ -9,6 +9,7 @@ import '../../providers/window_layout_provider.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/system/system_helper.dart';
 import '../../utils/styles/theme.dart';
+import '../../widgets/animations/staggered_entrance.dart';
 import '../../widgets/cards/settings_card.dart';
 import '../../widgets/cards/theme_card.dart';
 
@@ -48,29 +49,34 @@ class ThemesPage extends StatelessWidget {
                   child: Column(
                     spacing: AppDimens.mobileItemSpacing,
                     children: [
-                      SettingsCard(
-                        title: context.tr('settings.blur'),
-                        value: themeSettings.backgroundBlur > 0
-                            ? context.tr('settings.on')
-                            : context.tr('settings.off'),
-                        valueColor: themeSettings.backgroundBlur > 0
-                            ? calcTheme.accent
-                            : calcTheme.unselected,
-                        axis: SettingsCardAxis.horizontal,
-                        child: _CalcSwitch(
-                          value: themeSettings.backgroundBlur > 0,
-                          onChanged: themeSettings.setBackgroundBlur,
+                      StaggeredEntrance(
+                        position: 0,
+                        child: SettingsCard(
+                          title: context.tr('settings.blur'),
+                          value: themeSettings.backgroundBlur > 0
+                              ? context.tr('settings.on')
+                              : context.tr('settings.off'),
+                          valueColor: themeSettings.backgroundBlur > 0
+                              ? calcTheme.accent
+                              : calcTheme.unselected,
+                          axis: SettingsCardAxis.horizontal,
+                          child: _CalcSwitch(
+                            value: themeSettings.backgroundBlur > 0,
+                            onChanged: themeSettings.setBackgroundBlur,
+                          ),
                         ),
                       ),
-                      SettingsCard(
-                        title: context.tr('settings.opacity'),
-                        value: themeSettings.backgroundOpacity.toStringAsFixed(
-                          1,
-                        ),
-                        valueIsAccent: true,
-                        child: _CalcSlider(
-                          value: themeSettings.backgroundOpacity,
-                          onChanged: themeSettings.setBackgroundOpacity,
+                      StaggeredEntrance(
+                        position: 1,
+                        child: SettingsCard(
+                          title: context.tr('settings.opacity'),
+                          value: themeSettings.backgroundOpacity
+                              .toStringAsFixed(1),
+                          valueIsAccent: true,
+                          child: _CalcSlider(
+                            value: themeSettings.backgroundOpacity,
+                            onChanged: themeSettings.setBackgroundOpacity,
+                          ),
                         ),
                       ),
                     ],
@@ -119,19 +125,20 @@ class _ThemeCards extends StatelessWidget {
   Widget build(BuildContext context) {
     const gap = AppDimens.mobileItemSpacing;
     if (SystemHelper.isMobileSystem) {
+      const mobileColumns = 3;
       return GridView.builder(
         padding: EdgeInsets.zero,
         primary: false,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: mobileColumns,
           mainAxisSpacing: gap,
           crossAxisSpacing: gap,
           childAspectRatio: ThemeCard.figmaAspectRatio,
         ),
         itemCount: themes.length,
-        itemBuilder: (context, index) => _card(themes[index]),
+        itemBuilder: (context, index) => _animatedCard(index, mobileColumns),
       );
     }
 
@@ -147,19 +154,29 @@ class _ThemeCards extends StatelessWidget {
           spacing: gap,
           runSpacing: gap,
           children: [
-            for (final themeId in themes)
-              SizedBox(width: cardWidth, child: _card(themeId)),
+            for (var index = 0; index < themes.length; index++)
+              SizedBox(
+                width: cardWidth,
+                child: _animatedCard(index, preferredColumns),
+              ),
           ],
         );
       },
     );
   }
 
-  ThemeCard _card(int themeId) => ThemeCard(
-    themeId: themeId,
-    isSelected: themeId == selectedTheme,
-    onTap: () => onThemeSelected(themeId),
-  );
+  Widget _animatedCard(int index, int columnCount) {
+    final themeId = themes[index];
+    return StaggeredEntrance(
+      position: index,
+      columnCount: columnCount,
+      child: ThemeCard(
+        themeId: themeId,
+        isSelected: themeId == selectedTheme,
+        onTap: () => onThemeSelected(themeId),
+      ),
+    );
+  }
 }
 
 class _CalcSlider extends StatelessWidget {

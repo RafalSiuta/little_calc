@@ -6,6 +6,7 @@ import '../../utils/internationalization/app_localizations.dart';
 import '../../utils/internationalization/i18n_extension.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
+import '../../widgets/animations/staggered_entrance.dart';
 import '../../widgets/buttons/radio_btn.dart';
 
 class LanguagePage extends StatelessWidget {
@@ -48,18 +49,21 @@ class LanguagePage extends StatelessWidget {
             child: Column(
               spacing: AppDimens.mobileItemSpacing,
               children: [
-                for (final option in options.entries)
-                  DecoratedBox(
-                    decoration: theme.settingsCardDecoration,
-                    child: RadioBtn<String>(
-                      value: option.key,
-                      padding: EdgeInsets.all(theme.basePadding),
-                      label: Text(
-                        option.value,
-                        style: theme.settingsCardTextStyle.copyWith(
-                          color: option.key == selectedLanguage
-                              ? theme.text
-                              : theme.unselected,
+                for (final (index, option) in options.entries.indexed)
+                  StaggeredEntrance(
+                    position: index,
+                    child: DecoratedBox(
+                      decoration: theme.settingsCardDecoration,
+                      child: RadioBtn<String>(
+                        value: option.key,
+                        padding: EdgeInsets.all(theme.basePadding),
+                        label: Text(
+                          option.value,
+                          style: theme.settingsCardTextStyle.copyWith(
+                            color: option.key == selectedLanguage
+                                ? theme.text
+                                : theme.unselected,
+                          ),
                         ),
                       ),
                     ),

@@ -1,102 +1,168 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/internationalization/i18n_extension.dart';
 import '../../models/currency_model/currency.dart';
 import '../../providers/currencies_provider.dart';
-import '../../providers/calculator_memory_provider.dart';
-import '../../providers/window_layout_provider.dart';
-import '../../utils/calc_symbols/calc_symbols.dart';
 import '../../utils/currency_logic/currency_logic.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
 import '../../utils/system/system_helper.dart';
+import '../../widgets/animations/calculation_completion.dart';
+import '../../widgets/animations/display_motion.dart';
+import '../../widgets/animations/staggered_entrance.dart';
 import '../../widgets/buttons/option_icon_button.dart';
 import '../../widgets/cards/currency_card.dart';
 import '../../widgets/displays/currency_choice_display.dart';
 import '../../widgets/displays/currency_equation_display.dart';
 import '../../widgets/displays/date_header.dart';
-import '../../widgets/keyboards/calculator_keyboard.dart';
 import '../../widgets/nav/calc_tab_bar/calc_tab_bar.dart';
 
-class CurrencyPage extends StatelessWidget {
-  const CurrencyPage({Key? key}) : super(key: key);
+class CurrencyPage extends StatefulWidget {
+  const CurrencyPage({
+    super.key,
+    required this.isExpanded,
+    required this.keyboardHeight,
+    required this.onToggleLayout,
+    required this.initialTab,
+    required this.onTabChanged,
+  });
+
+  final bool isExpanded;
+  final double keyboardHeight;
+  final VoidCallback onToggleLayout;
+  final int initialTab;
+  final ValueChanged<int?> onTabChanged;
+
+  @override
+  State<CurrencyPage> createState() => _CurrencyPageState();
+}
+
+class _CurrencyPageState extends State<CurrencyPage>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+  int? _reportedTab;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportedTab = widget.initialTab;
+    _tabController = TabController(
+      length: 3,
+      initialIndex: widget.initialTab,
+      vsync: this,
+    );
+    _tabController.addListener(_reportTab);
+    _tabController.animation!.addListener(_reportTab);
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_reportTab);
+    _tabController.animation!.removeListener(_reportTab);
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _reportTab() {
+    final tab =
+        _tabController.indexIsChanging || _tabController.offset.abs() > 0.001
+        ? null
+        : _tabController.index;
+    if (tab == _reportedTab) return;
+
+    _reportedTab = tab;
+    widget.onTabChanged(tab);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final windowLayout = context.watch<WindowLayoutProvider>();
-
-    return DefaultTabController(
-      length: 3,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CalcTabBar(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DisplayMotion(
+          startScale: 1,
+          child: CalcTabBar(
+            controller: _tabController,
             tabs: [
               context.tr('pages.currencies'),
               context.tr('pages.commodities'),
               context.tr('pages.crypto'),
             ],
             trailing: OptionIconButton(
-              icon: SystemHelper.isMobileSystem && windowLayout.isExpanded
+              icon: SystemHelper.isMobileSystem && widget.isExpanded
                   ? Icons.calculate_outlined
                   : Icons.show_chart,
-              tooltip: windowLayout.isExpanded
+              tooltip: widget.isExpanded
                   ? context.tr('actions.hide_currencies')
                   : context.tr('actions.show_currencies'),
-              isActive: SystemHelper.isDesktopSystem && windowLayout.isExpanded,
+              isActive: SystemHelper.isDesktopSystem && widget.isExpanded,
               usePressedAccent: true,
-              onPressed: windowLayout.toggleCalculatorWidth,
+              onPressed: widget.onToggleLayout,
             ),
           ),
-          Expanded(
-            child: TabBarView(
-              children: [
-                const _CurrenciesTab(),
-                _PlaceholderPage(title: context.tr('pages.commodities')),
-                _PlaceholderPage(title: context.tr('pages.crypto')),
-              ],
-            ),
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              _CurrenciesTab(
+                isExpanded: widget.isExpanded,
+                keyboardHeight: widget.keyboardHeight,
+              ),
+              _PlaceholderPage(title: context.tr('pages.commodities')),
+              _PlaceholderPage(title: context.tr('pages.crypto')),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 class _CurrenciesTab extends StatelessWidget {
-  const _CurrenciesTab({Key? key}) : super(key: key);
+  const _CurrenciesTab({
+    required this.isExpanded,
+    required this.keyboardHeight,
+  });
+
+  final bool isExpanded;
+  final double keyboardHeight;
 
   @override
   Widget build(BuildContext context) {
-    final windowLayout = context.watch<WindowLayoutProvider>();
-    final provider = context.watch<CurrenciesProvider>();
+    final (isLoading, hasCurrencies) = context
+        .select<CurrenciesProvider, (bool, bool)>(
+          (provider) => (provider.isLoading, provider.currencies.isNotEmpty),
+        );
 
-    if (provider.isLoading && provider.currencies.isEmpty) {
+    if (isLoading && !hasCurrencies) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.currencies.isEmpty) {
+    if (!hasCurrencies) {
       return _PlaceholderPage(title: context.tr('pages.currencies'));
     }
 
+    final converter = _CurrencyConverter(keyboardHeight: keyboardHeight);
     if (SystemHelper.isMobileSystem) {
-      return windowLayout.isExpanded
-          ? const _MobileCurrenciesOverview()
-          : const _CurrencyConverter();
+      return isExpanded ? const _MobileCurrenciesOverview() : converter;
     }
 
-    if (windowLayout.isExpanded) {
-      return const Row(
+    if (isExpanded) {
+      return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: _CurrenciesList()),
-          Expanded(child: _CurrencyConverter()),
+          const Expanded(
+            child: DisplayMotion(startScale: 1, child: _CurrenciesList()),
+          ),
+          Expanded(child: converter),
         ],
       );
     }
 
-    return const _CurrencyConverter();
+    return converter;
   }
 }
 
@@ -115,53 +181,30 @@ class _MobileCurrenciesOverview extends StatelessWidget {
       ),
     ];
 
-    return ListView(
-      padding: EdgeInsets.all(calcTheme.basePadding),
-      children: [
-        _CurrencyListHeader(onAddPressed: () {}),
-        // SizedBox(height: calcTheme.itemSpacing),
-        // CurrencyChoiceDisplay(
-        //   currency: base,
-        //   currencies: provider.currencies,
-        //   valueSymbol: _currencyGlyph(base),
-        //   value: provider.formatCurrencyValue(logic.baseValueDisplay),
-        //   label: logic.baseLabel(base, target),
-        //   isActive: activeDisplay == CurrencyActiveDisplay.base,
-        //   onSelected: provider.setBaseCurrency,
-        // ),
-        // const SizedBox(height: AppDimens.smallItemSpacing),
-        // CurrencyChoiceDisplay(
-        //   currency: target,
-        //   currencies: provider.currencies,
-        //   valueSymbol: _currencyGlyph(target),
-        //   value: provider.formatCurrencyValue(logic.targetValueDisplay),
-        //   label: logic.targetLabel(base, target),
-        //   isActive: activeDisplay == CurrencyActiveDisplay.target,
-        //   onSelected: provider.setTargetCurrency,
-        // ),
-        // const SizedBox(height: AppDimens.smallItemSpacing),
-        // _CurrencyInfoDisplay(
-        //   rateDisplay: logic.rateDisplay(
-        //     base,
-        //     target,
-        //     decimalPlaces: provider.currencyDecimalPlaces(),
-        //   ),
-        //   onSwapCurrencies: provider.swapCurrencies,
-        //   onBackspace: logic.delete,
-        //   showActions: false,
-        // ),
-        SizedBox(height: calcTheme.itemSpacing),
-        for (var index = 0; index < currencies.length; index++) ...[
-          CurrencyCard(
-            currency: currencies[index],
-            value: provider.valueForCurrency(currencies[index]),
-            isActive: currencies[index].codeIso == base.codeIso,
-            onTap: () => provider.selectCurrency(currencies[index]),
-          ),
-          if (index < currencies.length - 1)
-            SizedBox(height: calcTheme.itemSpacing),
-        ],
-      ],
+    return AnimationLimiter(
+      child: ListView.separated(
+        padding: EdgeInsets.all(calcTheme.basePadding),
+        itemCount: currencies.length + 1,
+        separatorBuilder: (_, _) => SizedBox(height: calcTheme.itemSpacing),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return StaggeredEntrance(
+              position: 0,
+              child: _CurrencyListHeader(onAddPressed: () {}),
+            );
+          }
+          final currency = currencies[index - 1];
+          return StaggeredEntrance(
+            position: index,
+            child: CurrencyCard(
+              currency: currency,
+              value: provider.valueForCurrency(currency),
+              isActive: currency.codeIso == base.codeIso,
+              onTap: () => provider.selectCurrency(currency),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -186,21 +229,26 @@ class _CurrenciesList extends StatelessWidget {
         _CurrencyListHeader(onAddPressed: () {}),
         SizedBox(height: calcTheme.itemSpacing),
         Expanded(
-          child: ListView.separated(
-            itemCount: currencies.length,
-            padding: EdgeInsets.all(calcTheme.basePadding),
-            separatorBuilder: (context, index) =>
-                SizedBox(height: calcTheme.itemSpacing),
-            itemBuilder: (context, index) {
-              final currency = currencies[index];
+          child: AnimationLimiter(
+            child: ListView.separated(
+              itemCount: currencies.length,
+              padding: EdgeInsets.all(calcTheme.basePadding),
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: calcTheme.itemSpacing),
+              itemBuilder: (context, index) {
+                final currency = currencies[index];
 
-              return CurrencyCard(
-                currency: currency,
-                value: provider.valueForCurrency(currency),
-                isActive: currency.codeIso == base.codeIso,
-                onTap: () => provider.selectCurrency(currency),
-              );
-            },
+                return StaggeredEntrance(
+                  position: index,
+                  child: CurrencyCard(
+                    currency: currency,
+                    value: provider.valueForCurrency(currency),
+                    isActive: currency.codeIso == base.codeIso,
+                    onTap: () => provider.selectCurrency(currency),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ],
@@ -238,28 +286,9 @@ class _CurrencyListHeader extends StatelessWidget {
 }
 
 class _CurrencyConverter extends StatelessWidget {
-  const _CurrencyConverter({Key? key}) : super(key: key);
+  const _CurrencyConverter({required this.keyboardHeight});
 
-  void _handleKeyPress(
-    BuildContext context,
-    CurrencyLogic logic,
-    String value,
-  ) {
-    final logicValue = CalcSymbols.logicValue(value);
-    final memory = context.read<CalculatorMemoryProvider>();
-    if (memory.handleKey(
-      logicValue,
-      currentValue: logic.memoryValue,
-      onRecall: logic.recallMemoryValue,
-    )) {
-      return;
-    }
-    if (logicValue.isEmpty) {
-      return;
-    }
-
-    logic.handleKeyPress(logicValue);
-  }
+  final double keyboardHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -284,47 +313,34 @@ class _CurrencyConverter extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(calcTheme.basePadding),
-            child: _CurrencyDisplay(
-              base: base,
-              target: target,
-              currencies: provider.currencies,
-              baseValue: provider.formatCurrencyValue(logic.baseValueDisplay),
-              targetValue: provider.formatCurrencyValue(
-                logic.targetValueDisplay,
-              ),
-              baseLabel: logic.baseLabel(base, target, builder: currencyLabel),
-              targetLabel: logic.targetLabel(
-                base,
-                target,
-                builder: currencyLabel,
-              ),
-              equationDisplay: logic.equationDisplay,
-              resultDisplay: resultDisplay == 'Error'
-                  ? context.tr('errors.generic')
-                  : provider.formatCurrencyValue(resultDisplay),
-              resultCurrency: resultCurrency,
-              rateDisplay: logic.rateDisplay(
-                base,
-                target,
-                decimalPlaces: provider.currencyDecimalPlaces(),
-              ),
-              onBaseSelected: provider.setBaseCurrency,
-              onTargetSelected: provider.setTargetCurrency,
-              onSwapCurrencies: provider.swapCurrencies,
-              onBackspace: logic.delete,
-            ),
-          ),
+    return Padding(
+      padding: EdgeInsets.all(
+        calcTheme.basePadding,
+      ).add(EdgeInsets.only(bottom: keyboardHeight)),
+      child: _CurrencyDisplay(
+        base: base,
+        target: target,
+        currencies: provider.currencies,
+        baseValue: provider.formatCurrencyValue(logic.baseValueDisplay),
+        targetValue: provider.formatCurrencyValue(logic.targetValueDisplay),
+        baseLabel: logic.baseLabel(base, target, builder: currencyLabel),
+        targetLabel: logic.targetLabel(base, target, builder: currencyLabel),
+        equationDisplay: logic.equationDisplay,
+        completedCalculations: logic.completedCalculations,
+        resultDisplay: resultDisplay == 'Error'
+            ? context.tr('errors.generic')
+            : provider.formatCurrencyValue(resultDisplay),
+        resultCurrency: resultCurrency,
+        rateDisplay: logic.rateDisplay(
+          base,
+          target,
+          decimalPlaces: provider.currencyDecimalPlaces(),
         ),
-        CalculatorKeyboard(
-          rows: CalcSymbols.compactRows,
-          onPressed: (value) => _handleKeyPress(context, logic, value),
-        ),
-      ],
+        onBaseSelected: provider.setBaseCurrency,
+        onTargetSelected: provider.setTargetCurrency,
+        onSwapCurrencies: provider.swapCurrencies,
+        onBackspace: logic.delete,
+      ),
     );
   }
 }
@@ -340,6 +356,7 @@ class _CurrencyDisplay extends StatelessWidget {
     required this.baseLabel,
     required this.targetLabel,
     required this.equationDisplay,
+    required this.completedCalculations,
     required this.resultDisplay,
     required this.resultCurrency,
     required this.rateDisplay,
@@ -357,6 +374,7 @@ class _CurrencyDisplay extends StatelessWidget {
   final String baseLabel;
   final String targetLabel;
   final String equationDisplay;
+  final int completedCalculations;
   final String resultDisplay;
   final Currency resultCurrency;
   final String rateDisplay;
@@ -373,86 +391,111 @@ class _CurrencyDisplay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        CurrencyChoiceDisplay(
-          currency: base,
-          currencies: currencies,
-          valueSymbol: _currencyGlyph(base),
-          value: baseValue,
-          label: baseLabel,
-          isActive: activeDisplay == CurrencyActiveDisplay.base,
-          onSelected: onBaseSelected,
-          onActivated: () => context
-              .read<CurrenciesProvider>()
-              .currencyLogic
-              .setActiveDisplay(CurrencyActiveDisplay.base),
+        DisplayMotion(
+          child: CurrencyChoiceDisplay(
+            currency: base,
+            currencies: currencies,
+            valueSymbol: _currencyGlyph(base),
+            value: baseValue,
+            label: baseLabel,
+            isActive: activeDisplay == CurrencyActiveDisplay.base,
+            onSelected: onBaseSelected,
+            onActivated: () => context
+                .read<CurrenciesProvider>()
+                .currencyLogic
+                .setActiveDisplay(CurrencyActiveDisplay.base),
+          ),
         ),
         SizedBox(height: calcTheme.itemSpacing),
-        CurrencyChoiceDisplay(
-          currency: target,
-          currencies: currencies,
-          valueSymbol: _currencyGlyph(target),
-          value: targetValue,
-          label: targetLabel,
-          isActive: activeDisplay == CurrencyActiveDisplay.target,
-          onSelected: onTargetSelected,
-          onActivated: () => context
-              .read<CurrenciesProvider>()
-              .currencyLogic
-              .setActiveDisplay(CurrencyActiveDisplay.target),
+        DisplayMotion(
+          position: 1,
+          child: CurrencyChoiceDisplay(
+            currency: target,
+            currencies: currencies,
+            valueSymbol: _currencyGlyph(target),
+            value: targetValue,
+            label: targetLabel,
+            isActive: activeDisplay == CurrencyActiveDisplay.target,
+            onSelected: onTargetSelected,
+            onActivated: () => context
+                .read<CurrenciesProvider>()
+                .currencyLogic
+                .setActiveDisplay(CurrencyActiveDisplay.target),
+          ),
         ),
         SizedBox(height: calcTheme.itemSpacing),
-        CurrencyEquationDisplay(
-          equationDisplay: equationDisplay,
-          isActive: activeDisplay == CurrencyActiveDisplay.equation,
+        DisplayMotion(
+          position: 2,
+          child: EquationAfterEquals(
+            equation: equationDisplay,
+            completedCalculations: completedCalculations,
+            builder: (visibleEquation) => EquationAppearance(
+              hasEquation: visibleEquation.isNotEmpty,
+              child: CurrencyEquationDisplay(
+                equationDisplay: visibleEquation,
+                isActive: activeDisplay == CurrencyActiveDisplay.equation,
+              ),
+            ),
+          ),
         ),
         Expanded(
-          child: Row(
-            children: [
-              ShaderMask(
-                shaderCallback: (bounds) {
-                  return LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [calcTheme.accent, calcTheme.accent2],
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.srcIn,
-                child: Text(
-                  _currencyGlyph(resultCurrency),
-                  maxLines: 1,
-                  style: calcTheme.displayLargeTextStyle,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ShaderMask(
-                  shaderCallback: (bounds) {
-                    return LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [calcTheme.accent, calcTheme.accent2],
-                    ).createShader(bounds);
-                  },
-                  blendMode: BlendMode.srcIn,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerRight,
+          child: DisplayMotion(
+            position: 3,
+            child: ResultAfterEquals(
+              completedCalculations: completedCalculations,
+              child: Row(
+                children: [
+                  ShaderMask(
+                    shaderCallback: (bounds) {
+                      return LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [calcTheme.accent, calcTheme.accent2],
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.srcIn,
                     child: Text(
-                      resultDisplay,
+                      _currencyGlyph(resultCurrency),
                       maxLines: 1,
-                      textAlign: TextAlign.right,
                       style: calcTheme.displayLargeTextStyle,
                     ),
                   ),
-                ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ShaderMask(
+                      shaderCallback: (bounds) {
+                        return LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [calcTheme.accent, calcTheme.accent2],
+                        ).createShader(bounds);
+                      },
+                      blendMode: BlendMode.srcIn,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          resultDisplay,
+                          maxLines: 1,
+                          textAlign: TextAlign.right,
+                          style: calcTheme.displayLargeTextStyle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-        _CurrencyInfoDisplay(
-          rateDisplay: rateDisplay,
-          onSwapCurrencies: onSwapCurrencies,
-          onBackspace: onBackspace,
+        DisplayMotion(
+          position: 3,
+          startScale: 1,
+          child: _CurrencyInfoDisplay(
+            rateDisplay: rateDisplay,
+            onSwapCurrencies: onSwapCurrencies,
+            onBackspace: onBackspace,
+          ),
         ),
       ],
     );

@@ -95,6 +95,9 @@ class CalculatorLogic extends ChangeNotifier {
 
   Flag flag = Flag.RESULT;
 
+  int _completedCalculations = 0;
+  int get completedCalculations => _completedCalculations;
+
   bool get useRadians => _useRadians;
   String get angleModeButtonLabel => _useRadians ? 'Deg' : 'Rad';
   String get angleModeDisplay => _useRadians ? 'Rad' : 'Deg';
@@ -536,6 +539,7 @@ class CalculatorLogic extends ChangeNotifier {
       operator = "";
       openBrackets = 0;
       flag = Flag.RESULT;
+      _completedCalculations++;
     } catch (e) {
       display = "0";
     }

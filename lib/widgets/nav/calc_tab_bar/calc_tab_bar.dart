@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/styles/theme.dart';
+import '../../animations/staggered_entrance.dart';
 
 class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
   const CalcTabBar({
@@ -56,13 +57,16 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
                   unselectedLabelStyle: calcTheme.tabTextStyle,
                   overlayColor: WidgetStateProperty.all(Colors.transparent),
                   tabs: [
-                    for (final tab in tabs)
+                    for (final (index, tab) in tabs.indexed)
                       Tab(
                         height: preferredSize.height,
-                        child: Text(
-                          tab,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        child: StaggeredEntrance(
+                          position: index,
+                          child: Text(
+                            tab,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                   ],
@@ -71,7 +75,7 @@ class CalcTabBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             if (trailing != null) ...[
               SizedBox(width: calcTheme.itemSpacing),
-              trailing!,
+              StaggeredEntrance(position: tabs.length, child: trailing!),
             ],
           ],
         ),

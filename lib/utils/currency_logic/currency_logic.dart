@@ -57,6 +57,8 @@ class CurrencyLogic extends ChangeNotifier {
     return _calculator.equationDisplay;
   }
 
+  int get completedCalculations => _calculator.completedCalculations;
+
   String get baseValueDisplay {
     if (_activeDisplay == CurrencyActiveDisplay.target) {
       return _formatDisplayNumber(_convertedTargetToBase);

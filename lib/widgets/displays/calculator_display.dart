@@ -6,6 +6,7 @@ import '../../utils/calc_logic/calculator_logic.dart';
 import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
+import '../animations/calculation_completion.dart';
 import '../buttons/option_icon_button.dart';
 import 'equation_display.dart';
 
@@ -39,38 +40,50 @@ class CalculatorDisplay extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: AppDimens.itemSpacing,
               children: [
-                if (data.equationDisplay.isNotEmpty)
-                  Flexible(
-                    child: EquationDisplay(
-                      equation: data.equationDisplay,
-                      onLongPress: () =>
-                          _copyToClipboard(context, data.equationDisplay),
-                    ),
-                  ),
+                EquationAfterEquals(
+                  equation: data.equationDisplay,
+                  completedCalculations: data.completedCalculations,
+                  flexible: true,
+                  builder: (equation) => equation.isEmpty
+                      ? const SizedBox.shrink()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: AppDimens.itemSpacing,
+                          ),
+                          child: EquationDisplay(
+                            equation: equation,
+                            onLongPress: () =>
+                                _copyToClipboard(context, equation),
+                          ),
+                        ),
+                ),
                 Flexible(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onLongPress: () => _copyToClipboard(context, displayValue),
-                    child: ShaderMask(
-                      shaderCallback: (bounds) {
-                        return LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [calcTheme.accent, calcTheme.accent2],
-                        ).createShader(bounds);
-                      },
-                      blendMode: BlendMode.srcIn,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          displayValue,
-                          maxLines: 1,
-                          textAlign: TextAlign.right,
-                          style: calcTheme.displayLargeTextStyle.copyWith(
-                            height: 1.5,
+                  child: ResultAfterEquals(
+                    completedCalculations: data.completedCalculations,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onLongPress: () =>
+                          _copyToClipboard(context, displayValue),
+                      child: ShaderMask(
+                        shaderCallback: (bounds) {
+                          return LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [calcTheme.accent, calcTheme.accent2],
+                          ).createShader(bounds);
+                        },
+                        blendMode: BlendMode.srcIn,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            displayValue,
+                            maxLines: 1,
+                            textAlign: TextAlign.right,
+                            style: calcTheme.displayLargeTextStyle.copyWith(
+                              height: 1.5,
+                            ),
                           ),
                         ),
                       ),

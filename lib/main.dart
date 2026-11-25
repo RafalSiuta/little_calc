@@ -19,6 +19,7 @@ import 'providers/window_layout_provider.dart';
 import 'screens/main_screen.dart';
 import 'utils/internationalization/app_localizations.dart';
 import 'utils/routes/custom_route.dart';
+import 'utils/unit_converter_logic/unit_converter_logic.dart';
 
 Future<int> getAndroidVersion() async {
   if (Platform.isAndroid) {
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => WindowLayoutProvider()),
         ChangeNotifierProvider(create: (context) => ThemeSettingsProvider()),
         ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
+        ChangeNotifierProvider(create: (_) => UnitConverterLogic()),
       ],
       child: Consumer2<ThemeSettingsProvider, LocaleProvider>(
         builder: (context, themeSettings, localeProvider, child) {

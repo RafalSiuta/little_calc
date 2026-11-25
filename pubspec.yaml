@@ -38,6 +38,8 @@ dependencies:
   device_info_plus: ^12.3.0
   google_fonts: ^8.1.0
   fl_chart: ^1.2.0
+  flutter_staggered_animations: ^1.1.1
+  simple_animations: ^5.2.0
 
 dev_dependencies:
   flutter_test:

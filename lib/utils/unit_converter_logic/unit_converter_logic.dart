@@ -65,6 +65,8 @@ class UnitConverterLogic extends ChangeNotifier {
     return _calculator.equationDisplay;
   }
 
+  int get completedCalculations => _calculator.completedCalculations;
+
   void setCategory(UnitCategory value) {
     if (value == _category) return;
     _category = value;

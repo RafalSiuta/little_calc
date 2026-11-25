@@ -70,11 +70,15 @@ class _CurrencyCardState extends State<CurrencyCard> {
           ),
           child: Row(
             children: [
-              _CurrencyCardLabel(
-                currency: widget.currency,
-                isActive: widget.isActive,
+              Expanded(
+                flex: 3,
+                child: _CurrencyCardLabel(
+                  currency: widget.currency,
+                  isActive: widget.isActive,
+                ),
               ),
               Expanded(
+                flex: 2,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: theme.basePadding),
                   child: SizedBox(
@@ -83,28 +87,31 @@ class _CurrencyCardState extends State<CurrencyCard> {
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Text(
-                    widget.currency.symbol,
-                    style: theme.numButtonNumberTextStyle.copyWith(
-                      color: valueColor,
+              Expanded(
+                flex: 4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${widget.currency.symbol} ${widget.value}',
+                          style: theme.numButtonNumberTextStyle.copyWith(
+                            color: valueColor,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    widget.value,
-                    style: theme.numButtonNumberTextStyle.copyWith(
+                    const SizedBox(width: 5),
+                    Icon(
+                      isRising ? Icons.arrow_upward : Icons.arrow_downward,
                       color: valueColor,
+                      size: 24,
                     ),
-                  ),
-                  const SizedBox(width: 5),
-                  Icon(
-                    isRising ? Icons.arrow_upward : Icons.arrow_downward,
-                    color: valueColor,
-                    size: 24,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -129,9 +136,16 @@ class _CurrencyCardLabel extends StatelessWidget {
         Row(
           children: [
             CurrencyFlag(currency: currency),
-            Text(
-              currency.codeIso,
-              style: theme.numButtonNumberTextStyle.copyWith(color: theme.text),
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  currency.codeIso,
+                  style: theme.numButtonNumberTextStyle.copyWith(
+                    color: theme.text,
+                  ),
+                ),
+              ),
             ),
             if (isActive)
               Icon(Icons.arrow_drop_down, color: theme.text, size: 24),

@@ -1,13 +1,19 @@
-import 'package:flutter/widgets.dart';
-
+import '../../utils/custom_icons/bixcalc_icons.dart';
 import '../nav_model/nav_model.dart';
 
-class ScreenModel {
-  const ScreenModel({
-    required this.page,
-    required this.nav,
-  });
+enum ScreenModel {
+  calculator(
+    NavModel(
+      title: 'navigation.calculator',
+      icon: BixCalcIcons.calculator_simple,
+    ),
+  ),
+  units(NavModel(title: 'navigation.units', icon: BixCalcIcons.ruler_triangle)),
+  currencies(NavModel(title: 'waluty', icon: BixCalcIcons.sack_dollar)),
+  history(NavModel(title: 'historia', icon: BixCalcIcons.history)),
+  settings(NavModel(title: 'navigation.settings', icon: BixCalcIcons.settings));
 
-  final Widget page;
+  const ScreenModel(this.nav);
+
   final NavModel nav;
 }

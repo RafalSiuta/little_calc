@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/nav_model/nav_model.dart';
 import '../../utils/styles/dimensions/dimensions.dart';
 import '../../utils/styles/theme.dart';
+import '../animations/staggered_entrance.dart';
 import '../buttons/option_icon_button.dart';
 
 class CalculatorOptionsBar extends StatelessWidget {
@@ -48,26 +49,32 @@ class CalculatorOptionsBar extends StatelessWidget {
                   spacing: itemSpacing,
                   children: [
                     for (var index = 0; index < leftItems.length; index++)
-                      OptionIconButton(
-                        icon: leftItems[index].icon,
-                        tooltip: leftItems[index].title,
-                        size: index == 0
-                            ? const Size.square(AppDimens.baseIconSize)
-                            : iconSize,
-                        isActive: index == selectedItem,
-                        onPressed: () => onItemSelected(index),
+                      StaggeredEntrance(
+                        position: index,
+                        child: OptionIconButton(
+                          icon: leftItems[index].icon,
+                          tooltip: leftItems[index].title,
+                          size: index == 0
+                              ? const Size.square(AppDimens.baseIconSize)
+                              : iconSize,
+                          isActive: index == selectedItem,
+                          onPressed: () => onItemSelected(index),
+                        ),
                       ),
                   ],
                 ),
               ),
             ),
             if (rightItem != null)
-              OptionIconButton(
-                icon: rightItem.icon,
-                tooltip: rightItem.title,
-                size: iconSize,
-                isActive: selectedItem == items.length - 1,
-                onPressed: () => onItemSelected(items.length - 1),
+              StaggeredEntrance(
+                position: items.length - 1,
+                child: OptionIconButton(
+                  icon: rightItem.icon,
+                  tooltip: rightItem.title,
+                  size: iconSize,
+                  isActive: selectedItem == items.length - 1,
+                  onPressed: () => onItemSelected(items.length - 1),
+                ),
               ),
           ],
         ),
