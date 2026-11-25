@@ -5,8 +5,8 @@ class AppDimens {
   static const double basePadding = 16;
   static const double paddingSmall = 8;
   static const double smallItemSpacing = 5;
-  static const double itemSpacing = 16;
-  static const double mobileItemSpacing = 10;
+  static const double itemSpacing = 18;
+  static const double mobileItemSpacing = 16;
   static const double keyHeight = 54;
   static const double mobileKeyHeight = 319 / 6;
   static const double mobileExpandedKeyHeight = 466 / 12;

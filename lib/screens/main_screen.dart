@@ -1,3 +1,4 @@
+import 'package:bixcalc/screens/currency_page/currency_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/nav_model/nav_model.dart';
@@ -41,13 +42,13 @@ class _MainScreenState extends State<MainScreen> {
         icon: BixCalcIcons.ruler_triangle,
       ),
     ),
-    // ScreenModel(
-    //   page: CurrencyPage(),
-    //   nav: NavModel(
-    //     title: 'waluty',
-    //     icon: Icons.attach_money,
-    //   ),
-    // ),
+    ScreenModel(
+      page: CurrencyPage(),
+      nav: NavModel(
+        title: 'waluty',
+        icon: BixCalcIcons.sack_dollar,
+      ),
+    ),
     // ScreenModel(
     //   page: HistoryPage(),
     //   nav: NavModel(
