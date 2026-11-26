@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../models/nav_model/nav_model.dart';
 import '../models/screen_model/screen_model.dart';
 import '../providers/calculator_memory_provider.dart';
-import '../providers/currencies_provider.dart';
 import '../providers/theme_settings_provider.dart';
 import '../providers/window_layout_provider.dart';
 import '../utils/calc_logic/calculator_logic.dart';
@@ -21,8 +20,6 @@ import '../widgets/keyboards/scientific_calculator_keyboard.dart';
 import '../widgets/options/calculator_options_bar.dart';
 import '../widgets/window/window_title_bar.dart';
 import 'calc_page/calc_page.dart';
-import 'currency_page/currency_page.dart';
-import 'history_page/history_page.dart';
 import 'sets_page/sets_page.dart';
 import 'unit_convert_page/unit_convert_page.dart';
 
@@ -37,6 +34,11 @@ enum _KeyboardLayout {
       : AppDimens.calculatorKeyboardHeight(isExpanded: this == scientific);
 }
 
+// When restoring History, add HistoryPage with no shared keypad, like settings.
+// When restoring Currencies, share the converter keypad layout with units.
+// Show it only on the conversion tab when currencies are loaded. Route input
+// through the shared memory handler to CurrenciesProvider.currencyLogic, and
+// restore the saved tab and the keypad lock while the tab is changing.
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -55,12 +57,8 @@ class _MainScreenState extends State<MainScreen>
   ScreenModel? _outgoingPage;
   final Set<ScreenModel> _expandedMobilePages = {};
   bool _showHyperbolicFunctions = false;
-  int _currencyTab = 0;
-  bool _currencyTabIsChanging = false;
 
-  bool get _keyboardIsLocked =>
-      _outgoingPage != null ||
-      (_currentPage == ScreenModel.currencies && _currencyTabIsChanging);
+  bool get _keyboardIsLocked => _outgoingPage != null;
 
   @override
   void initState() {
@@ -91,9 +89,6 @@ class _MainScreenState extends State<MainScreen>
 
   void _startTransition(ScreenModel page) {
     setState(() {
-      if (_currentPage == ScreenModel.currencies) {
-        _currencyTabIsChanging = false;
-      }
       _requestedPage = page;
       _outgoingPage = _currentPage;
       _currentPage = page;
@@ -133,39 +128,20 @@ class _MainScreenState extends State<MainScreen>
     });
   }
 
-  void _onCurrencyTabChanged(int? index) {
-    if (_currentPage != ScreenModel.currencies) return;
-
-    final isChanging = index == null;
-    if (isChanging == _currencyTabIsChanging &&
-        (index == null || index == _currencyTab)) {
-      return;
-    }
-
-    setState(() {
-      _currencyTabIsChanging = isChanging;
-      if (index != null) _currencyTab = index;
-    });
-  }
-
   _KeyboardLayout _keyboardLayout(
     ScreenModel page,
     WindowLayoutProvider windowLayout,
-    bool hasCurrencies,
   ) {
     final isExpanded = _isExpanded(page, windowLayout);
     return switch (page) {
       ScreenModel.calculator =>
         isExpanded ? _KeyboardLayout.scientific : _KeyboardLayout.compact,
-      ScreenModel.currencies when _currencyTab != 0 || !hasCurrencies =>
-        _KeyboardLayout.hidden,
-      ScreenModel.units ||
-      ScreenModel.currencies when !isExpanded => _KeyboardLayout.compact,
-      ScreenModel.units || ScreenModel.currencies =>
+      ScreenModel.units when !isExpanded => _KeyboardLayout.compact,
+      ScreenModel.units =>
         SystemHelper.isMobileSystem
             ? _KeyboardLayout.hidden
             : _KeyboardLayout.desktopConverter,
-      ScreenModel.history || ScreenModel.settings => _KeyboardLayout.hidden,
+      ScreenModel.settings => _KeyboardLayout.hidden,
     };
   }
 
@@ -198,17 +174,6 @@ class _MainScreenState extends State<MainScreen>
           logic.recallMemoryValue,
           logic.handleKeyPress,
         );
-      case ScreenModel.currencies:
-        final provider = context.read<CurrenciesProvider>();
-        if (_currencyTab != 0 || provider.currencies.isEmpty) return;
-        final logic = provider.currencyLogic;
-        _applyKey(
-          key,
-          logic.memoryValue,
-          logic.recallMemoryValue,
-          logic.handleKeyPress,
-        );
-      case ScreenModel.history:
       case ScreenModel.settings:
         return;
     }
@@ -246,14 +211,6 @@ class _MainScreenState extends State<MainScreen>
         keyboardHeight: keyboard.height,
         onToggleLayout: toggleLayout,
       ),
-      ScreenModel.currencies => CurrencyPage(
-        isExpanded: isExpanded,
-        keyboardHeight: keyboard.height,
-        onToggleLayout: toggleLayout,
-        initialTab: _currencyTab,
-        onTabChanged: _onCurrencyTabChanged,
-      ),
-      ScreenModel.history => const HistoryPage(),
       ScreenModel.settings => const SetsPage(),
     };
     final isOutgoing = page == _outgoingPage;
@@ -336,18 +293,10 @@ class _MainScreenState extends State<MainScreen>
     final themeSettings = context.watch<ThemeSettingsProvider>();
     final calcTheme = context.calcTheme;
     final outgoingPage = _outgoingPage;
-    final usesCurrencies =
-        _currentPage == ScreenModel.currencies ||
-        outgoingPage == ScreenModel.currencies;
-    final hasCurrencies =
-        usesCurrencies &&
-        context.select<CurrenciesProvider, bool>(
-          (provider) => provider.currencies.isNotEmpty,
-        );
-    final keyboard = _keyboardLayout(_currentPage, windowLayout, hasCurrencies);
+    final keyboard = _keyboardLayout(_currentPage, windowLayout);
     final outgoingKeyboard = outgoingPage == null
         ? keyboard
-        : _keyboardLayout(outgoingPage, windowLayout, hasCurrencies);
+        : _keyboardLayout(outgoingPage, windowLayout);
     final lockKeyboard = _keyboardIsLocked;
 
     return Scaffold(

@@ -9,8 +9,8 @@ enum ScreenModel {
     ),
   ),
   units(NavModel(title: 'navigation.units', icon: BixCalcIcons.ruler_triangle)),
-  currencies(NavModel(title: 'waluty', icon: BixCalcIcons.sack_dollar)),
-  history(NavModel(title: 'historia', icon: BixCalcIcons.history)),
+  // currencies(NavModel(title: 'waluty', icon: BixCalcIcons.sack_dollar)),
+  // history(NavModel(title: 'historia', icon: BixCalcIcons.history)),
   settings(NavModel(title: 'navigation.settings', icon: BixCalcIcons.settings));
 
   const ScreenModel(this.nav);
